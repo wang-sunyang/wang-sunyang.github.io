@@ -4,7 +4,7 @@
 
 纯手写 HTML / CSS / JavaScript 搭起来的个人站点，没有框架、没有构建、没有第三方依赖。改完文件 `git push`，GitHub Pages 自动发布。
 
-**线上地址：<https://yangyang2857-rgb.github.io/>**
+**线上地址：<https://wang-sunyang.github.io/>**
 
 ![GitHub Pages](https://img.shields.io/badge/hosting-GitHub%20Pages-2ea44f)
 ![No build](https://img.shields.io/badge/build-none-blue)
@@ -16,8 +16,8 @@
 | 入口 | 内容 |
 | --- | --- |
 | [笔记更新指南](docs/notes-guide.md) | 加新文章、改分类、接上一篇/下一篇的完整步骤 |
-| [拾光 OneStar 文档](https://github.com/yangyang2857-rgb/onestar/blob/main/docs/README.md) | 姊妹仓库：安卓构建与发版规范 |
-| [跨平台开发与发布总纲](https://github.com/yangyang2857-rgb/onestar/blob/main/docs/cross-platform-release-plan.md) | 六生态时间表与 12 道发布闸门 |
+| [拾光 OneStar 文档](https://github.com/wang-sunyang/onestar/blob/main/docs/README.md) | 姊妹仓库：安卓构建与发版规范 |
+| [跨平台开发与发布总纲](https://github.com/wang-sunyang/onestar/blob/main/docs/cross-platform-release-plan.md) | 六生态时间表与 12 道发布闸门 |
 
 ## 目录
 
@@ -110,8 +110,8 @@
 因为页面之间是相对路径，直接双击打开也能看，但更推荐起一个本地服务，避免 `file://` 下的路径与 `localStorage` 行为差异：
 
 ```bash
-git clone https://github.com/yangyang2857-rgb/yangyang2857-rgb.github.io.git
-cd yangyang2857-rgb.github.io
+git clone https://github.com/wang-sunyang/wang-sunyang.github.io.git
+cd wang-sunyang.github.io
 python3 -m http.server 8000
 # 浏览器打开 http://localhost:8000/
 ```
@@ -129,7 +129,7 @@ python3 -m http.server 8000
 ## 部署方式
 
 - 托管：GitHub Pages，源为 `main` 分支根目录
-- 域名：`yangyang2857-rgb.github.io`，没有 `CNAME` 文件，也没有自定义域
+- 域名：`wang-sunyang.github.io`，没有 `CNAME` 文件，也没有自定义域
 - 没有 GitHub Actions 工作流：不需要构建，Pages 只负责把文件原样发出去
 - 发布延迟：推送后通常几十秒内生效，缓存未过期时强刷一次（Ctrl/Cmd + Shift + R）
 
@@ -166,7 +166,7 @@ python3 -m http.server 8000
 | --- | --- |
 | 邮箱 | [3383927177@qq.com](mailto:3383927177@qq.com) |
 | 微信 | `ILOVEHUTAOMUCH` |
-| GitHub | [@yangyang2857-rgb](https://github.com/yangyang2857-rgb) |
+| GitHub | [@wang-sunyang](https://github.com/wang-sunyang) |
 
 ## 版权
 

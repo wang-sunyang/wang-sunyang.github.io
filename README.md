@@ -5,7 +5,7 @@
 A personal site built by hand in plain HTML / CSS / JavaScript — no framework, no build
 step, no third-party dependencies. Edit a file, `git push`, GitHub Pages publishes it.
 
-**Live: <https://yangyang2857-rgb.github.io/>**
+**Live: <https://wang-sunyang.github.io/>**
 
 ![GitHub Pages](https://img.shields.io/badge/hosting-GitHub%20Pages-2ea44f)
 ![No build](https://img.shields.io/badge/build-none-blue)
@@ -17,8 +17,8 @@ step, no third-party dependencies. Edit a file, `git push`, GitHub Pages publish
 | Entry | Covers |
 | --- | --- |
 | [Note workflow guide](docs/notes-guide.md) | Adding a post, categories, prev/next wiring — the full checklist |
-| [OneStar docs](https://github.com/yangyang2857-rgb/onestar/blob/main/docs/README.md) | Sister repo: Android build and release specs |
-| [OneStar cross-platform plan](https://github.com/yangyang2857-rgb/onestar/blob/main/docs/cross-platform-release-plan.md) | Six-ecosystem timeline and the 12 release gates |
+| [OneStar docs](https://github.com/wang-sunyang/onestar/blob/main/docs/README.md) | Sister repo: Android build and release specs |
+| [OneStar cross-platform plan](https://github.com/wang-sunyang/onestar/blob/main/docs/cross-platform-release-plan.md) | Six-ecosystem timeline and the 12 release gates |
 
 ## Contents
 
@@ -134,8 +134,8 @@ Pages use relative paths, so double-clicking a file mostly works — but a local
 because `file://` changes path resolution and `localStorage` behaviour:
 
 ```bash
-git clone https://github.com/yangyang2857-rgb/yangyang2857-rgb.github.io.git
-cd yangyang2857-rgb.github.io
+git clone https://github.com/wang-sunyang/wang-sunyang.github.io.git
+cd wang-sunyang.github.io
 python3 -m http.server 8000
 # open http://localhost:8000/
 ```
@@ -157,7 +157,7 @@ The full checklist lives in [`docs/notes-guide.md`](docs/notes-guide.md). The es
 ## Deployment
 
 - Hosting: GitHub Pages, source = `main` branch, repository root
-- Domain: `yangyang2857-rgb.github.io` — no `CNAME` file, no custom domain
+- Domain: `wang-sunyang.github.io` — no `CNAME` file, no custom domain
 - No GitHub Actions workflow: nothing needs building, Pages just serves the files as they are
 - Publish delay: usually a few tens of seconds after pushing; force-reload (Ctrl/Cmd + Shift + R) if
   a cache is still warm
@@ -201,7 +201,7 @@ Fallbacks in place:
 | --- | --- |
 | Email | [3383927177@qq.com](mailto:3383927177@qq.com) |
 | WeChat | `ILOVEHUTAOMUCH` |
-| GitHub | [@yangyang2857-rgb](https://github.com/yangyang2857-rgb) |
+| GitHub | [@wang-sunyang](https://github.com/wang-sunyang) |
 
 ## Copyright
 
