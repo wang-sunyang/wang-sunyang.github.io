@@ -1,430 +1,402 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>笔记 · 王孙阳</title>
-<meta name="description" content="王孙阳的学习笔记与技术随笔——记录做过的事、踩过的坑和想明白的道理。">
+<meta name="description" content="王孙阳的学习笔记和技术随笔。不是教程，更像是给未来的自己留的备忘：做过什么、卡在哪里、后来怎么想通的。">
 <link rel="canonical" href="https://wang-sunyang.github.io/blog.html">
-<meta name="theme-color" content="#060a14">
+<meta name="theme-color" content="#05060e">
 <meta name="color-scheme" content="dark light">
 
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="王孙阳 · 个人主页">
+<meta property="og:site_name" content="王孙阳 · Wang Sunyang">
 <meta property="og:title" content="笔记 · 王孙阳">
-<meta property="og:description" content="记录做过的事、踩过的坑和想明白的道理。">
+<meta property="og:description" content="写下来，才真正学会。学习笔记与技术随笔。">
 <meta property="og:url" content="https://wang-sunyang.github.io/blog.html">
 <meta property="og:locale" content="zh_CN">
 <meta name="twitter:card" content="summary">
 
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='15' fill='%230b1120'/%3E%3Ctext x='32' y='45' font-size='34' font-weight='700' font-family='sans-serif' fill='%235eead4' text-anchor='middle'%3E%E7%8E%8B%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%235eead4'/%3E%3Cstop offset='1' stop-color='%23a78bfa'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='15' fill='%23070a16'/%3E%3Ctext x='32' y='46' font-size='36' font-weight='800' font-family='sans-serif' fill='url(%23g)' text-anchor='middle'%3E%E7%8E%8B%3C/text%3E%3C/svg%3E">
 
+<script>
+/* 首屏前决定主题，避免闪白/闪黑 */
+(function(){var s=null;try{s=localStorage.getItem('theme');}catch(e){}var l=window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)').matches;document.documentElement.setAttribute('data-theme',s||(l?'light':'dark'));})();
+</script>
 <style>
+/* ============================================================
+   NIGHTGLEAN · 长夜拾星 — Notes · Design System
+   0 deps · hand-written · 20 languages
+   ============================================================ */
 :root{
-  --bg:#060a14;
-  --surface:#0b1120;
-  --line:rgba(148,163,184,.14);
-  --line-strong:rgba(148,163,184,.26);
-  --text:#e8eef9;
-  --text-2:#9aa8c0;
-  --text-3:#6b7a94;
-  --accent:#5eead4;
-  --accent-soft:rgba(94,234,212,.10);
-  --accent-line:rgba(94,234,212,.30);
-  --accent-2:#8b7cf6;
-  --accent-grad:linear-gradient(120deg,#5eead4,#7ef0dc);
-  --accent-glow:rgba(94,234,212,.55);
-  --on-accent:#04211c;
-  --nav-bg:rgba(6,10,20,.62);
-  --card-bg:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.018));
-  --subtle:rgba(255,255,255,.04);
-  --hover:rgba(255,255,255,.075);
-  --inset-line:rgba(255,255,255,.09);
-  --glow-1:rgba(94,234,212,.13);
-  --glow-2:rgba(139,124,246,.15);
-  --glow-3:rgba(56,132,255,.07);
-  --shadow:0 24px 60px -28px rgba(0,0,0,.9);
-  --ease:cubic-bezier(.22,.61,.36,1);
-}
+  --bg:#05060e;
+  --bg-2:#090b18;
+  --surface:rgba(255,255,255,.04);
+  --surface-2:rgba(255,255,255,.065);
+  --line:rgba(255,255,255,.09);
+  --line-strong:rgba(255,255,255,.16);
 
+  --text:#eef1fb;
+  --text-2:#a3adc9;
+  --text-3:#626d8e;
+
+  --acc1:#5eead4;
+  --acc2:#a78bfa;
+  --acc3:#f5c76a;
+  --acc4:#f472b6;
+
+  --acc1-soft:rgba(94,234,212,.12);
+  --acc2-soft:rgba(167,139,250,.14);
+  --acc3-soft:rgba(245,199,106,.12);
+
+  --grad:linear-gradient(120deg,var(--acc1),var(--acc2) 50%,var(--acc4));
+  --grad-soft:linear-gradient(120deg,rgba(94,234,212,.9),rgba(167,139,250,.9));
+  --glow-1:rgba(94,234,212,.55);
+  --glow-2:rgba(167,139,250,.55);
+
+  --nav-bg:rgba(5,6,14,.6);
+  --card-bg:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.02));
+  --hover:rgba(255,255,255,.08);
+
+  --radius:24px;
+  --radius-sm:14px;
+  --shadow:0 30px 80px -40px rgba(0,0,0,.9);
+  --ease:cubic-bezier(.22,.61,.36,1);
+  --font:"Inter","SF Pro Display",-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","HarmonyOS Sans SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans","Noto Sans Arabic","Noto Sans Thai","Noto Sans Devanagari",sans-serif;
+}
 :root[data-theme="light"]{
-  --bg:#f6f7fb;
-  --surface:#ffffff;
+  --bg:#f4f5fb;
+  --bg-2:#ffffff;
+  --surface:rgba(15,23,42,.04);
+  --surface-2:rgba(15,23,42,.06);
   --line:rgba(15,23,42,.10);
   --line-strong:rgba(15,23,42,.18);
-  --text:#0f172a;
-  --text-2:#4a5878;
-  --text-3:#77839a;
-  --accent:#0e9887;
-  --accent-soft:rgba(14,152,135,.09);
-  --accent-line:rgba(14,152,135,.28);
-  --accent-2:#6b5cf0;
-  --accent-grad:linear-gradient(120deg,#0e9887,#16b3a0);
-  --accent-glow:rgba(14,152,135,.40);
-  --on-accent:#ffffff;
-  --nav-bg:rgba(246,247,251,.75);
-  --card-bg:linear-gradient(180deg,#ffffff,rgba(255,255,255,.72));
-  --subtle:rgba(15,23,42,.035);
-  --hover:rgba(15,23,42,.065);
-  --inset-line:rgba(15,23,42,.05);
-  --glow-1:rgba(14,152,135,.10);
-  --glow-2:rgba(107,92,240,.10);
-  --glow-3:rgba(56,132,255,.06);
-  --shadow:0 24px 50px -30px rgba(15,23,42,.35);
+  --text:#0e1424;
+  --text-2:#46506e;
+  --text-3:#7a849d;
+  --acc1:#0e9887;
+  --acc2:#6b5cf0;
+  --acc3:#d98a17;
+  --acc4:#db2777;
+  --acc1-soft:rgba(14,152,135,.10);
+  --acc2-soft:rgba(107,92,240,.10);
+  --acc3-soft:rgba(217,138,23,.10);
+  --nav-bg:rgba(244,245,251,.72);
+  --card-bg:linear-gradient(180deg,#ffffff,rgba(255,255,255,.65));
+  --hover:rgba(15,23,42,.06);
+  --shadow:0 30px 60px -42px rgba(15,23,42,.35);
 }
 
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-
 html{scroll-behavior:smooth;scroll-padding-top:96px;-webkit-text-size-adjust:100%}
-
 body{
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","HarmonyOS Sans SC","Hiragino Sans GB","Microsoft YaHei","Source Han Sans SC",sans-serif;
-  background:var(--bg);color:var(--text);
-  font-size:16px;line-height:1.75;overflow-x:hidden;
-  -webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums;
-  transition:background .35s var(--ease),color .35s var(--ease);
+  font-family:var(--font);
+  background:var(--bg);
+  color:var(--text);
+  font-size:16px;line-height:1.75;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+  font-variant-numeric:tabular-nums;
+  transition:background .4s var(--ease),color .4s var(--ease);
+  min-height:100vh;
 }
+::selection{background:var(--acc1);color:#04110f}
 
-body::before{
-  content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
-  background:
-    radial-gradient(620px 520px at 10% -10%,var(--glow-1),transparent 62%),
-    radial-gradient(560px 500px at 92% 106%,var(--glow-2),transparent 62%),
-    radial-gradient(460px 400px at 64% 44%,var(--glow-3),transparent 68%);
-  transition:background .35s var(--ease);
-}
+/* ---------- layered background ---------- */
+#aurora{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;filter:blur(70px) saturate(130%)}
+#aurora i{position:absolute;border-radius:50%;opacity:.55;mix-blend-mode:screen;will-change:transform}
+#aurora i:nth-child(1){width:52vw;height:52vw;left:-14vw;top:-18vw;background:radial-gradient(circle,var(--acc1) 0%,transparent 62%);animation:drift1 26s var(--ease) infinite alternate}
+#aurora i:nth-child(2){width:46vw;height:46vw;right:-12vw;top:8vw;background:radial-gradient(circle,var(--acc2) 0%,transparent 62%);animation:drift2 32s var(--ease) infinite alternate}
+#aurora i:nth-child(3){width:38vw;height:38vw;left:30vw;bottom:-16vw;background:radial-gradient(circle,var(--acc4) 0%,transparent 60%);animation:drift3 38s var(--ease) infinite alternate}
+@keyframes drift1{to{transform:translate(8vw,6vh) scale(1.15)}}
+@keyframes drift2{to{transform:translate(-9vw,10vh) scale(1.08)}}
+@keyframes drift3{to{transform:translate(6vw,-8vh) scale(1.2)}}
+:root[data-theme="light"] #aurora{filter:blur(70px) saturate(90%);opacity:.7}
+:root[data-theme="light"] #aurora i{mix-blend-mode:multiply;opacity:.4}
 
-.skip{position:absolute;left:-9999px;top:0;z-index:200;background:var(--accent);color:var(--on-accent);padding:10px 18px;border-radius:0 0 12px 0;font-weight:700;text-decoration:none}
+#stars{position:fixed;inset:0;z-index:1;pointer-events:none}
+
+#grain{position:fixed;inset:-50%;z-index:2;pointer-events:none;opacity:.05;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation:grain 8s steps(6) infinite}
+@keyframes grain{0%,100%{transform:translate(0,0)}20%{transform:translate(-3%,2%)}40%{transform:translate(2%,-3%)}60%{transform:translate(-2%,-2%)}80%{transform:translate(3%,3%)}}
+
+/* ---------- cursor ---------- */
+#cdot,#cring{position:fixed;top:-100px;left:-100px;z-index:9999;pointer-events:none;border-radius:50%;transform:translate(-50%,-50%)}
+#cdot{width:6px;height:6px;background:var(--acc1);box-shadow:0 0 12px var(--glow-1);mix-blend-mode:difference}
+#cring{width:38px;height:38px;border:1.5px solid rgba(148,163,184,.5);transition:width .25s var(--ease),height .25s var(--ease),border-color .25s var(--ease),background .25s var(--ease)}
+#cring.hot{width:64px;height:64px;border-color:var(--acc1);background:var(--acc1-soft)}
+@media (hover:none),(pointer:coarse){#cdot,#cring{display:none}}
+body.cursor-on{cursor:none}
+body.cursor-on a,body.cursor-on button,body.cursor-on [data-tilt]{cursor:none}
+
+/* ---------- skip / progress ---------- */
+.skip{position:fixed;left:-9999px;top:0;z-index:200;background:var(--acc1);color:#04110f;padding:10px 18px;font-weight:700;text-decoration:none;border-radius:0 0 12px 0}
 .skip:focus{left:0}
+#progress{position:fixed;top:0;left:0;height:2px;width:0;z-index:120;background:var(--grad);box-shadow:0 0 14px var(--glow-1)}
+a:focus-visible,button:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--acc1);outline-offset:3px;border-radius:8px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 
-a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:8px}
-
-.site-nav{
-  position:fixed;top:0;left:0;right:0;z-index:100;
-  background:var(--nav-bg);
-  backdrop-filter:blur(18px) saturate(140%);
-  -webkit-backdrop-filter:blur(18px) saturate(140%);
-  border-bottom:1px solid var(--line);
-  transition:background .35s var(--ease),border-color .35s var(--ease);
-}
-.nav-inner{max-width:1080px;margin:0 auto;padding:13px 24px;display:flex;align-items:center;gap:12px}
-.logo{
-  font-weight:800;font-size:16px;letter-spacing:.02em;text-decoration:none;
-  display:inline-flex;align-items:center;gap:9px;color:var(--text);flex-shrink:0;
-}
-.logo::before{
-  content:"";width:9px;height:9px;border-radius:50%;
-  background:linear-gradient(135deg,var(--accent),var(--accent-2));
-  box-shadow:0 0 12px var(--accent-glow);
-}
-.nav-links{display:flex;gap:2px;margin-left:auto;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
+/* ---------- nav ---------- */
+.site-nav{position:fixed;top:0;left:0;right:0;z-index:100;background:var(--nav-bg);backdrop-filter:blur(20px) saturate(150%);-webkit-backdrop-filter:blur(20px) saturate(150%);border-bottom:1px solid var(--line);transition:background .4s var(--ease),border-color .4s var(--ease)}
+.nav-inner{max-width:1160px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;gap:14px}
+.logo{font-weight:800;font-size:16px;letter-spacing:.02em;text-decoration:none;display:inline-flex;align-items:center;gap:10px;color:var(--text);flex-shrink:0}
+.logo .lg-mark{width:28px;height:28px;border-radius:9px;display:grid;place-items:center;font-size:15px;font-weight:800;color:#04110f;background:var(--grad);box-shadow:0 4px 18px -4px var(--glow-1);position:relative;overflow:hidden}
+.logo .lg-mark::after{content:"";position:absolute;inset:0;background:linear-gradient(120deg,transparent 30%,rgba(255,255,255,.7) 50%,transparent 70%);transform:translateX(-100%);animation:shine 4s var(--ease) infinite}
+@keyframes shine{0%,60%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+.nav-links{display:flex;gap:2px;margin-left:auto;overflow-x:auto;scrollbar-width:none}
 .nav-links::-webkit-scrollbar{display:none}
-.nav-links a{
-  color:var(--text-2);text-decoration:none;font-size:14px;
-  padding:7px 12px;border-radius:10px;white-space:nowrap;
-  transition:color .25s var(--ease),background .25s var(--ease);
-}
+.nav-links a{color:var(--text-2);text-decoration:none;font-size:14px;padding:7px 12px;border-radius:10px;white-space:nowrap;transition:color .25s var(--ease),background .25s var(--ease)}
 .nav-links a:hover{color:var(--text);background:var(--hover)}
-.nav-links a.active{color:var(--accent);background:var(--accent-soft)}
-
-.theme-toggle{
-  width:38px;height:38px;flex-shrink:0;display:grid;place-items:center;
-  background:var(--subtle);border:1px solid var(--line);border-radius:11px;
-  color:var(--text-2);cursor:pointer;
-  transition:color .25s var(--ease),border-color .25s var(--ease),background .25s var(--ease);
-}
-.theme-toggle:hover{color:var(--accent);border-color:var(--accent-line);background:var(--accent-soft)}
-.theme-toggle svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.nav-links a.active{color:var(--acc1);background:var(--acc1-soft)}
+.nav-tools{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.tool-btn{width:38px;height:38px;display:grid;place-items:center;background:var(--surface);border:1px solid var(--line);border-radius:11px;color:var(--text-2);cursor:pointer;transition:color .25s var(--ease),border-color .25s var(--ease),background .25s var(--ease),transform .25s var(--ease)}
+.tool-btn:hover{color:var(--acc1);border-color:var(--acc1);background:var(--acc1-soft);transform:translateY(-1px)}
+.tool-btn svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 :root[data-theme="dark"] .i-moon{display:none}
 :root[data-theme="light"] .i-sun{display:none}
 
-main{position:relative;z-index:1}
-.wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+/* language switcher */
+.lang-btn{width:auto;padding:0 13px;gap:8px;display:flex;align-items:center;font-family:inherit;font-size:13px;font-weight:600}
+.lang-btn svg{width:17px;height:17px}
+#langPanel{position:fixed;z-index:150;width:min(420px,calc(100vw - 32px));max-height:70vh;overflow:hidden;background:var(--bg-2);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);opacity:0;visibility:hidden;transform:translateY(12px) scale(.98);transform-origin:top right;transition:opacity .28s var(--ease),transform .28s var(--ease),visibility .28s}
+#langPanel.open{opacity:1;visibility:visible;transform:none}
+.lang-head{display:flex;align-items:center;justify-content:space-between;padding:16px 18px 12px;border-bottom:1px solid var(--line)}
+.lang-head b{font-size:14px;font-weight:700}
+.lang-close{background:none;border:none;color:var(--text-3);cursor:pointer;width:28px;height:28px;display:grid;place-items:center;border-radius:8px}
+.lang-close:hover{color:var(--text);background:var(--hover)}
+.lang-list{overflow-y:auto;max-height:calc(70vh - 60px);padding:8px}
+.lang-list button{width:100%;display:flex;align-items:center;gap:12px;background:none;border:none;color:var(--text-2);font-family:inherit;font-size:14px;padding:11px 12px;border-radius:12px;cursor:pointer;text-align:start;transition:background .2s,color .2s}
+.lang-list button:hover{background:var(--hover);color:var(--text)}
+.lang-list button.active{background:var(--acc1-soft);color:var(--acc1)}
+.lang-list .lg-dot{width:10px;height:10px;border-radius:50%;background:var(--grad);box-shadow:0 0 8px var(--glow-1);flex:none}
+.lang-list .lg-native{font-weight:600}
+.lang-list .lg-sub{font-size:12px;color:var(--text-3)}
+.lang-list button .chk{margin-inline-start:auto;color:var(--acc1);opacity:0}
+.lang-list button.active .chk{opacity:1}
 
-/* ---------- 页头 ---------- */
-.page-head{
-  padding:152px 0 40px;
-  border-bottom:1px solid var(--line);
-}
-.eyebrow{
-  display:inline-block;font-size:12px;font-weight:700;letter-spacing:.16em;
-  text-transform:uppercase;color:var(--accent);margin-bottom:16px;
-  padding-left:26px;position:relative;
-}
-.eyebrow::before{
-  content:"";position:absolute;left:0;top:50%;width:18px;height:1px;
-  background:var(--accent);transform:translateY(-50%);
-}
-.page-head h1{
-  font-size:clamp(32px,5vw,46px);line-height:1.2;
-  letter-spacing:-.02em;font-weight:800;margin-bottom:16px;
-}
-.page-head h1 span{
-  background:linear-gradient(120deg,var(--accent) 10%,var(--accent-2) 90%);
-  -webkit-background-clip:text;background-clip:text;color:transparent;
-}
-.page-head p{color:var(--text-2);font-size:16px;max-width:52ch}
+/* ---------- layout ---------- */
+main{position:relative;z-index:5}
+.wrap{max-width:1160px;margin:0 auto;padding:0 24px}
+.sec-tag{display:inline-flex;align-items:center;gap:9px;font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--acc1);margin-bottom:16px}
+.sec-tag::before{content:"";width:22px;height:1px;background:var(--acc1)}
 
-/* ---------- 筛选 ---------- */
-.filter-bar{
-  display:flex;gap:9px;flex-wrap:wrap;
-  padding:32px 0 8px;
-}
-.filter{
-  font:inherit;font-size:13.5px;
-  color:var(--text-2);
-  background:var(--subtle);
-  border:1px solid var(--line);
-  padding:8px 17px;border-radius:999px;cursor:pointer;
-  transition:color .22s var(--ease),border-color .22s var(--ease),
-             background .22s var(--ease),transform .22s var(--ease);
-}
-.filter:hover{color:var(--text);border-color:var(--line-strong)}
-.filter[aria-pressed="true"]{
-  color:var(--on-accent);
-  background:var(--accent-grad);
-  border-color:transparent;
-  font-weight:600;
-  box-shadow:0 8px 22px -12px var(--accent-glow);
-}
-.filter .count{
-  font-size:11.5px;opacity:.65;margin-left:5px;
-  font-variant-numeric:tabular-nums;
-}
+/* ---------- page head ---------- */
+.page-head{padding:158px 0 46px;border-bottom:1px solid var(--line);position:relative}
+.page-head h1{font-size:clamp(34px,5.6vw,58px);line-height:1.14;letter-spacing:-.02em;font-weight:800;margin-bottom:18px;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.page-head .sub{color:var(--text-2);font-size:16px;max-width:56ch}
 
-/* ---------- 文章列表 ---------- */
-.post-list{
-  list-style:none;
-  padding:36px 0 96px;
-  display:grid;gap:16px;
-}
+/* ---------- filter ---------- */
+.filter-bar{display:flex;gap:9px;flex-wrap:wrap;padding:34px 0 12px}
+.filter{font:inherit;font-size:13.5px;color:var(--text-2);background:var(--surface);border:1px solid var(--line);padding:9px 18px;border-radius:999px;cursor:pointer;display:inline-flex;align-items:center;gap:7px;transition:color .22s var(--ease),border-color .22s var(--ease),background .22s var(--ease),transform .22s var(--ease),box-shadow .22s var(--ease)}
+.filter:hover{color:var(--text);border-color:var(--line-strong);transform:translateY(-1px)}
+.filter[aria-pressed="true"]{color:#06120f;background:var(--grad);border-color:transparent;font-weight:650;box-shadow:0 12px 28px -14px var(--glow-1)}
+.filter .count{font-size:11.5px;opacity:.7;font-variant-numeric:tabular-nums}
+
+/* ---------- cards base ---------- */
+.card{background:var(--card-bg);border:1px solid var(--line);border-radius:var(--radius);padding:30px;position:relative;transition:transform .3s var(--ease),border-color .3s var(--ease),box-shadow .3s var(--ease)}
+.glow-card{position:relative}
+.glow-card::before{content:"";position:absolute;inset:-1px;border-radius:inherit;padding:1px;background:conic-gradient(from var(--a,0deg),transparent 0deg,var(--acc1) 60deg,transparent 120deg,var(--acc2) 200deg,transparent 280deg);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;opacity:0;transition:opacity .4s var(--ease)}
+.glow-card:hover::before{opacity:1;animation:spinborder 3.5s linear infinite}
+@property --a{syntax:"<angle>";initial-value:0deg;inherits:false}
+@keyframes spinborder{to{--a:360deg}}
+
+/* ---------- post list ---------- */
+.post-list{list-style:none;display:grid;gap:18px;padding:34px 0 96px}
 .post-item{display:contents}
-
-.post-card{
-  display:block;text-decoration:none;color:inherit;
-  background:var(--card-bg);
-  border:1px solid var(--line);
-  border-radius:20px;
-  padding:30px 32px;
-  position:relative;overflow:hidden;
-  transition:transform .3s var(--ease),border-color .3s var(--ease),
-             box-shadow .3s var(--ease),background .35s var(--ease),opacity .3s var(--ease);
-}
-.post-card::before{
-  content:"";position:absolute;left:0;top:0;bottom:0;width:2px;
-  background:linear-gradient(180deg,var(--accent),var(--accent-2));
-  transform:scaleY(0);transform-origin:top;
-  transition:transform .35s var(--ease);
-}
-.post-card:hover{
-  transform:translateY(-3px);
-  border-color:var(--line-strong);
-  box-shadow:var(--shadow);
-}
-.post-card:hover::before{transform:scaleY(1)}
-
-.post-meta{
-  display:flex;align-items:center;gap:10px;flex-wrap:wrap;
-  font-size:12.5px;color:var(--text-3);margin-bottom:13px;
-}
-.post-meta .cat{
-  color:var(--accent);
-  background:var(--accent-soft);
-  border:1px solid var(--accent-line);
-  padding:2px 10px;border-radius:999px;
-  font-weight:600;font-size:12px;
-}
+.post-card{display:flex;flex-direction:column;text-decoration:none;color:inherit;position:relative;overflow:hidden;transform-style:preserve-3d;will-change:transform;padding:30px 34px}
+.post-card .idx{position:absolute;top:20px;right:24px;font-size:46px;font-weight:800;color:var(--text);opacity:.05;line-height:1;font-variant-numeric:tabular-nums}
+.post-card .glare{position:absolute;inset:0;pointer-events:none;background:radial-gradient(320px 200px at var(--gx,50%) var(--gy,0%),rgba(255,255,255,.1),transparent 60%);opacity:0;transition:opacity .3s}
+.post-card:hover .glare{opacity:1}
+.post-meta{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:12.5px;color:var(--text-3);margin-bottom:16px}
+.post-meta .cat-chip{display:inline-flex;align-items:center;font-size:12px;font-weight:700;color:var(--acc1);background:var(--acc1-soft);border:1px solid rgba(94,234,212,.3);padding:3px 11px;border-radius:999px}
 .post-meta .sep{opacity:.4}
 .post-meta .read{font-variant-numeric:tabular-nums}
-
-.post-card h2{
-  font-size:20px;line-height:1.45;font-weight:700;
-  letter-spacing:-.01em;margin-bottom:10px;
-  transition:color .25s var(--ease);
-}
-.post-card:hover h2{color:var(--accent)}
-.post-card p{
-  font-size:14.5px;color:var(--text-2);line-height:1.8;
-  max-width:66ch;margin-bottom:16px;
-}
-.post-foot{
-  display:inline-flex;align-items:center;gap:6px;
-  font-size:13px;font-weight:600;color:var(--accent);
-}
+.post-card h2{font-size:clamp(19px,2.6vw,24px);line-height:1.35;font-weight:750;letter-spacing:-.01em;margin-bottom:12px;transition:color .25s var(--ease)}
+.post-card:hover h2{color:var(--acc1)}
+.post-card>p{font-size:15px;color:var(--text-2);line-height:1.8;max-width:68ch;margin-bottom:22px;flex:1}
+.post-foot{display:inline-flex;align-items:center;gap:7px;font-size:13.5px;font-weight:650;color:var(--acc1)}
 .post-foot .arrow{transition:transform .25s var(--ease)}
 .post-card:hover .arrow{transform:translateX(4px)}
-
 .is-hidden{display:none !important}
+.empty{text-align:center;padding:56px 24px;color:var(--text-3);font-size:14.5px}
 
-.empty{
-  text-align:center;padding:64px 24px;
-  color:var(--text-3);font-size:14.5px;
-}
+/* ---------- subscribe ---------- */
+.subscribe{padding:20px 0 110px}
+.sub-card{background:radial-gradient(640px 320px at 50% 0%,var(--acc1-soft),transparent 70%),var(--card-bg);border:1px solid var(--line);border-radius:30px;padding:52px 44px;display:flex;align-items:center;justify-content:space-between;gap:26px;flex-wrap:wrap;position:relative;overflow:hidden}
+.sub-card::before{content:"";position:absolute;inset:-1px;border-radius:inherit;padding:1px;background:linear-gradient(120deg,var(--acc1),transparent 40%,var(--acc2));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;opacity:.5}
+.sub-card h2{font-size:clamp(22px,3vw,30px);margin-bottom:10px;letter-spacing:-.01em}
+.sub-card p{color:var(--text-2);font-size:15px;max-width:52ch}
+.btns{display:flex;gap:14px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:9px;padding:14px 28px;border-radius:999px;font-size:15px;font-weight:650;text-decoration:none;border:1px solid transparent;position:relative;overflow:hidden;transition:transform .25s var(--ease),box-shadow .25s var(--ease),border-color .25s var(--ease)}
+.btn .arrow{transition:transform .25s var(--ease)}
+.btn:hover .arrow{transform:translateX(4px)}
+.btn.primary{background:var(--grad);color:#06120f;box-shadow:0 16px 40px -16px var(--glow-1)}
+.btn.primary::after{content:"";position:absolute;inset:0;background:linear-gradient(120deg,transparent 30%,rgba(255,255,255,.55) 50%,transparent 70%);transform:translateX(-120%);transition:transform .6s var(--ease)}
+.btn.primary:hover::after{transform:translateX(120%)}
+.btn.primary:hover{transform:translateY(-2px);box-shadow:0 22px 50px -16px var(--glow-1)}
+.btn.ghost{color:var(--text);background:var(--surface);border-color:var(--line-strong)}
+.btn.ghost:hover{transform:translateY(-2px);border-color:var(--acc1);background:var(--acc1-soft)}
 
-/* ---------- 订阅条 ---------- */
-.subscribe{
-  border-top:1px solid var(--line);
-  padding:56px 0 88px;
-}
-.subscribe-inner{
-  background:
-    radial-gradient(520px 240px at 50% 0%,var(--accent-soft),transparent 72%),
-    var(--card-bg);
-  border:1px solid var(--line);
-  border-radius:22px;
-  padding:38px 32px;
-  display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;
-}
-.subscribe h2{font-size:19px;font-weight:700;margin-bottom:6px}
-.subscribe p{font-size:14.5px;color:var(--text-2)}
-.subscribe .btns{display:flex;gap:10px;flex-wrap:wrap}
-.btn{
-  display:inline-flex;align-items:center;gap:8px;
-  padding:12px 22px;border-radius:999px;
-  font-size:14.5px;font-weight:600;text-decoration:none;
-  border:1px solid transparent;
-  transition:transform .25s var(--ease),box-shadow .25s var(--ease),
-             background .25s var(--ease),border-color .25s var(--ease);
-}
-.btn.primary{
-  background:var(--accent-grad);color:var(--on-accent);
-  box-shadow:0 14px 34px -14px var(--accent-glow);
-}
-.btn.primary:hover{transform:translateY(-2px)}
-.btn.ghost{color:var(--text);background:var(--subtle);border-color:var(--line-strong)}
-.btn.ghost:hover{transform:translateY(-2px);background:var(--hover);border-color:var(--accent-line)}
-
-footer{
-  position:relative;z-index:1;
-  border-top:1px solid var(--line);
-  padding:32px 0;font-size:13.5px;color:var(--text-3);
-}
+/* ---------- footer ---------- */
+footer{position:relative;z-index:5;border-top:1px solid var(--line);padding:34px 0;font-size:13.5px;color:var(--text-3)}
 .foot-inner{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
-footer b{color:var(--text-2);font-weight:600}
+footer b{color:var(--text-2);font-weight:650}
 footer a{color:var(--text-2);text-decoration:none}
-footer a:hover{color:var(--accent)}
+footer a:hover{color:var(--acc1)}
+.motto{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:700}
 
-@media (max-width:620px){
-  .wrap{padding:0 18px}
-  .nav-inner{padding:11px 16px;gap:8px}
-  .logo{font-size:15px}
-  .nav-links a{padding:6px 9px;font-size:13px}
-  .theme-toggle{width:34px;height:34px;border-radius:10px}
-  .page-head{padding:126px 0 32px}
-  .post-card{padding:24px 22px;border-radius:17px}
-  .post-card h2{font-size:18px}
-  .subscribe-inner{padding:28px 22px;border-radius:18px}
-  .subscribe .btns{width:100%}
-  .subscribe .btn{flex:1;justify-content:center}
+/* back to top */
+#toTop{position:fixed;right:22px;bottom:22px;z-index:90;width:46px;height:46px;border-radius:14px;background:var(--bg-2);border:1px solid var(--line);color:var(--text-2);cursor:pointer;display:grid;place-items:center;box-shadow:var(--shadow);opacity:0;visibility:hidden;transform:translateY(10px);transition:.3s var(--ease)}
+#toTop.show{opacity:1;visibility:visible;transform:none}
+#toTop:hover{color:var(--acc1);border-color:var(--acc1)}
+#toTop svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 
-  /* --- mobile a11y: touch targets & safe spacing --- */
-  .nav-links a{min-height:40px;display:inline-flex;align-items:center;padding:0 10px}
-  .theme-toggle{width:38px;height:38px;border-radius:11px}
-  footer a,.foot-inner a{display:inline-flex;align-items:center;min-height:40px}
-  .back{min-height:40px}
-  .hero{padding:104px 0 64px}
+/* reveal */
+.js .reveal{opacity:0;transform:translateY(24px);filter:blur(6px);transition:opacity .7s var(--ease),transform .7s var(--ease),filter .7s var(--ease)}
+.js .reveal.in{opacity:1;transform:none;filter:none}
+
+/* RTL */
+[dir="rtl"] .nav-links{margin-left:0;margin-right:auto}
+[dir="rtl"] .sec-tag::before{order:2}
+[dir="rtl"] .post-card .idx{right:auto;left:24px}
+[dir="rtl"] .post-foot .arrow{transform:rotate(180deg)}
+[dir="rtl"] .post-card:hover .arrow{transform:rotate(180deg) translateX(-4px)}
+[dir="rtl"] .btn .arrow{transform:rotate(180deg)}
+[dir="rtl"] .btn:hover .arrow{transform:rotate(180deg) translateX(-4px)}
+
+/* responsive */
+@media (max-width:860px){
+  .nav-links{display:none}
 }
-
+@media (max-width:680px){
+  .wrap{padding:0 18px}
+  .page-head{padding:126px 0 36px}
+  .post-card{padding:24px 22px;border-radius:18px}
+  .sub-card{padding:38px 22px;border-radius:22px}
+  .sub-card .btns{width:100%}
+  .sub-card .btn{flex:1;justify-content:center}
+  .nav-inner{padding:10px 16px}
+  .post-list{padding:26px 0 72px}
+}
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
-  *,*::before,*::after{
-    animation-duration:.01ms !important;
-    animation-iteration-count:1 !important;
-    transition-duration:.01ms !important;
-  }
+  *,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important}
+  .js .reveal{opacity:1;transform:none;filter:none}
+  #aurora i{animation:none}
+  #grain{display:none}
 }
 </style>
-
-<script>
-  (function () {
-    var saved = null;
-    try { saved = localStorage.getItem('theme'); } catch (e) {}
-    var prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
-    document.documentElement.setAttribute('data-theme', saved || (prefersLight ? 'light' : 'dark'));
-  })();
-</script>
 </head>
 
 <body>
-<a class="skip" href="#main">跳到主要内容</a>
+<a class="skip" href="#main" data-i18n="skip">跳到主要内容</a>
+<div id="progress" aria-hidden="true"></div>
+
+<div id="aurora" aria-hidden="true"><i></i><i></i><i></i></div>
+<canvas id="stars" aria-hidden="true"></canvas>
+<div id="grain" aria-hidden="true"></div>
+<div id="cdot" aria-hidden="true"></div>
+<div id="cring" aria-hidden="true"></div>
 
 <nav class="site-nav" aria-label="主导航">
   <div class="nav-inner">
-    <a class="logo" href="index.html">王孙阳</a>
+    <a class="logo" href="index.html"><span class="lg-mark">王</span><span>王孙阳</span></a>
     <div class="nav-links">
-      <a href="index.html#about">关于</a>
-      <a href="index.html#works">作品</a>
-      <a href="blog.html" class="active" aria-current="page">笔记</a>
-      <a href="index.html#contact">联系</a>
+      <a href="index.html#about" data-i18n="nav.about">关于</a>
+      <a href="index.html#projects" data-i18n="nav.projects">作品</a>
+      <a href="index.html#stack" data-i18n="nav.stack">技术栈</a>
+      <a href="index.html#philosophy" data-i18n="nav.phil">理念</a>
+      <a href="index.html#journey" data-i18n="nav.journey">轨迹</a>
+      <a href="blog.html" data-i18n="nav.notes" class="active" aria-current="page">笔记</a>
+      <a href="index.html#contact" data-i18n="nav.contact">联系</a>
     </div>
-    <button class="theme-toggle" id="themeToggle" type="button" aria-label="切换深浅色" aria-pressed="false">
-      <svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4"/></svg>
-      <svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
-    </button>
+    <div class="nav-tools">
+      <button class="tool-btn lang-btn" id="langBtn" type="button" aria-label="切换语言 / Switch language" aria-haspopup="true" aria-expanded="false">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"/></svg>
+        <span id="langLabel">简体中文</span>
+      </button>
+      <button class="tool-btn" id="themeToggle" type="button" aria-label="切换深浅色" aria-pressed="false">
+        <svg class="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4"/></svg>
+        <svg class="i-moon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      </button>
+    </div>
   </div>
 </nav>
+
+<div id="langPanel" role="dialog" aria-label="选择语言 / Choose language">
+  <div class="lang-head">
+    <b data-i18n="ui.langTitle">选择语言 / Language</b>
+    <button class="lang-close" id="langClose" type="button" aria-label="关闭">✕</button>
+  </div>
+  <div class="lang-list" id="langList"></div>
+</div>
 
 <main id="main">
   <header class="page-head">
     <div class="wrap">
-      <div class="eyebrow">Notes</div>
-      <h1>写下来，才真正<span>学会</span></h1>
-      <p>这里放我的学习笔记和技术随笔。不是教程，更像是给未来的自己留的备忘：做过什么、卡在哪里、后来怎么想通的。</p>
+      <div class="sec-tag" data-i18n="page.eyebrow">NOTES</div>
+      <h1 data-i18n="page.title">写下来，才真正学会</h1>
+      <p class="sub" data-i18n="page.subtitle">这里放我的学习笔记和技术随笔。不是教程，更像是给未来的自己留的备忘：做过什么、卡在哪里、后来怎么想通的。</p>
     </div>
   </header>
 
   <div class="wrap">
     <div class="filter-bar" role="group" aria-label="按分类筛选笔记">
-      <button class="filter" data-filter="all" aria-pressed="true">全部<span class="count">2</span></button>
-      <button class="filter" data-filter="前端" aria-pressed="false">前端<span class="count">1</span></button>
-      <button class="filter" data-filter="效率" aria-pressed="false">效率<span class="count">1</span></button>
+      <button class="filter" data-filter="all" aria-pressed="true"><span data-i18n="filter.all">全部</span><span class="count">2</span></button>
+      <button class="filter" data-filter="fe" aria-pressed="false"><span data-i18n="cat.fe">前端</span><span class="count">1</span></button>
+      <button class="filter" data-filter="prod" aria-pressed="false"><span data-i18n="cat.prod">效率</span><span class="count">1</span></button>
     </div>
 
     <ul class="post-list" id="postList">
-      <li class="post-item" data-cat="前端">
-        <a class="post-card" href="posts/handwritten-html.html">
+      <li class="post-item" data-cat="fe">
+        <a class="card glow-card post-card reveal" data-tilt href="posts/handwritten-html.html">
+          <span class="idx" aria-hidden="true">01</span>
+          <span class="glare" aria-hidden="true"></span>
           <div class="post-meta">
-            <span class="cat">前端</span>
+            <span class="cat-chip" data-i18n="cat.fe">前端</span>
             <span class="sep" aria-hidden="true">·</span>
-            <time datetime="2026-11-08">2026 年 11 月 8 日</time>
+            <time datetime="2026-11-08" data-i18n="p1.date">2026 年 11 月 8 日</time>
             <span class="sep" aria-hidden="true">·</span>
-            <span class="read">约 6 分钟</span>
+            <span class="read" data-i18n="p1.read">约 6 分钟</span>
           </div>
-          <h2>为什么我用纯手写 HTML 做个人主页</h2>
-          <p>用框架三分钟能搭出来的页面，我断断续续写了几个晚上。不是不会用工具，而是想把那些被框架藏起来的东西，亲手摸一遍。</p>
-          <span class="post-foot">阅读全文 <span class="arrow" aria-hidden="true">→</span></span>
+          <h2 data-i18n="p1.title">为什么我用纯手写 HTML 做个人主页</h2>
+          <p data-i18n="p1.desc">用框架三分钟能搭出来的页面，我断断续续写了几个晚上。不是不会用工具，而是想把那些被框架藏起来的东西，亲手摸一遍。</p>
+          <span class="post-foot"><span data-i18n="readMore">阅读全文</span> <span class="arrow" aria-hidden="true">→</span></span>
         </a>
       </li>
 
-      <li class="post-item" data-cat="效率">
-        <a class="post-card" href="posts/three-habits.html">
+      <li class="post-item" data-cat="prod">
+        <a class="card glow-card post-card reveal" data-tilt href="posts/three-habits.html">
+          <span class="idx" aria-hidden="true">02</span>
+          <span class="glare" aria-hidden="true"></span>
           <div class="post-meta">
-            <span class="cat">效率</span>
+            <span class="cat-chip" data-i18n="cat.prod">效率</span>
             <span class="sep" aria-hidden="true">·</span>
-            <time datetime="2026-10-21">2026 年 10 月 21 日</time>
+            <time datetime="2026-10-21" data-i18n="p2.date">2026 年 10 月 21 日</time>
             <span class="sep" aria-hidden="true">·</span>
-            <span class="read">约 5 分钟</span>
+            <span class="read" data-i18n="p2.read">约 5 分钟</span>
           </div>
-          <h2>把重复的事交给工具：三个小习惯</h2>
-          <p>效率提升往往不来自什么大动作，而是来自三个具体的判断：什么该省、什么绝不能省、以及怎么让工具替你记住规则。</p>
-          <span class="post-foot">阅读全文 <span class="arrow" aria-hidden="true">→</span></span>
+          <h2 data-i18n="p2.title">把重复的事交给工具：三个小习惯</h2>
+          <p data-i18n="p2.desc">效率提升往往不来自什么大动作，而是来自三个具体的判断：什么该省、什么绝不能省、以及怎么让工具替你记住规则。</p>
+          <span class="post-foot"><span data-i18n="readMore">阅读全文</span> <span class="arrow" aria-hidden="true">→</span></span>
         </a>
       </li>
     </ul>
 
-    <p class="empty is-hidden" id="emptyTip">这个分类下还没有笔记。</p>
+    <p class="empty is-hidden" id="emptyTip" data-i18n="empty">这个分类下还没有笔记。</p>
   </div>
 
   <section class="subscribe">
     <div class="wrap">
-      <div class="subscribe-inner">
+      <div class="sub-card reveal">
         <div>
-          <h2>不定期更新</h2>
-          <p>有想明白的事就写一篇，不追热点，不硬凑数量。</p>
+          <h2 data-i18n="sub.title">不定期更新</h2>
+          <p data-i18n="sub.desc">有想明白的事就写一篇，不追热点，不硬凑数量。</p>
         </div>
         <div class="btns">
-          <a class="btn primary" href="index.html#contact">订阅更新</a>
-          <a class="btn ghost" href="index.html">回到主页</a>
+          <a class="btn primary" href="index.html#contact"><span data-i18n="sub.cta">订阅更新</span> <span class="arrow" aria-hidden="true">→</span></a>
+          <a class="btn ghost" href="index.html" data-i18n="sub.back">回到主页</a>
         </div>
       </div>
     </div>
@@ -433,55 +405,519 @@ footer a:hover{color:var(--accent)}
 
 <footer>
   <div class="wrap foot-inner">
-    <div>© <span id="year">2026</span> <b>王孙阳</b> · 用好奇心搭建</div>
-    <div><a href="index.html">主页</a></div>
+    <div>© <span id="year">2026</span> <b>王孙阳</b> · <span class="motto" data-i18n="footer.line">少一层抽象，就少一类 bug。</span></div>
+    <div><a href="#top" data-i18n="footer.top">回到顶部 ↑</a></div>
   </div>
 </footer>
 
+<button id="toTop" type="button" aria-label="回到顶部"><svg viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
+
 <script>
-  document.getElementById('year').textContent = new Date().getFullYear();
+/* ============================================================
+   i18n dictionary — 20 languages
+   ============================================================ */
+var LANGS=[
+  {code:"zh",native:"简体中文",sub:"Simplified Chinese"},
+  {code:"zh-TW",native:"繁體中文",sub:"Traditional Chinese"},
+  {code:"en",native:"English",sub:"English"},
+  {code:"ja",native:"日本語",sub:"Japanese"},
+  {code:"ko",native:"한국어",sub:"Korean"},
+  {code:"fr",native:"Français",sub:"French"},
+  {code:"de",native:"Deutsch",sub:"German"},
+  {code:"es",native:"Español",sub:"Spanish"},
+  {code:"pt",native:"Português",sub:"Portuguese"},
+  {code:"it",native:"Italiano",sub:"Italian"},
+  {code:"ru",native:"Русский",sub:"Russian"},
+  {code:"uk",native:"Українська",sub:"Ukrainian"},
+  {code:"pl",native:"Polski",sub:"Polish"},
+  {code:"nl",native:"Nederlands",sub:"Dutch"},
+  {code:"tr",native:"Türkçe",sub:"Turkish"},
+  {code:"ar",native:"العربية",sub:"Arabic",rtl:true},
+  {code:"hi",native:"हिन्दी",sub:"Hindi"},
+  {code:"id",native:"Bahasa Indonesia",sub:"Indonesian"},
+  {code:"vi",native:"Tiếng Việt",sub:"Vietnamese"},
+  {code:"th",native:"ไทย",sub:"Thai"}
+];
 
-  (function () {
-    var root = document.documentElement;
-    var btn = document.getElementById('themeToggle');
+var I18N={
+"zh":{skip:"跳到主要内容",ui:{langTitle:"选择语言 / Language"},
+nav:{about:"关于",projects:"作品",stack:"技术栈",phil:"理念",journey:"轨迹",notes:"笔记",contact:"联系"},
+page:{eyebrow:"NOTES",title:"写下来，才真正学会",subtitle:"这里放我的学习笔记和技术随笔。不是教程，更像是给未来的自己留的备忘：做过什么、卡在哪里、后来怎么想通的。"},
+filter:{all:"全部"},cat:{fe:"前端",prod:"效率"},
+p1:{title:"为什么我用纯手写 HTML 做个人主页",desc:"用框架三分钟能搭出来的页面，我断断续续写了几个晚上。不是不会用工具，而是想把那些被框架藏起来的东西，亲手摸一遍。",date:"2026 年 11 月 8 日",read:"约 6 分钟"},
+p2:{title:"把重复的事交给工具：三个小习惯",desc:"效率提升往往不来自什么大动作，而是来自三个具体的判断：什么该省、什么绝不能省、以及怎么让工具替你记住规则。",date:"2026 年 10 月 21 日",read:"约 5 分钟"},
+readMore:"阅读全文",empty:"这个分类下还没有笔记。",
+sub:{title:"不定期更新",desc:"有想明白的事就写一篇，不追热点，不硬凑数量。",cta:"订阅更新",back:"回到主页"},
+footer:{line:"少一层抽象，就少一类 bug。",top:"回到顶部 ↑"}},
 
-    function syncLabel(t) {
-      btn.setAttribute('aria-pressed', t === 'light' ? 'true' : 'false');
-      btn.setAttribute('aria-label', t === 'light' ? '切换到深色模式' : '切换到浅色模式');
-      var tc = document.querySelector('meta[name="theme-color"]');
-      if (tc) tc.setAttribute('content', t === 'light' ? '#f6f7fb' : '#060a14');
+"zh-TW":{skip:"跳到主要內容",ui:{langTitle:"選擇語言 / Language"},
+nav:{about:"關於",projects:"作品",stack:"技術棧",phil:"理念",journey:"軌跡",notes:"筆記",contact:"聯繫"},
+page:{eyebrow:"NOTES",title:"寫下來，才真正學會",subtitle:"這裡放我的學習筆記和技術隨筆。不是教學，更像是給未來的自己留的備忘：做過什麼、卡在哪裡、後來怎麼想通的。"},
+filter:{all:"全部"},cat:{fe:"前端",prod:"效率"},
+p1:{title:"為什麼我用純手寫 HTML 做個人主頁",desc:"用框架三分鐘能搭出來的頁面，我斷斷續續寫了幾個晚上。不是不會用工具，而是想把那些被框架藏起來的東西，親手摸一遍。",date:"2026 年 11 月 8 日",read:"約 6 分鐘"},
+p2:{title:"把重複的事交給工具：三個小習慣",desc:"效率提升往往不來自什麼大動作，而是來自三個具體的判斷：什麼該省、什麼絕不能省、以及怎麼讓工具替你記住規則。",date:"2026 年 10 月 21 日",read:"約 5 分鐘"},
+readMore:"閱讀全文",empty:"這個分類下還沒有筆記。",
+sub:{title:"不定期更新",desc:"有想明白的事就寫一篇，不追熱點，不硬湊數量。",cta:"訂閱更新",back:"回到主頁"},
+footer:{line:"少一層抽象，就少一類 bug。",top:"回到頂部 ↑"}},
+
+"en":{skip:"Skip to content",ui:{langTitle:"Choose language / Language"},
+nav:{about:"About",projects:"Projects",stack:"Stack",phil:"Philosophy",journey:"Journey",notes:"Notes",contact:"Contact"},
+page:{eyebrow:"NOTES",title:"Write it down, then you really learn",subtitle:"My study notes and technical essays. Not tutorials — more like memos for my future self: what I did, where I got stuck, and how I eventually figured it out."},
+filter:{all:"All"},cat:{fe:"Frontend",prod:"Productivity"},
+p1:{title:"Why I hand-wrote my homepage in plain HTML",desc:"A page a framework can scaffold in three minutes took me several scattered evenings. Not because I can't use tools, but because I wanted to feel the things frameworks hide away.",date:"Nov 8, 2026",read:"~6 min"},
+p2:{title:"Hand repetitive work to tools: three small habits",desc:"Real efficiency rarely comes from a big move. It comes from three concrete calls: what to skip, what never to skip, and how to make tools remember your rules.",date:"Oct 21, 2026",read:"~5 min"},
+readMore:"Read more",empty:"No notes in this category yet.",
+sub:{title:"Updates, occasionally",desc:"I write one when I've actually figured something out — no hot takes, no padding the count.",cta:"Subscribe",back:"Back to home"},
+footer:{line:"One fewer layer of abstraction, one fewer bug.",top:"Back to top ↑"}},
+
+"ja":{skip:"本文へスキップ",ui:{langTitle:"言語を選択 / Language"},
+nav:{about:"私について",projects:"作品",stack:"技術スタック",phil:"信条",journey:"軌跡",notes:"ノート",contact:"連絡"},
+page:{eyebrow:"NOTES",title:"書き出してこそ、本当に身につく",subtitle:"勉強ノートと技術メモを置く場所。チュートリアルではなく、未来の自分への備忘録——何をしたか、どこで詰まったか、どう納得したか。"},
+filter:{all:"すべて"},cat:{fe:"フロントエンド",prod:"生産性"},
+p1:{title:"なぜ素の HTML で個人サイトを手書きしたか",desc:"フレームワークなら3分でできるページを、何晩もかけて書いた。ツールが使えないのではなく、フレームワークが隠してしまうものを自分の手で触れたかった。",date:"2026年11月8日",read:"約6分"},
+p2:{title:"繰り返し作業をツールに任せる：3つの小さな習慣",desc:"効率化は大きな一手からではなく、3つの具体的な判断から生まれる。何を省くか、何を絶対に省かないか、ルールをどうツールに覚えさせるか。",date:"2026年10月21日",read:"約5分"},
+readMore:"続きを読む",empty:"この分類にはまだノートがありません。",
+sub:{title:"不定期に更新",desc:"納得できたことがあれば1本書く。話題追いも数合わせもしない。",cta:"更新を購読",back:"ホームへ戻る"},
+footer:{line:"抽象を 1 つ減らせば、バグは 1 種類減る。",top:"トップへ ↑"}},
+
+"ko":{skip:"본문으로 건너뛰기",ui:{langTitle:"언어 선택 / Language"},
+nav:{about:"소개",projects:"프로젝트",stack:"스택",phil:"신념",journey:"여정",notes:"노트",contact:"연락처"},
+page:{eyebrow:"NOTES",title:"써 봐야 진짜로 배운다",subtitle:"공부 노트와 기술 메모를 두는 곳. 튜토리얼이 아니라 미래의 나에게 남기는 메모입니다 — 무엇을 했는지, 어디서 막혔는지, 어떻게 납득했는지."},
+filter:{all:"전체"},cat:{fe:"프론트엔드",prod:"생산성"},
+p1:{title:"왜 개인 홈페이지를 순수 HTML로 손수 짰는가",desc:"프레임워크라면 3분이면 되는 페이지를 며칠 밤에 걸쳐 썼다. 도구를 못 써서가 아니라, 프레임워크가 숨겨버리는 것들을 직접 만져보고 싶었기 때문이다.",date:"2026년 11월 8일",read:"약 6분"},
+p2:{title:"반복 작업은 도구에 맡기기: 세 가지 작은 습관",desc:"효율 향상은 큰 한 방이 아니라 세 가지 구체적인 판단에서 나온다. 무엇을 아낄지, 무엇을 절대 아끼지 않을지, 규칙을 도구에 어떻게 기억시킬지.",date:"2026년 10월 21일",read:"약 5분"},
+readMore:"전체 읽기",empty:"이 분류에는 아직 노트가 없습니다.",
+sub:{title:"가끔 업데이트",desc:"뭔가 제대로 깨달았을 때 한 편 씁니다. 유행도 쫓지 않고 분량도 억지로 채우지 않습니다.",cta:"업데이트 구독",back:"홈으로"},
+footer:{line:"추상화 한 겹을 줄이면 버그도 한 부류 줄어든다.",top:"맨 위로 ↑"}},
+
+"fr":{skip:"Aller au contenu",ui:{langTitle:"Choisir la langue / Language"},
+nav:{about:"À propos",projects:"Projets",stack:"Stack",phil:"Philosophie",journey:"Parcours",notes:"Notes",contact:"Contact"},
+page:{eyebrow:"NOTES",title:"Écrire, c'est enfin vraiment apprendre",subtitle:"Mes notes d'étude et billets techniques. Pas des tutoriels — plutôt des mémos pour mon futur moi : ce que j'ai fait, où je suis resté bloqué, comment j'ai fini par comprendre."},
+filter:{all:"Tout"},cat:{fe:"Frontend",prod:"Productivité"},
+p1:{title:"Pourquoi j'ai écrit mon site à la main en HTML pur",desc:"Une page qu'un framework monte en trois minutes m'a pris plusieurs soirées éparpillées. Pas parce que je ne sais pas me servir des outils, mais parce que je voulais toucher ce que les frameworks cachent.",date:"8 nov. 2026",read:"~6 min"},
+p2:{title:"Confier le répétitif aux outils : trois petites habitudes",desc:"La productivité vient rarement d'un grand geste, mais de trois choix concrets : quoi sauter, quoi ne jamais sauter, et comment faire retenir vos règles aux outils.",date:"21 oct. 2026",read:"~5 min"},
+readMore:"Lire la suite",empty:"Pas encore de note dans cette catégorie.",
+sub:{title:"Mises à jour, de temps en temps",desc:"J'écris quand j'ai vraiment compris quelque chose — ni buzz, ni remplissage.",cta:"S'abonner",back:"Retour à l'accueil"},
+footer:{line:"Une couche d'abstraction en moins, une classe de bugs en moins.",top:"Retour en haut ↑"}},
+
+"de":{skip:"Zum Inhalt springen",ui:{langTitle:"Sprache wählen / Language"},
+nav:{about:"Über",projects:"Projekte",stack:"Stack",phil:"Prinzipien",journey:"Weg",notes:"Notizen",contact:"Kontakt"},
+page:{eyebrow:"NOTIZEN",title:"Aufschreiben heißt wirklich lernen",subtitle:"Meine Lernnotizen und Technik-Essays. Keine Tutorials — eher Memos für mein künftiges Ich: was ich getan habe, wo ich festhing, wie ich es schließlich verstanden habe."},
+filter:{all:"Alle"},cat:{fe:"Frontend",prod:"Produktivität"},
+p1:{title:"Warum ich meine Homepage in purem HTML von Hand geschrieben habe",desc:"Eine Seite, die ein Framework in drei Minuten baut, hat mich mehrere Abende gekostet. Nicht weil ich keine Tools kann, sondern weil ich anfassen wollte, was Frameworks verstecken.",date:"8. Nov. 2026",read:"~6 Min."},
+p2:{title:"Wiederkehrendes an Tools abgeben: drei kleine Gewohnheiten",desc:"Effizienz kommt selten von einer großen Aktion, sondern von drei konkreten Entscheidungen: was weglassen, was niemals weglassen, und wie Tools deine Regeln merken.",date:"21. Okt. 2026",read:"~5 Min."},
+readMore:"Weiterlesen",empty:"In dieser Kategorie gibt es noch keine Notizen.",
+sub:{title:"Updates, ab und zu",desc:"Ich schreibe, wenn ich etwas wirklich verstanden habe — kein Hype, kein Auffüllen.",cta:"Abonnieren",back:"Zur Startseite"},
+footer:{line:"Eine Abstraktionsschicht weniger, eine Fehlerklasse weniger.",top:"Nach oben ↑"}},
+
+"es":{skip:"Saltar al contenido",ui:{langTitle:"Elegir idioma / Language"},
+nav:{about:"Sobre mí",projects:"Proyectos",stack:"Stack",phil:"Filosofía",journey:"Trayectoria",notes:"Notas",contact:"Contacto"},
+page:{eyebrow:"NOTAS",title:"Escribirlo es aprenderlo de verdad",subtitle:"Mis apuntes y ensayos técnicos. No tutoriales — más bien memos para mi yo futuro: qué hice, dónde me atoré, cómo terminé entendiéndolo."},
+filter:{all:"Todo"},cat:{fe:"Frontend",prod:"Productividad"},
+p1:{title:"Por qué escribí mi web a mano en HTML puro",desc:"Una página que un framework monta en tres minutos me llevó varias noches. No porque no sepa usar herramientas, sino porque quería tocar lo que los frameworks esconden.",date:"8 nov 2026",read:"~6 min"},
+p2:{title:"Delega lo repetitivo en las herramientas: tres pequeños hábitos",desc:"La eficiencia rara vez viene de un gran gesto, sino de tres decisiones concretas: qué omitir, qué nunca omitir y cómo hacer que las herramientas recuerden tus reglas.",date:"21 oct 2026",read:"~5 min"},
+readMore:"Leer más",empty:"Aún no hay notas en esta categoría.",
+sub:{title:"Actualizaciones, de vez en cuando",desc:"Escribo cuando de verdad entendí algo — sin perseguir tendencias ni rellenar.",cta:"Suscribirme",back:"Volver al inicio"},
+footer:{line:"Una capa de abstracción menos, una clase de bugs menos.",top:"Volver arriba ↑"}},
+
+"pt":{skip:"Ir ao conteúdo",ui:{langTitle:"Escolher idioma / Language"},
+nav:{about:"Sobre",projects:"Projetos",stack:"Stack",phil:"Filosofia",journey:"Trajetória",notes:"Notas",contact:"Contato"},
+page:{eyebrow:"NOTAS",title:"Escrever é aprender de verdade",subtitle:"Minhas anotações e ensaios técnicos. Não tutoriais — mais lembretes para o meu eu futuro: o que fiz, onde travei, como acabei entendendo."},
+filter:{all:"Tudo"},cat:{fe:"Frontend",prod:"Produtividade"},
+p1:{title:"Por que escrevi meu site à mão em HTML puro",desc:"Uma página que um framework monta em três minutos me levou várias noites. Não porque eu não saiba usar ferramentas, mas porque queria tocar o que os frameworks escondem.",date:"8 nov 2026",read:"~6 min"},
+p2:{title:"Entregue o repetitivo às ferramentas: três pequenos hábitos",desc:"Eficiência raramente vem de um grande gesto, mas de três decisões concretas: o que pular, o que nunca pular e como fazer as ferramentas lembrarem suas regras.",date:"21 out 2026",read:"~5 min"},
+readMore:"Ler mais",empty:"Ainda não há notas nesta categoria.",
+sub:{title:"Atualizações, de vez em quando",desc:"Escrevo quando de fato entendi algo — sem caçar tendências nem encher linguiça.",cta:"Assinar",back:"Voltar ao início"},
+footer:{line:"Uma camada de abstração a menos, uma classe de bugs a menos.",top:"Voltar ao topo ↑"}},
+
+"it":{skip:"Vai al contenuto",ui:{langTitle:"Scegli lingua / Language"},
+nav:{about:"Su di me",projects:"Progetti",stack:"Stack",phil:"Filosofia",journey:"Percorso",notes:"Note",contact:"Contatti"},
+page:{eyebrow:"NOTE",title:"Scrivere è imparare davvero",subtitle:"I miei appunti e saggi tecnici. Non tutorial — più che altro promemoria per il mio io futuro: cosa ho fatto, dove mi sono bloccato, come ho finito per capirci."},
+filter:{all:"Tutto"},cat:{fe:"Frontend",prod:"Produttività"},
+p1:{title:"Perché ho scritto a mano il mio sito in HTML puro",desc:"Una pagina che un framework monta in tre minuti mi è costata diverse serate. Non perché non sappia usare gli strumenti, ma perché volevo toccare ciò che i framework nascondono.",date:"8 nov 2026",read:"~6 min"},
+p2:{title:"Affida la ripetizione agli strumenti: tre piccole abitudini",desc:"L'efficienza raramente arriva da una grande mossa, ma da tre scelte concrete: cosa saltare, cosa non saltare mai e come far ricordare le tue regole agli strumenti.",date:"21 ott 2026",read:"~5 min"},
+readMore:"Leggi tutto",empty:"Ancora nessuna nota in questa categoria.",
+sub:{title:"Aggiornamenti, ogni tanto",desc:"Scrivo quando ho davvero capito qualcosa — niente trend, niente riempitivi.",cta:"Iscriviti",back:"Torna alla home"},
+footer:{line:"Uno strato di astrazione in meno, una classe di bug in meno.",top:"Torna su ↑"}},
+
+"ru":{skip:"К содержанию",ui:{langTitle:"Выбрать язык / Language"},
+nav:{about:"Обо мне",projects:"Проекты",stack:"Стек",phil:"Принципы",journey:"Путь",notes:"Заметки",contact:"Контакты"},
+page:{eyebrow:"ЗАМЕТКИ",title:"Записал — значит, по-настоящему понял",subtitle:"Мои учебные заметки и технические эссе. Не туториалы — скорее памятки для будущего себя: что делал, где застрял, как в итоге разобрался."},
+filter:{all:"Все"},cat:{fe:"Фронтенд",prod:"Продуктивность"},
+p1:{title:"Почему я написал свой сайт вручную на чистом HTML",desc:"Страницу, которую фреймворк собирает за три минуты, я писал несколько вечеров. Не потому что не умею пользоваться инструментами, а потому что хотел потрогать то, что фреймворки прячут.",date:"8 нояб. 2026",read:"~6 мин"},
+p2:{title:"Отдайте рутину инструментам: три маленькие привычки",desc:"Эффективность редко приходит из одного большого шага — она из трёх конкретных решений: что пропустить, что не пропускать никогда и как заставить инструменты помнить ваши правила.",date:"21 окт. 2026",read:"~5 мин"},
+readMore:"Читать дальше",empty:"В этой категории пока нет заметок.",
+sub:{title:"Обновления — время от времени",desc:"Пишу, когда действительно в чём-то разобрался — без погони за хайпом и без набора объёма.",cta:"Подписаться",back:"На главную"},
+footer:{line:"На один слой абстракции меньше — на один класс багов меньше.",top:"Наверх ↑"}},
+
+"uk":{skip:"До змісту",ui:{langTitle:"Обрати мову / Language"},
+nav:{about:"Про мене",projects:"Проєкти",stack:"Стек",phil:"Принципи",journey:"Шлях",notes:"Нотатки",contact:"Контакти"},
+page:{eyebrow:"НОТАТКИ",title:"Записав — по-справжньому зрозумів",subtitle:"Мої навчальні нотатки й технічні есе. Не туторіали — радше пам'ятки для майбутнього себе: що робив, де застряг, як зрештою розібрався."},
+filter:{all:"Усі"},cat:{fe:"Фронтенд",prod:"Продуктивність"},
+p1:{title:"Чому я написав свій сайт вручну чистим HTML",desc:"Сторінку, яку фреймворк збирає за три хвилини, я писав кілька вечорів. Не тому що не вмію користуватись інструментами, а тому що хотів торкнутися того, що фреймворки ховають.",date:"8 лист. 2026",read:"~6 хв"},
+p2:{title:"Віддайте рутину інструментам: три маленькі звички",desc:"Ефективність рідко приходить з одного великого кроку — вона з трьох конкретних рішень: що пропустити, що не пропускати ніколи і як змусити інструменти пам'ятати ваші правила.",date:"21 жовт. 2026",read:"~5 хв"},
+readMore:"Читати далі",empty:"У цій категорії поки немає нотаток.",
+sub:{title:"Оновлення — час від часу",desc:"Пишу, коли справді в чомусь розібрався — без погоні за хайпом і без набору обсягу.",cta:"Підписатися",back:"На головну"},
+footer:{line:"На один шар абстракції менше — на один клас багів менше.",top:"Догори ↑"}},
+
+"pl":{skip:"Przejdź do treści",ui:{langTitle:"Wybierz język / Language"},
+nav:{about:"O mnie",projects:"Projekty",stack:"Stack",phil:"Zasady",journey:"Droga",notes:"Notatki",contact:"Kontakt"},
+page:{eyebrow:"NOTATKI",title:"Zapisać to naprawdę zrozumieć",subtitle:"Moje notatki i techniczne eseje. Nie tutoriale — raczej notki dla przyszłego mnie: co robiłem, gdzie utknąłem, jak w końcu to pojąłem."},
+filter:{all:"Wszystko"},cat:{fe:"Frontend",prod:"Produktywność"},
+p1:{title:"Dlaczego napisałem swoją stronę ręcznie w czystym HTML",desc:"Strona, którą framework stawia w trzy minuty, zajęła mi kilka rozproszonych wieczorów. Nie dlatego, że nie umiem używać narzędzi, ale dlatego, że chciałem dotknąć tego, co frameworki chowają.",date:"8 lis 2026",read:"~6 min"},
+p2:{title:"Oddaj powtarzalne narzędziom: trzy małe nawyki",desc:"Efektywność rzadko bierze się z jednego wielkiego ruchu, lecz z trzech konkretnych wyborów: co pominąć, czego nigdy nie pomijać i jak sprawić, by narzędzia pamiętały twoje zasady.",date:"21 paź 2026",read:"~5 min"},
+readMore:"Czytaj dalej",empty:"W tej kategorii nie ma jeszcze notatek.",
+sub:{title:"Aktualizacje od czasu do czasu",desc:"Piszę, gdy naprawdę coś zrozumiałem — bez pogoni za trendami i bez nabijania liczby.",cta:"Subskrybuj",back:"Wróć na stronę główną"},
+footer:{line:"O jedną warstwę abstrakcji mniej to o jedną klasę bugów mniej.",top:"Do góry ↑"}},
+
+"nl":{skip:"Naar inhoud",ui:{langTitle:"Kies taal / Language"},
+nav:{about:"Over",projects:"Projecten",stack:"Stack",phil:"Filosofie",journey:"Pad",notes:"Notities",contact:"Contact"},
+page:{eyebrow:"NOTITIES",title:"Opschrijven is echt leren",subtitle:"Mijn studienotities en technische essays. Geen tutorials — eerder memo's voor mijn toekomstige ik: wat ik deed, waar ik vastliep, hoe ik het uiteindelijk begreep."},
+filter:{all:"Alles"},cat:{fe:"Frontend",prod:"Productiviteit"},
+p1:{title:"Waarom ik mijn site met de hand in puur HTML schreef",desc:"Een pagina die een framework in drie minuten opzet, kostte me een paar verspreide avonden. Niet omdat ik geen tools kan gebruiken, maar omdat ik wilde voelen wat frameworks verbergen.",date:"8 nov 2026",read:"~6 min"},
+p2:{title:"Geef repetitief werk aan tools: drie kleine gewoontes",desc:"Efficiëntie komt zelden van één grote stap, maar van drie concrete keuzes: wat overslaan, wat nooit overslaan en hoe tools jouw regels laten onthouden.",date:"21 okt 2026",read:"~5 min"},
+readMore:"Lees verder",empty:"Nog geen notities in deze categorie.",
+sub:{title:"Updates, af en toe",desc:"Ik schrijf wanneer ik iets echt heb begrepen — geen hypes, geen opvulling.",cta:"Abonneren",back:"Terug naar home"},
+footer:{line:"Eén abstractielaag minder, één klasse bugs minder.",top:"Naar boven ↑"}},
+
+"tr":{skip:"İçeriğe geç",ui:{langTitle:"Dil seçin / Language"},
+nav:{about:"Hakkında",projects:"Projeler",stack:"Stack",phil:"İlkeler",journey:"Yol",notes:"Notlar",contact:"İletişim"},
+page:{eyebrow:"NOTLAR",title:"Yazınca gerçekten öğrenirsin",subtitle:"Ders notlarım ve teknik denemelerim. Eğitim değil — daha çok gelecekteki kendime notlar: ne yaptım, nerede takıldım, sonunda nasıl çözdüm."},
+filter:{all:"Tümü"},cat:{fe:"Frontend",prod:"Verimlilik"},
+p1:{title:"Neden ana sayfamı saf HTML ile elle yazdım",desc:"Bir framework'ün üç dakikada kurduğu sayfayı birkaç geceye yayarak yazdım. Araç kullanmayı bilmediğimden değil, framework'lerin sakladığı şeylere kendi ellerimle dokunmak istediğimden.",date:"8 Kas 2026",read:"~6 dk"},
+p2:{title:"Tekrarlayan işi araçlara devret: üç küçük alışkanlık",desc:"Verimlilik nadiren büyük bir hamleden gelir; üç somut karardan gelir: neyi atlamalı, neyi asla atlamamalı ve kuralları araçlara nasıl hatırlatmalı.",date:"21 Eki 2026",read:"~5 dk"},
+readMore:"Devamını oku",empty:"Bu kategoride henüz not yok.",
+sub:{title:"Ara ara güncelleme",desc:"Bir şeyi gerçekten çözdüğümde yazarım — gündem kovalamak da yok, sayı şişirmek de.",cta:"Abone ol",back:"Ana sayfaya dön"},
+footer:{line:"Bir soyutlama katmanı eksikse, bir bug sınıfı eksiktir.",top:"Yukarı ↑"}},
+
+"ar":{skip:"الانتقال إلى المحتوى",ui:{langTitle:"اختر اللغة / Language"},
+nav:{about:"عنّي",projects:"المشاريع",stack:"التقنيات",phil:"المبادئ",journey:"المسار",notes:"ملاحظات",contact:"تواصل"},
+page:{eyebrow:"ملاحظات",title:"اكتبه، حينها فقط تتعلّم فعلًا",subtitle:"ملاحظات دراستي ومقالاتي التقنية. ليست دروسًا — بل أقرب إلى مذكّرات لنفسي في المستقبل: ماذا فعلت، وأين علقت، وكيف فهمت الأمر في النهاية."},
+filter:{all:"الكل"},cat:{fe:"واجهة أمامية",prod:"الإنتاجية"},
+p1:{title:"لماذا كتبت صفحتي الرئيسية يدويًا بـ HTML خالص",desc:"صفحة يبنيها إطار عمل في ثلاث دقائق استغرقت مني بضع ليالٍ متفرّقة. ليس لأنني لا أجيد استخدام الأدوات، بل لأنني أردت أن ألمس ما تخفيه الأطر.",date:"8 نوفمبر 2026",read:"~6 دقائق"},
+p2:{title:"سلّم المهام المتكررة للأدوات: ثلاث عادات صغيرة",desc:"نادرًا ما تأتي الإنتاجية من خطوة كبيرة، بل من ثلاثة قرارات ملموسة: ماذا تتجاوز، وما لا تتجاوزه أبدًا، وكيف تجعل الأدوات تتذكّر قواعدك.",date:"21 أكتوبر 2026",read:"~5 دقائق"},
+readMore:"اقرأ المزيد",empty:"لا توجد ملاحظات في هذا التصنيف بعد.",
+sub:{title:"تحديثات من حين لآخر",desc:"أكتب عندما أفهم شيئًا فعلًا — لا مطاردة للترند ولا حشو للعدد.",cta:"اشترك",back:"العودة إلى الرئيسية"},
+footer:{line:"طبقة تجريد أقل تعني فئة أخطاء أقل.",top:"إلى الأعلى ↑"}},
+
+"hi":{skip:"सामग्री पर जाएँ",ui:{langTitle:"भाषा चुनें / Language"},
+nav:{about:"परिचय",projects:"प्रोजेक्ट",stack:"स्टैक",phil:"सिद्धांत",journey:"सफ़र",notes:"नोट्स",contact:"संपर्क"},
+page:{eyebrow:"नोट्स",title:"लिखो, तभी सच में सीखोगे",subtitle:"मेरी पढ़ाई की नोट्स और तकनीकी निबंध। ट्यूटोरियल नहीं — भविष्य के मेरे लिए मेमो: मैंने क्या किया, कहाँ अटका, और आख़िर कैसे समझा।"},
+filter:{all:"सभी"},cat:{fe:"फ्रंटएंड",prod:"उत्पादकता"},
+p1:{title:"मैंने अपना होमपेज शुद्ध HTML में हाथ से क्यों लिखा",desc:"जो पेज कोई फ्रेमवर्क तीन मिनट में बना दे, उसे मैंने कई रातों में बिखर कर लिखा। इसलिए नहीं कि मुझे टूल नहीं आते, बल्कि इसलिए कि मैं वह छूना चाहता था जो फ्रेमवर्क छिपा देते हैं।",date:"8 नवंबर 2026",read:"~6 मिनट"},
+p2:{title:"दोहराव वाला काम टूल्स को दो: तीन छोटी आदतें",desc:"दक्षता शायद ही किसी बड़े कदम से आती है, बल्कि तीन ठोस फ़ैसलों से आती है: क्या छोड़ना है, क्या कभी नहीं छोड़ना, और अपने नियम टूल्स से कैसे याद करवाने हैं।",date:"21 अक्टूबर 2026",read:"~5 मिनट"},
+readMore:"पूरा पढ़ें",empty:"इस श्रेणी में अभी कोई नोट नहीं है।",
+sub:{title:"कभी-कभी अपडेट",desc:"जब कुछ सच में समझ आता है तब लिखता हूँ — न ट्रेंड का पीछा, न संख्या भरना।",cta:"सब्सक्राइब करें",back:"होम पर वापस"},
+footer:{line:"एक परत कम, एक तरह के बग कम।",top:"ऊपर ↑"}},
+
+"id":{skip:"Langsung ke konten",ui:{langTitle:"Pilih bahasa / Language"},
+nav:{about:"Tentang",projects:"Proyek",stack:"Stack",phil:"Prinsip",journey:"Perjalanan",notes:"Catatan",contact:"Kontak"},
+page:{eyebrow:"CATATAN",title:"Menuliskannya baru benar-benar belajar",subtitle:"Catatan belajar dan esai teknis saya. Bukan tutorial — lebih seperti memo untuk diri saya di masa depan: apa yang saya kerjakan, di mana saya mentok, dan bagaimana akhirnya memahaminya."},
+filter:{all:"Semua"},cat:{fe:"Frontend",prod:"Produktivitas"},
+p1:{title:"Mengapa saya menulis beranda dengan HTML murni secara manual",desc:"Halaman yang bisa dibuat framework dalam tiga menit memakan beberapa malam bagi saya. Bukan karena tidak bisa memakai alat, tapi karena ingin menyentuh hal-hal yang disembunyikan framework.",date:"8 Nov 2026",read:"~6 mnt"},
+p2:{title:"Serahkan pekerjaan berulang ke alat: tiga kebiasaan kecil",desc:"Efisiensi jarang datang dari satu langkah besar, melainkan dari tiga keputusan konkret: apa yang dilewati, apa yang tidak boleh dilewati, dan cara membuat alat mengingat aturan Anda.",date:"21 Okt 2026",read:"~5 mnt"},
+readMore:"Baca selengkapnya",empty:"Belum ada catatan di kategori ini.",
+sub:{title:"Pembaruan sesekali",desc:"Saya menulis ketika benar-benar memahami sesuatu — tanpa mengejar tren atau menggelembungkan jumlah.",cta:"Berlangganan",back:"Kembali ke beranda"},
+footer:{line:"Satu lapisan abstraksi lebih sedikit berarti satu kelas bug lebih sedikit.",top:"Ke atas ↑"}},
+
+"vi":{skip:"Đến nội dung",ui:{langTitle:"Chọn ngôn ngữ / Language"},
+nav:{about:"Giới thiệu",projects:"Dự án",stack:"Stack",phil:"Nguyên tắc",journey:"Hành trình",notes:"Ghi chú",contact:"Liên hệ"},
+page:{eyebrow:"GHI CHÚ",title:"Viết ra mới thật sự hiểu",subtitle:"Ghi chú học tập và tản văn kỹ thuật của tôi. Không phải tutorial — giống lời nhắc cho chính tôi trong tương lai: đã làm gì, kẹt ở đâu, rồi cuối cùng hiểu ra thế nào."},
+filter:{all:"Tất cả"},cat:{fe:"Frontend",prod:"Năng suất"},
+p1:{title:"Vì sao tôi viết tay trang chủ bằng HTML thuần",desc:"Một trang mà framework dựng trong ba phút đã ngốn của tôi vài buổi tối. Không phải vì tôi không biết dùng công cụ, mà vì muốn tự tay chạm vào những thứ framework che giấu.",date:"8 thg 11, 2026",read:"~6 phút"},
+p2:{title:"Giao việc lặp lại cho công cụ: ba thói quen nhỏ",desc:"Hiệu quả hiếm khi đến từ một bước lớn, mà từ ba quyết định cụ thể: bỏ qua gì, không bao giờ bỏ qua gì, và làm sao để công cụ ghi nhớ quy tắc của bạn.",date:"21 thg 10, 2026",read:"~5 phút"},
+readMore:"Đọc tiếp",empty:"Chưa có ghi chú nào trong danh mục này.",
+sub:{title:"Thỉnh thoảng cập nhật",desc:"Tôi viết khi đã thật sự hiểu điều gì đó — không chạy theo xu hướng, không cố nhồi số lượng.",cta:"Đăng ký",back:"Về trang chủ"},
+footer:{line:"Bớt một lớp trừu tượng là bớt một lớp lỗi.",top:"Lên đầu trang ↑"}},
+
+"th":{skip:"ข้ามไปยังเนื้อหา",ui:{langTitle:"เลือกภาษา / Language"},
+nav:{about:"เกี่ยวกับ",projects:"โปรเจกต์",stack:"สแตก",phil:"หลักคิด",journey:"เส้นทาง",notes:"บันทึก",contact:"ติดต่อ"},
+page:{eyebrow:"บันทึก",title:"เขียนออกมา จึงจะเรียนรู้จริง",subtitle:"บันทึกการเรียนและความเรียงเชิงเทคนิคของผม ไม่ใช่บทเรียน — เหมือนโน้ตถึงตัวเองในอนาคต: ทำอะไรมา ติดตรงไหน แล้วสุดท้ายคิดออกได้อย่างไร"},
+filter:{all:"ทั้งหมด"},cat:{fe:"ฟรอนต์เอนด์",prod:"ประสิทธิภาพ"},
+p1:{title:"ทำไมผมเขียนหน้าแรกด้วย HTML ล้วน ๆ มือเปล่า",desc:"เพจที่เฟรมเวิร์กตั้งได้ในสามนาที กลับใช้เวลาหลายคืนของผม ไม่ใช่เพราะใช้เครื่องมือไม่เป็น แต่เพราะอยากสัมผัสสิ่งที่เฟรมเวิร์กซ่อนไว้",date:"8 พ.ย. 2026",read:"~6 นาที"},
+p2:{title:"ยกงานซ้ำ ๆ ให้เครื่องมือ: สามนิสัยเล็ก ๆ",desc:"ประสิทธิภาพแทบไม่เคยมาจากก้าวใหญ่ แต่มาจากการตัดสินใจสามอย่าง: อะไรควรข้าม อะไรห้ามข้ามเด็ดขาด และทำยังไงให้เครื่องมือจำกฎของคุณ",date:"21 ต.ค. 2026",read:"~5 นาที"},
+readMore:"อ่านต่อ",empty:"ยังไม่มีบันทึกในหมวดนี้",
+sub:{title:"อัปเดตเป็นครั้งคราว",desc:"ผมเขียนเมื่อคิดอะไรออกจริง ๆ — ไม่ไล่กระแส ไม่ยัดจำนวน",cta:"ติดตาม",back:"กลับหน้าแรก"},
+footer:{line:"ลดชั้นนามธรรมลงหนึ่งชั้น ก็ลดบั๊กได้หนึ่งประเภท",top:"ขึ้นบน ↑"}}
+};
+
+/* ============================================================
+   i18n runtime
+   ============================================================ */
+var rootEl=document.documentElement;
+function getPath(obj,path){return path.split(".").reduce(function(o,k){return o?o[k]:undefined;},obj);}
+function currentLang(){
+  try{return localStorage.getItem("lang")||"zh";}catch(e){return "zh";}
+}
+function setLang(code){
+  var lang=I18N[code]||I18N["zh"];
+  try{localStorage.setItem("lang",code);}catch(e){}
+  rootEl.setAttribute("lang",code==="zh-TW"?"zh-TW":code);
+  rootEl.setAttribute("dir", code==="ar"?"rtl":"ltr");
+  document.querySelectorAll("[data-i18n]").forEach(function(el){
+    var v=getPath(lang,el.getAttribute("data-i18n"));
+    if(v!==undefined) el.textContent=v;
+  });
+  document.getElementById("langLabel").textContent=(LANGS.filter(function(l){return l.code===code;})[0]||{}).native||code;
+  document.querySelectorAll(".lang-list button").forEach(function(b){
+    b.classList.toggle("active",b.getAttribute("data-lang")===code);
+  });
+  var desc=getPath(lang,"page.subtitle");
+  if(desc){var m=document.querySelector('meta[name="description"]');if(m)m.setAttribute("content",desc);}
+  var t=getPath(lang,"page.title");
+  if(t){document.title=t+" · "+(code==="zh-TW"?"王孫陽":"王孙阳");}
+}
+
+/* build language list */
+(function(){
+  var list=document.getElementById("langList");
+  var html="";
+  LANGS.forEach(function(l){
+    html+='<button type="button" data-lang="'+l.code+'"><span class="lg-dot" aria-hidden="true"></span><span style="flex:1"><span class="lg-native">'+l.native+'</span><br><span class="lg-sub">'+l.sub+'</span></span><span class="chk">✓</span></button>';
+  });
+  list.innerHTML=html;
+})();
+
+/* auto-detect best language on first visit */
+(function(){
+  var saved=null;try{saved=localStorage.getItem("lang");}catch(e){}
+  if(saved && I18N[saved]){setLang(saved);return;}
+  var nav=(navigator.language||"zh").toLowerCase();
+  var cand="zh";
+  if(nav.indexOf("zh-tw")>-1||nav.indexOf("zh-hk")>-1||nav.indexOf("zh-mo")>-1){cand="zh-TW";}
+  else if(nav.indexOf("zh")>-1){cand="zh";}
+  else if(nav.indexOf("en")>-1){cand="en";}
+  else if(nav.indexOf("ja")>-1){cand="ja";}
+  else if(nav.indexOf("ko")>-1){cand="ko";}
+  else if(nav.indexOf("fr")>-1){cand="fr";}
+  else if(nav.indexOf("de")>-1){cand="de";}
+  else if(nav.indexOf("es")>-1){cand="es";}
+  else if(nav.indexOf("pt")>-1){cand="pt";}
+  else if(nav.indexOf("it")>-1){cand="it";}
+  else if(nav.indexOf("ru")>-1){cand="ru";}
+  else if(nav.indexOf("uk")>-1){cand="uk";}
+  else if(nav.indexOf("pl")>-1){cand="pl";}
+  else if(nav.indexOf("nl")>-1){cand="nl";}
+  else if(nav.indexOf("tr")>-1){cand="tr";}
+  else if(nav.indexOf("ar")>-1){cand="ar";}
+  else if(nav.indexOf("hi")>-1){cand="hi";}
+  else if(nav.indexOf("id")>-1){cand="id";}
+  else if(nav.indexOf("vi")>-1){cand="vi";}
+  else if(nav.indexOf("th")>-1){cand="th";}
+  setLang(cand);
+})();
+
+/* language panel open/close */
+var langPanel=document.getElementById("langPanel");
+var langBtn=document.getElementById("langBtn");
+function positionPanel(){
+  var r=langBtn.getBoundingClientRect();
+  langPanel.style.top=(r.bottom+10)+"px";
+  langPanel.style.right=Math.max(12,window.innerWidth-r.right)+"px";
+}
+langBtn.addEventListener("click",function(){
+  var open=langPanel.classList.toggle("open");
+  langBtn.setAttribute("aria-expanded",open?"true":"false");
+  if(open)positionPanel();
+});
+document.getElementById("langClose").addEventListener("click",function(){
+  langPanel.classList.remove("open");
+  langBtn.setAttribute("aria-expanded","false");
+});
+document.addEventListener("click",function(e){
+  if(langPanel.classList.contains("open") && !langPanel.contains(e.target) && e.target!==langBtn && !langBtn.contains(e.target)){
+    langPanel.classList.remove("open");langBtn.setAttribute("aria-expanded","false");
+  }
+});
+window.addEventListener("resize",function(){if(langPanel.classList.contains("open"))positionPanel();});
+document.getElementById("langList").addEventListener("click",function(e){
+  var b=e.target.closest("button[data-lang]");
+  if(!b)return;
+  setLang(b.getAttribute("data-lang"));
+  langPanel.classList.remove("open");langBtn.setAttribute("aria-expanded","false");
+});
+
+/* ============================================================
+   theme
+   ============================================================ */
+(function(){
+  var saved=null;try{saved=localStorage.getItem("theme");}catch(e){}
+  var light=window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches;
+  rootEl.setAttribute("data-theme",saved||(light?"light":"dark"));
+  var btn=document.getElementById("themeToggle");
+  function sync(t){
+    btn.setAttribute("aria-pressed",t==="light"?"true":"false");
+    btn.setAttribute("aria-label",t==="light"?"切换到深色模式":"切换到浅色模式");
+    var tc=document.querySelector('meta[name="theme-color"]');
+    if(tc)tc.setAttribute("content",t==="light"?"#f4f5fb":"#05060e");
+  }
+  sync(rootEl.getAttribute("data-theme"));
+  btn.addEventListener("click",function(){
+    var next=rootEl.getAttribute("data-theme")==="light"?"dark":"light";
+    rootEl.setAttribute("data-theme",next);
+    try{localStorage.setItem("theme",next);}catch(e){}
+    sync(next);
+  });
+  if(window.matchMedia){
+    var mq=window.matchMedia("(prefers-color-scheme: light)");
+    var cb=function(e){var s=null;try{s=localStorage.getItem("theme");}catch(err){};if(s)return;var t=e.matches?"light":"dark";rootEl.setAttribute("data-theme",t);sync(t);};
+    if(mq.addEventListener)mq.addEventListener("change",cb);else if(mq.addListener)mq.addListener(cb);
+  }
+})();
+
+/* ============================================================
+   starfield canvas
+   ============================================================ */
+(function(){
+  var canvas=document.getElementById("stars");
+  var ctx=canvas.getContext("2d");
+  var reduce=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var stars=[],W,H,raf=null,mx=0,my=0;
+  function resize(){
+    W=canvas.width=window.innerWidth;
+    H=canvas.height=window.innerHeight;
+    var n=Math.min(180,Math.floor(W*H/9000));
+    stars=[];
+    for(var i=0;i<n;i++){
+      stars.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.3+0.3,a:Math.random()*0.7+0.2,p:Math.random()*0.02+0.004});
     }
-    syncLabel(root.getAttribute('data-theme'));
+  }
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    var light=rootEl.getAttribute("data-theme")==="light";
+    var base=light?"15,23,42":"148,163,184";
+    for(var i=0;i<stars.length;i++){
+      var s=stars[i];
+      s.y-=0.08;if(s.y<-2)s.y=H+2;
+      s.a+=s.p;if(s.a>0.9||s.a<0.2)s.p*=-1;
+      ctx.beginPath();
+      ctx.arc(s.x+(mx*0.02*s.r),s.y,s.r,0,6.283);
+      ctx.fillStyle="rgba("+base+","+s.a+")";
+      ctx.fill();
+    }
+    ctx.strokeStyle=light?"rgba(14,152,135,.10)":"rgba(94,234,212,.10)";
+    ctx.lineWidth=0.5;
+    for(var a=0;a<stars.length;a++){
+      for(var b=a+1;b<stars.length;b++){
+        var dx=stars[a].x-stars[b].x,dy=stars[a].y-stars[b].y;
+        var d=dx*dx+dy*dy;
+        if(d<12000){ctx.beginPath();ctx.moveTo(stars[a].x,stars[a].y);ctx.lineTo(stars[b].x,stars[b].y);ctx.stroke();}
+      }
+    }
+    raf=requestAnimationFrame(draw);
+  }
+  resize();
+  if(!reduce)raf=requestAnimationFrame(draw);
+  else{draw();cancelAnimationFrame(raf);}
+  window.addEventListener("resize",resize);
+  window.addEventListener("mousemove",function(e){mx=e.clientX/W-0.5;my=e.clientY/H-0.5;});
+  document.addEventListener("visibilitychange",function(){
+    if(document.hidden){cancelAnimationFrame(raf);}
+    else if(!reduce){cancelAnimationFrame(raf);raf=requestAnimationFrame(draw);}
+  });
+})();
 
-    btn.addEventListener('click', function () {
-      var next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
-      root.setAttribute('data-theme', next);
-      syncLabel(next);
-      try { localStorage.setItem('theme', next); } catch (e) {}
+/* ============================================================
+   custom cursor
+   ============================================================ */
+(function(){
+  if(!window.matchMedia||!window.matchMedia("(hover:hover) and (pointer:fine)").matches)return;
+  var dot=document.getElementById("cdot"),ring=document.getElementById("cring");
+  var rx=0,ry=0,tx=0,ty=0,raf=null;
+  document.body.classList.add("cursor-on");
+  window.addEventListener("mousemove",function(e){
+    tx=e.clientX;ty=e.clientY;
+    dot.style.left=tx+"px";dot.style.top=ty+"px";
+  });
+  function loop(){
+    rx+=(tx-rx)*0.16;ry+=(ty-ry)*0.16;
+    ring.style.left=rx+"px";ring.style.top=ry+"px";
+    raf=requestAnimationFrame(loop);
+  }
+  loop();
+  document.addEventListener("mouseover",function(e){
+    if(e.target.closest("a,button,[data-tilt],input,textarea"))ring.classList.add("hot");
+  });
+  document.addEventListener("mouseout",function(e){
+    if(e.target.closest("a,button,[data-tilt],input,textarea"))ring.classList.remove("hot");
+  });
+})();
+
+/* ============================================================
+   scroll progress + reveal + back-to-top
+   ============================================================ */
+var bar=document.getElementById("progress");
+var ticking=false;
+window.addEventListener("scroll",function(){
+  if(ticking)return;ticking=true;
+  requestAnimationFrame(function(){
+    var h=document.documentElement;
+    var max=h.scrollHeight-h.clientHeight;
+    bar.style.width=(max>0?(h.scrollTop/max)*100:0)+"%";
+    document.getElementById("toTop").classList.toggle("show",h.scrollTop>600);
+    ticking=false;
+  });
+},{passive:true});
+document.getElementById("toTop").addEventListener("click",function(){window.scrollTo({top:0,behavior:"smooth"});});
+
+document.documentElement.classList.add("js");
+var revealEls=document.querySelectorAll(".reveal");
+if("IntersectionObserver" in window){
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(!e.isIntersecting)return;
+      e.target.classList.add("in");
+      io.unobserve(e.target);
     });
-  })();
+  },{threshold:0.1,rootMargin:"0px 0px -50px 0px"});
+  revealEls.forEach(function(el,i){el.style.transitionDelay=(i%3)*80+"ms";io.observe(el);});
+}else{revealEls.forEach(function(el){el.classList.add("in");});}
 
-  (function () {
-    var filters = Array.prototype.slice.call(document.querySelectorAll('.filter'));
-    var items = Array.prototype.slice.call(document.querySelectorAll('.post-item'));
-    var empty = document.getElementById('emptyTip');
+/* ============================================================
+   3D tilt
+   ============================================================ */
+(function(){
+  if(!window.matchMedia||!window.matchMedia("(hover:hover) and (pointer:fine)").matches)return;
+  if(window.matchMedia("(prefers-reduced-motion: reduce)").matches)return;
+  document.querySelectorAll("[data-tilt]").forEach(function(el){
+    var glare=el.querySelector(".glare");
+    el.addEventListener("mousemove",function(e){
+      var r=el.getBoundingClientRect();
+      var px=(e.clientX-r.left)/r.width,py=(e.clientY-r.top)/r.height;
+      var rx=(0.5-py)*7,ry=(px-0.5)*9;
+      el.style.transform="perspective(900px) rotateX("+rx+"deg) rotateY("+ry+"deg) translateY(-4px)";
+      if(glare){glare.style.setProperty("--gx",px*100+"%");glare.style.setProperty("--gy",py*100+"%");}
+    });
+    el.addEventListener("mouseleave",function(){
+      el.style.transform="";
+    });
+  });
+})();
 
-    filters.forEach(function (f) {
-      f.addEventListener('click', function () {
-        var key = f.getAttribute('data-filter');
-        filters.forEach(function (x) { x.setAttribute('aria-pressed', String(x === f)); });
-
-        var shown = 0;
-        items.forEach(function (it) {
-          var cat = it.getAttribute('data-cat');
-          var match = key === 'all' || cat === key;
-          it.style.display = match ? 'contents' : 'none';
-          if (match) shown++;
-        });
-        empty.classList.toggle('is-hidden', shown > 0);
+/* ============================================================
+   category filter
+   ============================================================ */
+(function(){
+  var filters=Array.prototype.slice.call(document.querySelectorAll(".filter"));
+  var items=Array.prototype.slice.call(document.querySelectorAll(".post-item"));
+  var empty=document.getElementById("emptyTip");
+  filters.forEach(function(f){
+    f.addEventListener("click",function(){
+      var key=f.getAttribute("data-filter");
+      filters.forEach(function(x){x.setAttribute("aria-pressed",String(x===f));});
+      var shown=0;
+      items.forEach(function(it){
+        var match=key==="all"||it.getAttribute("data-cat")===key;
+        it.style.display=match?"contents":"none";
+        if(match)shown++;
       });
+      empty.classList.toggle("is-hidden",shown>0);
     });
-  })();
+  });
+})();
+
+/* footer year */
+document.getElementById("year").textContent=new Date().getFullYear();
 </script>
 </body>
 </html>
