@@ -1,817 +1,559 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>王孙阳 · 个人主页</title>
-<meta name="description" content="王孙阳的个人主页——在读学生，关注前端开发、界面设计与 AI 工具，习惯把想法动手做成看得见的东西。">
+<title>王孙阳 · Wang Sunyang — 独立开发者 · Independent Developer</title>
+<meta name="description" content="王孙阳（Wang Sunyang）——独立开发者、长夜拾星工作室（Nightglean Studio）创始人。原生 Android、无 Gradle 构建链、AI Agent 权限闸门。少一层抽象，就少一类 bug。">
 <link rel="canonical" href="https://wang-sunyang.github.io/">
-<meta name="theme-color" content="#060a14">
+<meta name="theme-color" content="#05060e">
 <meta name="color-scheme" content="dark light">
 
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="王孙阳 · 个人主页">
-<meta property="og:title" content="王孙阳 · 个人主页">
-<meta property="og:description" content="在读学生，关注前端开发、界面设计与 AI 工具。做出来，比想清楚更重要。">
+<meta property="og:site_name" content="王孙阳 · Wang Sunyang">
+<meta property="og:title" content="王孙阳 · Wang Sunyang — 独立开发者">
+<meta property="og:description" content="原生 Android、无 Gradle 构建链、AI Agent 权限闸门。少一层抽象，就少一类 bug。">
 <meta property="og:url" content="https://wang-sunyang.github.io/">
 <meta property="og:locale" content="zh_CN">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="王孙阳 · 个人主页">
-<meta name="twitter:description" content="在读学生，关注前端开发、界面设计与 AI 工具。做出来，比想清楚更重要。">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="王孙阳 · Wang Sunyang — 独立开发者">
+<meta name="twitter:description" content="原生 Android、无 Gradle 构建链、AI Agent 权限闸门。少一层抽象，就少一类 bug。">
 
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='15' fill='%230b1120'/%3E%3Ctext x='32' y='45' font-size='34' font-weight='700' font-family='sans-serif' fill='%235eead4' text-anchor='middle'%3E%E7%8E%8B%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%235eead4'/%3E%3Cstop offset='1' stop-color='%23a78bfa'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='15' fill='%23070a16'/%3E%3Ctext x='32' y='46' font-size='36' font-weight='800' font-family='sans-serif' fill='url(%23g)' text-anchor='middle'%3E%E7%8E%8B%3C/text%3E%3C/svg%3E">
 
+<script>
+/* 首屏前决定主题，避免闪白/闪黑 */
+(function(){var s=null;try{s=localStorage.getItem('theme');}catch(e){}var l=window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)').matches;document.documentElement.setAttribute('data-theme',s||(l?'light':'dark'));})();
+</script>
 <style>
 /* ============================================================
-   Design Tokens · 双主题
+   NIGHTGLEAN · 长夜拾星 — Design System
+   0 deps · hand-written · 20 languages
    ============================================================ */
 :root{
-  --bg:#060a14;
-  --surface:#0b1120;
-  --surface-2:#101a2e;
+  --bg:#05060e;
+  --bg-2:#090b18;
+  --surface:rgba(255,255,255,.04);
+  --surface-2:rgba(255,255,255,.065);
+  --line:rgba(255,255,255,.09);
+  --line-strong:rgba(255,255,255,.16);
 
-  --line:rgba(148,163,184,.14);
-  --line-strong:rgba(148,163,184,.26);
+  --text:#eef1fb;
+  --text-2:#a3adc9;
+  --text-3:#626d8e;
 
-  --text:#e8eef9;
-  --text-2:#9aa8c0;
-  --text-3:#6b7a94;
+  --acc1:#5eead4;
+  --acc2:#a78bfa;
+  --acc3:#f5c76a;
+  --acc4:#f472b6;
 
-  --accent:#5eead4;
-  --accent-soft:rgba(94,234,212,.10);
-  --accent-line:rgba(94,234,212,.30);
-  --accent-2:#8b7cf6;
-  --accent-grad:linear-gradient(120deg,#5eead4,#7ef0dc);
-  --accent-glow:rgba(94,234,212,.55);
-  --on-accent:#04211c;
+  --acc1-soft:rgba(94,234,212,.12);
+  --acc2-soft:rgba(167,139,250,.14);
+  --acc3-soft:rgba(245,199,106,.12);
 
-  --nav-bg:rgba(6,10,20,.62);
-  --card-bg:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.018));
-  --subtle:rgba(255,255,255,.04);
-  --hover:rgba(255,255,255,.075);
-  --inset-line:rgba(255,255,255,.09);
-  --avatar-a:#132038;
-  --avatar-b:#080e1c;
+  --grad:linear-gradient(120deg,var(--acc1),var(--acc2) 50%,var(--acc4));
+  --grad-soft:linear-gradient(120deg,rgba(94,234,212,.9),rgba(167,139,250,.9));
+  --glow-1:rgba(94,234,212,.55);
+  --glow-2:rgba(167,139,250,.55);
 
-  --glow-1:rgba(94,234,212,.13);
-  --glow-2:rgba(139,124,246,.15);
-  --glow-3:rgba(56,132,255,.07);
+  --nav-bg:rgba(5,6,14,.6);
+  --card-bg:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.02));
+  --hover:rgba(255,255,255,.08);
 
-  --radius:22px;
+  --radius:24px;
   --radius-sm:14px;
-  --shadow:0 24px 60px -28px rgba(0,0,0,.9);
+  --shadow:0 30px 80px -40px rgba(0,0,0,.9);
   --ease:cubic-bezier(.22,.61,.36,1);
+  --font:"Inter","SF Pro Display",-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","HarmonyOS Sans SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans","Noto Sans Arabic","Noto Sans Thai","Noto Sans Devanagari",sans-serif;
 }
-
 :root[data-theme="light"]{
-  --bg:#f6f7fb;
-  --surface:#ffffff;
-  --surface-2:#eef1f7;
-
+  --bg:#f4f5fb;
+  --bg-2:#ffffff;
+  --surface:rgba(15,23,42,.04);
+  --surface-2:rgba(15,23,42,.06);
   --line:rgba(15,23,42,.10);
   --line-strong:rgba(15,23,42,.18);
-
-  --text:#0f172a;
-  --text-2:#4a5878;
-  --text-3:#77839a;
-
-  --accent:#0e9887;
-  --accent-soft:rgba(14,152,135,.09);
-  --accent-line:rgba(14,152,135,.28);
-  --accent-2:#6b5cf0;
-  --accent-grad:linear-gradient(120deg,#0e9887,#16b3a0);
-  --accent-glow:rgba(14,152,135,.40);
-  --on-accent:#ffffff;
-
-  --nav-bg:rgba(246,247,251,.75);
-  --card-bg:linear-gradient(180deg,#ffffff,rgba(255,255,255,.72));
-  --subtle:rgba(15,23,42,.035);
-  --hover:rgba(15,23,42,.065);
-  --inset-line:rgba(15,23,42,.05);
-  --avatar-a:#e6ebf5;
-  --avatar-b:#ffffff;
-
-  --glow-1:rgba(14,152,135,.10);
-  --glow-2:rgba(107,92,240,.10);
-  --glow-3:rgba(56,132,255,.06);
-
-  --shadow:0 24px 50px -30px rgba(15,23,42,.35);
+  --text:#0e1424;
+  --text-2:#46506e;
+  --text-3:#7a849d;
+  --acc1:#0e9887;
+  --acc2:#6b5cf0;
+  --acc3:#d98a17;
+  --acc4:#db2777;
+  --acc1-soft:rgba(14,152,135,.10);
+  --acc2-soft:rgba(107,92,240,.10);
+  --acc3-soft:rgba(217,138,23,.10);
+  --nav-bg:rgba(244,245,251,.72);
+  --card-bg:linear-gradient(180deg,#ffffff,rgba(255,255,255,.65));
+  --hover:rgba(15,23,42,.06);
+  --shadow:0 30px 60px -42px rgba(15,23,42,.35);
 }
 
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-
-html{
-  scroll-behavior:smooth;
-  scroll-padding-top:96px;
-  -webkit-text-size-adjust:100%;
-}
-
+html{scroll-behavior:smooth;scroll-padding-top:96px;-webkit-text-size-adjust:100%}
 body{
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","HarmonyOS Sans SC","Hiragino Sans GB","Microsoft YaHei","Source Han Sans SC",sans-serif;
+  font-family:var(--font);
   background:var(--bg);
   color:var(--text);
-  font-size:16px;
-  line-height:1.75;
+  font-size:16px;line-height:1.75;
   overflow-x:hidden;
   -webkit-font-smoothing:antialiased;
   font-variant-numeric:tabular-nums;
-  transition:background .35s var(--ease),color .35s var(--ease);
+  transition:background .4s var(--ease),color .4s var(--ease);
+  min-height:100vh;
 }
+::selection{background:var(--acc1);color:#04110f}
 
-body::before{
-  content:"";
-  position:fixed;
-  inset:0;
-  z-index:0;
-  pointer-events:none;
-  background:
-    radial-gradient(620px 520px at 10% -10%,var(--glow-1),transparent 62%),
-    radial-gradient(560px 500px at 92% 106%,var(--glow-2),transparent 62%),
-    radial-gradient(460px 400px at 64% 44%,var(--glow-3),transparent 68%);
-  transition:background .35s var(--ease);
-}
+/* ---------- layered background ---------- */
+#aurora{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;filter:blur(70px) saturate(130%)}
+#aurora i{position:absolute;border-radius:50%;opacity:.55;mix-blend-mode:screen;will-change:transform}
+#aurora i:nth-child(1){width:52vw;height:52vw;left:-14vw;top:-18vw;background:radial-gradient(circle,var(--acc1) 0%,transparent 62%);animation:drift1 26s var(--ease) infinite alternate}
+#aurora i:nth-child(2){width:46vw;height:46vw;right:-12vw;top:8vw;background:radial-gradient(circle,var(--acc2) 0%,transparent 62%);animation:drift2 32s var(--ease) infinite alternate}
+#aurora i:nth-child(3){width:38vw;height:38vw;left:30vw;bottom:-16vw;background:radial-gradient(circle,var(--acc4) 0%,transparent 60%);animation:drift3 38s var(--ease) infinite alternate}
+@keyframes drift1{to{transform:translate(8vw,6vh) scale(1.15)}}
+@keyframes drift2{to{transform:translate(-9vw,10vh) scale(1.08)}}
+@keyframes drift3{to{transform:translate(6vw,-8vh) scale(1.2)}}
+:root[data-theme="light"] #aurora{filter:blur(70px) saturate(90%);opacity:.7}
+:root[data-theme="light"] #aurora i{mix-blend-mode:multiply;opacity:.4}
 
-.skip{
-  position:absolute;left:-9999px;top:0;z-index:200;
-  background:var(--accent);color:var(--on-accent);
-  padding:10px 18px;border-radius:0 0 12px 0;font-weight:700;text-decoration:none;
-}
+#stars{position:fixed;inset:0;z-index:1;pointer-events:none}
+
+#grain{position:fixed;inset:-50%;z-index:2;pointer-events:none;opacity:.05;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation:grain 8s steps(6) infinite}
+@keyframes grain{0%,100%{transform:translate(0,0)}20%{transform:translate(-3%,2%)}40%{transform:translate(2%,-3%)}60%{transform:translate(-2%,-2%)}80%{transform:translate(3%,3%)}}
+
+/* ---------- cursor ---------- */
+#cdot,#cring{position:fixed;top:-100px;left:-100px;z-index:9999;pointer-events:none;border-radius:50%;transform:translate(-50%,-50%)}
+#cdot{width:6px;height:6px;background:var(--acc1);box-shadow:0 0 12px var(--glow-1);mix-blend-mode:difference}
+#cring{width:38px;height:38px;border:1.5px solid rgba(148,163,184,.5);transition:width .25s var(--ease),height .25s var(--ease),border-color .25s var(--ease),background .25s var(--ease)}
+#cring.hot{width:64px;height:64px;border-color:var(--acc1);background:var(--acc1-soft)}
+@media (hover:none),(pointer:coarse){#cdot,#cring{display:none}}
+body.cursor-on{cursor:none}
+body.cursor-on a,body.cursor-on button,body.cursor-on [data-tilt]{cursor:none}
+
+/* ---------- skip / progress ---------- */
+.skip{position:fixed;left:-9999px;top:0;z-index:200;background:var(--acc1);color:#04110f;padding:10px 18px;font-weight:700;text-decoration:none;border-radius:0 0 12px 0}
 .skip:focus{left:0}
+#progress{position:fixed;top:0;left:0;height:2px;width:0;z-index:120;background:var(--grad);box-shadow:0 0 14px var(--glow-1)}
+a:focus-visible,button:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--acc1);outline-offset:3px;border-radius:8px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 
-a:focus-visible,
-button:focus-visible,
-[tabindex]:focus-visible{
-  outline:2px solid var(--accent);
-  outline-offset:3px;
-  border-radius:8px;
-}
-
-.sr-only{
-  position:absolute;width:1px;height:1px;padding:0;margin:-1px;
-  overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;
-}
-
-#progress{
-  position:fixed;top:0;left:0;height:2px;width:0;z-index:110;
-  background:linear-gradient(90deg,var(--accent),var(--accent-2));
-  box-shadow:0 0 10px var(--accent-glow);
-}
-
-/* ---------- 导航 ---------- */
-.site-nav{
-  position:fixed;top:0;left:0;right:0;z-index:100;
-  background:var(--nav-bg);
-  backdrop-filter:blur(18px) saturate(140%);
-  -webkit-backdrop-filter:blur(18px) saturate(140%);
-  border-bottom:1px solid var(--line);
-  transition:background .35s var(--ease),border-color .35s var(--ease);
-}
-.nav-inner{
-  max-width:1080px;margin:0 auto;padding:13px 24px;
-  display:flex;align-items:center;gap:12px;
-}
-.logo{
-  font-weight:800;font-size:16px;letter-spacing:.02em;text-decoration:none;
-  display:inline-flex;align-items:center;gap:9px;color:var(--text);
-  flex-shrink:0;
-}
-.logo::before{
-  content:"";width:9px;height:9px;border-radius:50%;
-  background:linear-gradient(135deg,var(--accent),var(--accent-2));
-  box-shadow:0 0 12px var(--accent-glow);
-}
-.nav-links{
-  display:flex;gap:2px;margin-left:auto;
-  overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;
-}
+/* ---------- nav ---------- */
+.site-nav{position:fixed;top:0;left:0;right:0;z-index:100;background:var(--nav-bg);backdrop-filter:blur(20px) saturate(150%);-webkit-backdrop-filter:blur(20px) saturate(150%);border-bottom:1px solid var(--line);transition:background .4s var(--ease),border-color .4s var(--ease)}
+.nav-inner{max-width:1160px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;gap:14px}
+.logo{font-weight:800;font-size:16px;letter-spacing:.02em;text-decoration:none;display:inline-flex;align-items:center;gap:10px;color:var(--text);flex-shrink:0}
+.logo .lg-mark{width:28px;height:28px;border-radius:9px;display:grid;place-items:center;font-size:15px;font-weight:800;color:#04110f;background:var(--grad);box-shadow:0 4px 18px -4px var(--glow-1);position:relative;overflow:hidden}
+.logo .lg-mark::after{content:"";position:absolute;inset:0;background:linear-gradient(120deg,transparent 30%,rgba(255,255,255,.7) 50%,transparent 70%);transform:translateX(-100%);animation:shine 4s var(--ease) infinite}
+@keyframes shine{0%,60%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+.nav-links{display:flex;gap:2px;margin-left:auto;overflow-x:auto;scrollbar-width:none}
 .nav-links::-webkit-scrollbar{display:none}
-.nav-links a{
-  color:var(--text-2);text-decoration:none;font-size:14px;
-  padding:7px 12px;border-radius:10px;white-space:nowrap;
-  transition:color .25s var(--ease),background .25s var(--ease);
-}
+.nav-links a{color:var(--text-2);text-decoration:none;font-size:14px;padding:7px 12px;border-radius:10px;white-space:nowrap;transition:color .25s var(--ease),background .25s var(--ease)}
 .nav-links a:hover{color:var(--text);background:var(--hover)}
-.nav-links a.active{color:var(--accent);background:var(--accent-soft)}
-
-.theme-toggle{
-  width:38px;height:38px;flex-shrink:0;
-  display:grid;place-items:center;
-  background:var(--subtle);
-  border:1px solid var(--line);
-  border-radius:11px;
-  color:var(--text-2);cursor:pointer;
-  transition:color .25s var(--ease),border-color .25s var(--ease),background .25s var(--ease);
-}
-.theme-toggle:hover{color:var(--accent);border-color:var(--accent-line);background:var(--accent-soft)}
-.theme-toggle svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.nav-links a.active{color:var(--acc1);background:var(--acc1-soft)}
+.nav-tools{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.tool-btn{width:38px;height:38px;display:grid;place-items:center;background:var(--surface);border:1px solid var(--line);border-radius:11px;color:var(--text-2);cursor:pointer;transition:color .25s var(--ease),border-color .25s var(--ease),background .25s var(--ease),transform .25s var(--ease)}
+.tool-btn:hover{color:var(--acc1);border-color:var(--acc1);background:var(--acc1-soft);transform:translateY(-1px)}
+.tool-btn svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 :root[data-theme="dark"] .i-moon{display:none}
 :root[data-theme="light"] .i-sun{display:none}
 
-/* ---------- 布局 ---------- */
-main{position:relative;z-index:1}
-.wrap{max-width:1080px;margin:0 auto;padding:0 24px}
-section{padding:96px 0;position:relative}
-.sec-head{max-width:640px;margin-bottom:44px}
-.sec-tag{
-  display:inline-block;font-size:12px;font-weight:700;letter-spacing:.16em;
-  text-transform:uppercase;color:var(--accent);margin-bottom:14px;
-  padding-left:26px;position:relative;
-}
-.sec-tag::before{
-  content:"";position:absolute;left:0;top:50%;width:18px;height:1px;
-  background:var(--accent);transform:translateY(-50%);
-}
-.sec-head h2{
-  font-size:clamp(26px,3.4vw,36px);line-height:1.3;
-  letter-spacing:-.01em;margin-bottom:12px;
-}
-.sec-head p{color:var(--text-2);font-size:15.5px}
-.sec-more{
-  display:inline-flex;align-items:center;gap:6px;
-  margin-top:22px;font-size:14.5px;font-weight:600;
-  color:var(--accent);text-decoration:none;
-}
-.sec-more:hover{text-decoration:underline;text-underline-offset:4px}
+/* language switcher */
+.lang-btn{width:auto;padding:0 13px;gap:8px;display:flex;align-items:center;font-family:inherit;font-size:13px;font-weight:600}
+.lang-btn svg{width:17px;height:17px}
+#langPanel{position:fixed;z-index:150;width:min(420px,calc(100vw - 32px));max-height:70vh;overflow:hidden;background:var(--bg-2);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);opacity:0;visibility:hidden;transform:translateY(12px) scale(.98);transform-origin:top right;transition:opacity .28s var(--ease),transform .28s var(--ease),visibility .28s}
+#langPanel.open{opacity:1;visibility:visible;transform:none}
+.lang-head{display:flex;align-items:center;justify-content:space-between;padding:16px 18px 12px;border-bottom:1px solid var(--line)}
+.lang-head b{font-size:14px;font-weight:700}
+.lang-close{background:none;border:none;color:var(--text-3);cursor:pointer;width:28px;height:28px;display:grid;place-items:center;border-radius:8px}
+.lang-close:hover{color:var(--text);background:var(--hover)}
+.lang-list{overflow-y:auto;max-height:calc(70vh - 60px);padding:8px}
+.lang-list button{width:100%;display:flex;align-items:center;gap:12px;background:none;border:none;color:var(--text-2);font-family:inherit;font-size:14px;padding:11px 12px;border-radius:12px;cursor:pointer;text-align:start;transition:background .2s,color .2s}
+.lang-list button:hover{background:var(--hover);color:var(--text)}
+.lang-list button.active{background:var(--acc1-soft);color:var(--acc1)}
+.lang-list .lg-dot{width:10px;height:10px;border-radius:50%;background:var(--grad);box-shadow:0 0 8px var(--glow-1);flex:none}
+.lang-list .lg-native{font-weight:600}
+.lang-list .lg-sub{font-size:12px;color:var(--text-3)}
+.lang-list button .chk{margin-inline-start:auto;color:var(--acc1);opacity:0}
+.lang-list button.active .chk{opacity:1}
 
-/* ---------- Hero ---------- */
-.hero{
-  min-height:100vh;min-height:100svh;
-  display:flex;align-items:center;
-  padding:132px 0 88px;
-}
-.hero-grid{
-  display:grid;grid-template-columns:1.15fr .85fr;
-  gap:64px;align-items:center;width:100%;
-}
-.chip{
-  display:inline-flex;align-items:center;gap:9px;
-  font-size:13px;color:var(--accent);
-  background:var(--accent-soft);border:1px solid var(--accent-line);
-  padding:6px 14px;border-radius:999px;margin-bottom:26px;
-}
-.dot{
-  width:7px;height:7px;border-radius:50%;background:var(--accent);
-  box-shadow:0 0 10px var(--accent-glow);animation:pulse 2.4s infinite;
-}
+/* ---------- layout ---------- */
+main{position:relative;z-index:5}
+.wrap{max-width:1160px;margin:0 auto;padding:0 24px}
+section{padding:110px 0;position:relative}
+.sec-head{max-width:680px;margin-bottom:52px}
+.sec-tag{display:inline-flex;align-items:center;gap:9px;font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--acc1);margin-bottom:16px}
+.sec-tag::before{content:"";width:22px;height:1px;background:var(--acc1)}
+.sec-head h2{font-size:clamp(28px,3.6vw,40px);line-height:1.22;letter-spacing:-.015em;margin-bottom:12px;font-weight:800}
+.sec-head p{color:var(--text-2);font-size:15.5px;max-width:56ch}
+
+/* ---------- hero ---------- */
+.hero{min-height:100vh;min-height:100svh;display:flex;align-items:center;padding:130px 0 90px}
+.hero-inner{position:relative;width:100%}
+.chip{display:inline-flex;align-items:center;gap:9px;font-size:13px;color:var(--acc1);background:var(--acc1-soft);border:1px solid rgba(94,234,212,.3);padding:7px 15px;border-radius:999px;margin-bottom:26px}
+.chip .dot{width:7px;height:7px;border-radius:50%;background:var(--acc1);box-shadow:0 0 12px var(--glow-1);animation:pulse 2.4s infinite}
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(.8)}}
-
-h1{
-  font-size:clamp(36px,6vw,60px);line-height:1.14;
-  letter-spacing:-.02em;font-weight:800;margin-bottom:24px;
-}
-h1 span{
-  background:linear-gradient(120deg,var(--accent) 10%,var(--accent-2) 90%);
-  -webkit-background-clip:text;background-clip:text;color:transparent;
-}
-.lead{
-  font-size:16.5px;color:var(--text-2);max-width:44ch;
-  line-height:1.85;margin-bottom:36px;
-}
-.lead strong{color:var(--text);font-weight:600}
-
-.btns{display:flex;gap:12px;flex-wrap:wrap}
-.btn{
-  display:inline-flex;align-items:center;gap:8px;
-  padding:13px 26px;border-radius:999px;
-  font-size:15px;font-weight:600;text-decoration:none;
-  border:1px solid transparent;
-  transition:transform .25s var(--ease),box-shadow .25s var(--ease),
-             background .25s var(--ease),border-color .25s var(--ease),color .25s var(--ease);
-}
+h1{font-size:clamp(46px,8.6vw,92px);line-height:1.02;letter-spacing:-.03em;font-weight:800;margin-bottom:22px}
+h1 .glyph{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 30px var(--glow-2))}
+h1 .latin{display:block;font-size:clamp(20px,3vw,30px);letter-spacing:.02em;font-weight:700;color:var(--text-3);margin-top:10px}
+.type-line{min-height:32px;font-size:clamp(17px,2.4vw,22px);color:var(--text-2);font-weight:600;margin-bottom:20px;display:flex;align-items:center;gap:4px}
+.type-line .caret{display:inline-block;width:3px;height:1.2em;background:var(--acc1);margin-left:3px;animation:blink 1s steps(1) infinite;border-radius:2px;box-shadow:0 0 10px var(--glow-1)}
+@keyframes blink{50%{opacity:0}}
+.lead{font-size:16.5px;color:var(--text-2);max-width:52ch;line-height:1.9;margin-bottom:40px}
+.lead strong{color:var(--text);font-weight:650}
+.btns{display:flex;gap:14px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:9px;padding:14px 30px;border-radius:999px;font-size:15px;font-weight:650;text-decoration:none;border:1px solid transparent;position:relative;overflow:hidden;transition:transform .25s var(--ease),box-shadow .25s var(--ease),border-color .25s var(--ease)}
 .btn .arrow{transition:transform .25s var(--ease)}
 .btn:hover .arrow{transform:translateX(4px)}
-.btn.primary{
-  background:var(--accent-grad);
-  color:var(--on-accent);
-  box-shadow:0 14px 34px -14px var(--accent-glow);
-}
-.btn.primary:hover{transform:translateY(-2px);box-shadow:0 18px 40px -14px var(--accent-glow)}
-.btn.ghost{
-  color:var(--text);background:var(--subtle);
-  border-color:var(--line-strong);
-}
-.btn.ghost:hover{transform:translateY(-2px);background:var(--hover);border-color:var(--accent-line)}
+.btn.primary{background:var(--grad);color:#06120f;box-shadow:0 16px 40px -16px var(--glow-1)}
+.btn.primary::after{content:"";position:absolute;inset:0;background:linear-gradient(120deg,transparent 30%,rgba(255,255,255,.55) 50%,transparent 70%);transform:translateX(-120%);transition:transform .6s var(--ease)}
+.btn.primary:hover::after{transform:translateX(120%)}
+.btn.primary:hover{transform:translateY(-2px);box-shadow:0 22px 50px -16px var(--glow-1)}
+.btn.ghost{color:var(--text);background:var(--surface);border-color:var(--line-strong)}
+.btn.ghost:hover{transform:translateY(-2px);border-color:var(--acc1);background:var(--acc1-soft)}
+.scroll-hint{position:absolute;left:50%;bottom:-64px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--text-3);font-size:12px;letter-spacing:.14em;text-transform:uppercase}
+.scroll-hint .mouse{width:22px;height:34px;border:1.5px solid var(--text-3);border-radius:12px;position:relative}
+.scroll-hint .mouse::after{content:"";position:absolute;left:50%;top:6px;width:3px;height:7px;background:var(--acc1);border-radius:3px;transform:translateX(-50%);animation:wheel 1.8s infinite}
+@keyframes wheel{0%{opacity:1;transform:translate(-50%,0)}100%{opacity:0;transform:translate(-50%,12px)}}
 
-.avatar-wrap{
-  position:relative;width:min(280px,68vw);aspect-ratio:1;
-  margin-left:auto;display:grid;place-items:center;
-}
-.ring{
-  position:absolute;inset:-16px;border-radius:50%;
-  background:conic-gradient(from 0deg,transparent 0deg,var(--accent) 80deg,transparent 170deg,var(--accent-2) 260deg,transparent 350deg);
-  -webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 2px),#000 calc(100% - 2px));
-  mask:radial-gradient(farthest-side,transparent calc(100% - 2px),#000 calc(100% - 2px));
-  animation:spin 20s linear infinite;
-}
-.ring.two{inset:-34px;opacity:.35;animation-duration:32s;animation-direction:reverse}
-@keyframes spin{to{transform:rotate(360deg)}}
+/* ---------- marquee ---------- */
+.marquee{position:relative;z-index:5;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--surface);overflow:hidden;padding:18px 0;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.marquee-track{display:flex;gap:0;width:max-content;animation:scrollX 30s linear infinite}
+.marquee:hover .marquee-track{animation-play-state:paused}
+.marquee-track span{display:inline-flex;align-items:center;gap:10px;padding:0 22px;font-size:15px;font-weight:650;color:var(--text-2);white-space:nowrap;letter-spacing:.04em}
+.marquee-track span::after{content:"✦";color:var(--acc1);font-size:13px;text-shadow:0 0 10px var(--glow-1)}
+@keyframes scrollX{to{transform:translateX(-50%)}}
 
-.avatar{
-  width:100%;height:100%;border-radius:50%;
-  display:grid;place-items:center;
-  font-size:clamp(56px,9vw,82px);font-weight:800;
-  color:var(--text);
-  background:
-    radial-gradient(circle at 32% 26%,var(--accent-soft),transparent 58%),
-    linear-gradient(160deg,var(--avatar-a),var(--avatar-b));
-  border:1px solid var(--line-strong);
-  box-shadow:inset 0 1px 0 var(--inset-line),var(--shadow);
-  transition:background .35s var(--ease),box-shadow .35s var(--ease);
-}
+/* ---------- cards ---------- */
+.card{background:var(--card-bg);border:1px solid var(--line);border-radius:var(--radius);padding:30px;position:relative;transition:transform .3s var(--ease),border-color .3s var(--ease),box-shadow .3s var(--ease)}
+.glow-card{position:relative}
+.glow-card::before{content:"";position:absolute;inset:-1px;border-radius:inherit;padding:1px;background:conic-gradient(from var(--a,0deg),transparent 0deg,var(--acc1) 60deg,transparent 120deg,var(--acc2) 200deg,transparent 280deg);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;opacity:0;transition:opacity .4s var(--ease)}
+.glow-card:hover::before{opacity:1;animation:spinborder 3.5s linear infinite}
+@property --a{syntax:"<angle>";initial-value:0deg;inherits:false}
+@keyframes spinborder{to{--a:360deg}}
 
-/* ---------- 卡片 ---------- */
-.card{
-  background:var(--card-bg);
-  border:1px solid var(--line);
-  border-radius:var(--radius);
-  padding:28px;
-  transition:transform .3s var(--ease),border-color .3s var(--ease),box-shadow .3s var(--ease),background .35s var(--ease);
-}
-.card:hover{
-  transform:translateY(-4px);
-  border-color:var(--line-strong);
-  box-shadow:var(--shadow);
-}
-
-/* 关于 */
-.about-grid{display:grid;grid-template-columns:1.4fr .6fr;gap:24px;align-items:start}
+/* about */
+.about-grid{display:grid;grid-template-columns:1.45fr .55fr;gap:26px;align-items:stretch}
 .about-text p{color:var(--text-2);margin-bottom:16px;font-size:15.5px}
 .about-text p:last-child{margin-bottom:0}
-.about-text strong{color:var(--text);font-weight:600}
+.about-text strong{color:var(--text);font-weight:650}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-sm);padding:22px 20px;display:flex;flex-direction:column;gap:4px;position:relative;overflow:hidden}
+.stat::after{content:"";position:absolute;inset:0;background:radial-gradient(160px 90px at 50% 0%,var(--acc1-soft),transparent 70%);opacity:0;transition:opacity .3s}
+.stat:hover::after{opacity:1}
+.stat b{font-size:clamp(26px,3vw,36px);font-weight:800;letter-spacing:-.02em;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.stat span{font-size:13px;color:var(--text-3)}
 
-.stats{display:grid;grid-template-columns:1fr;gap:12px}
-.stat{
-  background:var(--subtle);border:1px solid var(--line);
-  border-radius:var(--radius-sm);padding:18px 22px;
-  display:flex;align-items:baseline;gap:12px;
-}
-.stat b{
-  font-size:26px;font-weight:800;letter-spacing:-.02em;
-  background:linear-gradient(120deg,var(--accent),var(--accent-2));
-  -webkit-background-clip:text;background-clip:text;color:transparent;
-}
-.stat span{font-size:13.5px;color:var(--text-3)}
+/* projects */
+.projects{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.proj{display:flex;flex-direction:column;text-decoration:none;color:inherit;position:relative;overflow:hidden;transform-style:preserve-3d;will-change:transform}
+.proj .idx{position:absolute;top:20px;right:22px;font-size:40px;font-weight:800;color:var(--text);opacity:.06;line-height:1;font-variant-numeric:tabular-nums}
+.proj .ico{width:46px;height:46px;border-radius:13px;display:grid;place-items:center;margin-bottom:20px;background:var(--acc1-soft);border:1px solid var(--line);color:var(--acc1)}
+.proj .ico svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.proj h3{font-size:17.5px;font-weight:750;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.proj h3 .go{font-size:13px;color:var(--acc1);opacity:0;transform:translateX(-5px);transition:.25s var(--ease);font-weight:700}
+.proj:hover h3 .go{opacity:1;transform:translateX(0)}
+.proj p{font-size:14.5px;color:var(--text-2);line-height:1.8;flex:1;margin-bottom:20px}
+.proj .meta{display:flex;flex-wrap:wrap;gap:7px}
+.proj .meta span{font-size:12px;color:var(--text-3);border:1px solid var(--line);padding:4px 10px;border-radius:7px}
+.proj .glare{position:absolute;inset:0;pointer-events:none;background:radial-gradient(320px 200px at var(--gx,50%) var(--gy,0%),rgba(255,255,255,.12),transparent 60%);opacity:0;transition:opacity .3s}
+.proj:hover .glare{opacity:1}
 
-/* 现在 */
-.now-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-.now-card .k{
-  font-size:12px;font-weight:700;letter-spacing:.1em;
-  color:var(--text-3);text-transform:uppercase;margin-bottom:12px;
-}
-.now-card h3{font-size:16.5px;font-weight:700;margin-bottom:8px}
-.now-card p{font-size:14.5px;color:var(--text-2);line-height:1.8}
+/* stack */
+.stack-wrap{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.stack-group .k{font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--text-3);margin-bottom:18px}
+.stack-tags{display:flex;flex-wrap:wrap;gap:10px}
+.stack-tags span{display:inline-flex;align-items:center;gap:8px;padding:11px 16px;border-radius:13px;background:var(--surface);border:1px solid var(--line);font-size:14px;font-weight:600;color:var(--text-2);transition:transform .22s var(--ease),border-color .22s,color .22s,background .22s}
+.stack-tags span:hover{transform:translateY(-3px);border-color:var(--acc1);color:var(--text);background:var(--acc1-soft)}
+.stack-tags span::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--grad);box-shadow:0 0 8px var(--glow-1)}
 
-/* 技能 */
-.skills{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
-.skill-top{display:flex;align-items:baseline;justify-content:space-between;gap:14px;margin-bottom:14px}
-.skill-top b{font-size:16.5px;font-weight:700}
-.skill-top i{font-style:normal;font-size:12.5px;color:var(--text-3);white-space:nowrap}
-.skill-desc{font-size:14.5px;color:var(--text-2);line-height:1.8}
+/* philosophy */
+.phil{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.phil-item{padding:28px 24px}
+.phil-item .n{font-size:12px;font-weight:800;letter-spacing:.14em;color:var(--acc1);opacity:.6;margin-bottom:14px;font-variant-numeric:tabular-nums}
+.phil-item h3{font-size:16px;font-weight:750;margin-bottom:10px;line-height:1.4}
+.phil-item p{font-size:14px;color:var(--text-2);line-height:1.75}
 
-.tags{display:flex;flex-wrap:wrap;gap:9px;margin-top:28px}
-.tag{
-  font-size:13px;color:var(--text-2);
-  background:var(--subtle);
-  border:1px solid var(--line);
-  padding:7px 15px;border-radius:999px;
-  transition:color .25s var(--ease),border-color .25s var(--ease),background .25s var(--ease);
-}
-.tag:hover{color:var(--accent);border-color:var(--accent-line);background:var(--accent-soft)}
-
-/* 作品 */
-.projects{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-.proj{
-  display:flex;flex-direction:column;text-decoration:none;color:inherit;
-  position:relative;overflow:hidden;
-}
-.proj::after{
-  content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
-  background:radial-gradient(280px 200px at 82% 0%,var(--accent-soft),transparent 70%);
-  opacity:0;transition:opacity .35s var(--ease);
-}
-.proj:hover::after{opacity:1}
-.proj:hover{transform:translateY(-3px);border-color:var(--accent-line)}
-.proj .ico svg{
-  width:22px;height:22px;fill:none;stroke:currentColor;
-  stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;
-  color:var(--accent);
-}
-
-/* ---------- 效率实验室 ---------- */
-.lab{display:grid;gap:14px}
-.lab-item{
-  display:grid;
-  grid-template-columns:auto minmax(0,1fr) auto;
-  gap:20px;align-items:start;
-  background:var(--card-bg);
-  border:1px solid var(--line);
-  border-radius:18px;
-  padding:22px 24px;
-  transition:transform .3s var(--ease),border-color .3s var(--ease),background .3s var(--ease);
-}
-.lab-item:hover{
-  transform:translateY(-2px);
-  border-color:var(--accent-line);
-  background:var(--hover);
-}
-.lab-no{
-  font-variant-numeric:tabular-nums;
-  font-size:12px;font-weight:700;letter-spacing:.12em;
-  color:var(--text-3);padding-top:3px;min-width:24px;
-}
-.lab-body{min-width:0}
-.lab-body h3{
-  font-size:16px;font-weight:700;margin-bottom:7px;
-  display:flex;align-items:center;gap:9px;
-}
-.lab-body h3 .dot-s{
-  width:6px;height:6px;border-radius:50%;flex:none;
-  background:var(--accent);box-shadow:0 0 8px var(--accent-glow);
-}
-.lab-body p{font-size:14.5px;color:var(--text-2);line-height:1.85;max-width:64ch}
-.lab-body p + p{margin-top:5px}
-.lab-body .how{color:var(--text-2);font-size:14px}
-.lab-body .how b{color:var(--text);font-weight:600}
-.lab-tags{display:flex;flex-wrap:wrap;gap:6px;justify-content:flex-end;max-width:190px}
-.lab-tags span{
-  font-size:11.5px;color:var(--text-2);white-space:nowrap;
-  border:1px solid var(--line);padding:3px 9px;border-radius:999px;
-}
-@media (max-width:820px){
-  .lab-item{grid-template-columns:1fr;gap:10px;padding:20px}
-  .lab-no{padding-top:0}
-  .lab-tags{justify-content:flex-start;max-width:none}
-}
-
-/* 时间线 */
-.timeline{position:relative;padding-left:30px}
-.proj .ico{
-  width:44px;height:44px;border-radius:13px;
-  display:grid;place-items:center;font-size:21px;
-  background:var(--subtle);border:1px solid var(--line);
-  margin-bottom:18px;
-}
-.proj h3{font-size:17px;font-weight:700;margin-bottom:9px;display:flex;align-items:center;gap:7px}
-.proj .go{
-  font-size:13px;color:var(--accent);opacity:0;
-  transform:translateX(-4px);transition:.25s var(--ease);font-weight:600;
-}
-.proj:hover .go{opacity:1;transform:translateX(0)}
-.proj p{font-size:14.5px;color:var(--text-2);line-height:1.8;flex:1;margin-bottom:18px}
-.meta{display:flex;flex-wrap:wrap;gap:7px}
-.meta span{
-  font-size:12px;color:var(--text-3);
-  border:1px solid var(--line);padding:3px 9px;border-radius:6px;
-}
-
-/* 时间线 */
-.timeline{position:relative;padding-left:30px}
-.timeline::before{
-  content:"";position:absolute;left:6px;top:8px;bottom:8px;width:1px;
-  background:linear-gradient(180deg,var(--accent-line),transparent);
-}
-.tl-item{position:relative;padding-bottom:32px}
+/* journey */
+.timeline{position:relative;padding-left:34px;max-width:820px}
+.timeline::before{content:"";position:absolute;left:7px;top:8px;bottom:8px;width:1px;background:linear-gradient(180deg,var(--acc1),var(--acc2),transparent)}
+.tl-item{position:relative;padding-bottom:38px}
 .tl-item:last-child{padding-bottom:0}
-.tl-item::before{
-  content:"";position:absolute;left:-29px;top:7px;
-  width:9px;height:9px;border-radius:50%;
-  background:var(--bg);border:2px solid var(--accent);
-  box-shadow:0 0 0 4px var(--accent-soft);
-}
-.tl-item time{
-  font-size:12px;font-weight:700;letter-spacing:.1em;
-  color:var(--accent);display:block;margin-bottom:7px;
-}
-.tl-item h4{font-size:16px;font-weight:700;margin-bottom:7px}
-.tl-item p{font-size:14.5px;color:var(--text-2);line-height:1.8;max-width:56ch}
+.tl-item::before{content:"";position:absolute;left:-33px;top:6px;width:11px;height:11px;border-radius:50%;background:var(--bg);border:2px solid var(--acc1);box-shadow:0 0 0 5px var(--acc1-soft),0 0 16px var(--glow-1)}
+.tl-item time{font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--acc1);display:block;margin-bottom:8px}
+.tl-item h4{font-size:17px;font-weight:750;margin-bottom:8px}
+.tl-item p{font-size:14.5px;color:var(--text-2);line-height:1.8;max-width:58ch}
 
-/* 联系 */
-.contact-card{
-  background:
-    radial-gradient(600px 300px at 50% 0%,var(--accent-soft),transparent 70%),
-    var(--card-bg);
-  border:1px solid var(--line);
-  border-radius:28px;
-  padding:56px 40px;
-  text-align:center;
-  transition:background .35s var(--ease);
-}
-.contact-card h2{font-size:clamp(24px,3vw,32px);margin-bottom:12px}
-.contact-card > p{color:var(--text-2);margin-bottom:36px;font-size:15.5px}
-.links{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-.link-item{
-  display:inline-flex;align-items:center;gap:10px;
-  text-decoration:none;color:var(--text);
-  background:var(--subtle);
-  border:1px solid var(--line);
-  border-radius:14px;padding:14px 22px;
-  transition:transform .25s var(--ease),border-color .25s var(--ease),background .25s var(--ease);
-}
-.link-item:hover{
-  transform:translateY(-2px);
-  border-color:var(--accent-line);
-  background:var(--accent-soft);
-}
-.link-item .ico-s{
-  display:grid;place-items:center;flex:none;
-  width:22px;height:22px;color:var(--accent);
-}
-.link-item .ico-s svg{width:18px;height:18px;fill:currentColor;stroke:none}
+/* contact */
+.contact-card{background:radial-gradient(640px 320px at 50% 0%,var(--acc1-soft),transparent 70%),var(--card-bg);border:1px solid var(--line);border-radius:30px;padding:64px 44px;text-align:center;position:relative;overflow:hidden}
+.contact-card::before{content:"";position:absolute;inset:-1px;border-radius:inherit;padding:1px;background:linear-gradient(120deg,var(--acc1),transparent 40%,var(--acc2));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;opacity:.5}
+.contact-card h2{font-size:clamp(26px,3.4vw,36px);margin-bottom:12px}
+.contact-card>p{color:var(--text-2);margin-bottom:40px;font-size:15.5px}
+.links{display:flex;gap:13px;justify-content:center;flex-wrap:wrap}
+.link-item{display:inline-flex;align-items:center;gap:11px;text-decoration:none;color:var(--text);background:var(--surface);border:1px solid var(--line);border-radius:15px;padding:15px 22px;transition:transform .25s var(--ease),border-color .25s,background .25s}
+.link-item:hover{transform:translateY(-3px);border-color:var(--acc1);background:var(--acc1-soft)}
+.link-item .ico-s{display:grid;place-items:center;flex:none;width:22px;height:22px;color:var(--acc1)}
+.link-item .ico-s svg{width:19px;height:19px;fill:currentColor;stroke:none}
 button.link-item{font-family:inherit;font-size:inherit;cursor:pointer;text-align:left}
-.link-item.copied{border-color:var(--accent-line);background:var(--accent-soft)}
-.link-item b{font-size:13px;font-weight:600;color:var(--text-3);display:block;line-height:1.2}
-.link-item span{font-size:14px;line-height:1.4}
+.link-item b{font-size:12.5px;font-weight:650;color:var(--text-3);display:block;line-height:1.2}
+.link-item span.t{font-size:14.5px;line-height:1.4}
+.link-item.copied{border-color:var(--acc1);background:var(--acc1-soft)}
 
-/* 页脚 */
-footer{
-  position:relative;z-index:1;
-  border-top:1px solid var(--line);
-  padding:32px 0;
-  font-size:13.5px;color:var(--text-3);
-}
+/* footer */
+footer{position:relative;z-index:5;border-top:1px solid var(--line);padding:34px 0;font-size:13.5px;color:var(--text-3)}
 .foot-inner{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
-footer b{color:var(--text-2);font-weight:600}
+footer b{color:var(--text-2);font-weight:650}
 footer a{color:var(--text-2);text-decoration:none}
-footer a:hover{color:var(--accent)}
+footer a:hover{color:var(--acc1)}
+.motto{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:700}
 
-/* ---------- 动效门控 ---------- */
-.js .reveal{opacity:0;transform:translateY(18px);transition:opacity .65s var(--ease),transform .65s var(--ease)}
-.js .reveal.in{opacity:1;transform:none}
+/* back to top */
+#toTop{position:fixed;right:22px;bottom:22px;z-index:90;width:46px;height:46px;border-radius:14px;background:var(--bg-2);border:1px solid var(--line);color:var(--text-2);cursor:pointer;display:grid;place-items:center;box-shadow:var(--shadow);opacity:0;visibility:hidden;transform:translateY(10px);transition:.3s var(--ease)}
+#toTop.show{opacity:1;visibility:visible;transform:none}
+#toTop:hover{color:var(--acc1);border-color:var(--acc1)}
+#toTop svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 
-/* ---------- 响应式 ---------- */
-@media (max-width:920px){
-  .hero-grid{grid-template-columns:1fr;gap:44px}
-  .avatar-wrap{margin:0 auto;order:-1;width:min(200px,52vw)}
-  .hero{padding:118px 0 72px;min-height:auto}
+/* reveal */
+.js .reveal{opacity:0;transform:translateY(24px);filter:blur(6px);transition:opacity .7s var(--ease),transform .7s var(--ease),filter .7s var(--ease)}
+.js .reveal.in{opacity:1;transform:none;filter:none}
+
+/* RTL */
+[dir="rtl"] .nav-links{margin-left:0;margin-right:auto}
+[dir="rtl"] .sec-tag::before{order:2}
+[dir="rtl"] .timeline{padding-left:0;padding-right:34px}
+[dir="rtl"] .timeline::before{left:auto;right:7px}
+[dir="rtl"] .tl-item::before{left:auto;right:-33px}
+[dir="rtl"] .proj .idx{right:auto;left:22px}
+[dir="rtl"] .btn .arrow{transform:rotate(180deg)}
+[dir="rtl"] .btn:hover .arrow{transform:rotate(180deg) translateX(-4px)}
+
+/* responsive */
+@media (max-width:980px){
   .about-grid{grid-template-columns:1fr}
-  .stats{grid-template-columns:repeat(3,1fr)}
-  .stat{flex-direction:column;gap:2px;padding:16px}
-  .stat b{font-size:22px}
-  .now-grid,.skills,.projects{grid-template-columns:1fr}
-  section{padding:72px 0}
-  .lead{max-width:none}
+  .projects{grid-template-columns:1fr 1fr}
+  .phil{grid-template-columns:1fr 1fr}
+  .stack-wrap{grid-template-columns:1fr}
 }
-
-@media (max-width:620px){
+@media (max-width:860px){
+  .nav-links{display:none}
+}
+@media (max-width:680px){
   .wrap{padding:0 18px}
-  .nav-inner{padding:11px 16px;gap:8px}
-  .logo{font-size:15px}
-  .nav-links a{padding:6px 9px;font-size:13px}
-  .theme-toggle{width:34px;height:34px;border-radius:10px}
-  .contact-card{padding:40px 22px;border-radius:22px}
-  .card{padding:22px}
+  section{padding:80px 0}
+  .hero{padding:112px 0 76px;min-height:auto}
+  h1{font-size:clamp(40px,12vw,56px)}
+  .projects{grid-template-columns:1fr}
+  .phil{grid-template-columns:1fr}
+  .contact-card{padding:48px 22px;border-radius:22px}
   .links{flex-direction:column}
   .link-item{width:100%;justify-content:center}
-  .stats{grid-template-columns:1fr}
-  .stat{flex-direction:row;align-items:baseline;gap:10px}
-
-  /* --- mobile a11y: touch targets & safe spacing --- */
-  .nav-links a{min-height:40px;display:inline-flex;align-items:center;padding:0 10px}
-  .theme-toggle{width:38px;height:38px;border-radius:11px}
-  footer a,.foot-inner a{display:inline-flex;align-items:center;min-height:40px}
-  .back{min-height:40px}
-  .hero{padding:104px 0 64px}
+  .scroll-hint{display:none}
+  .nav-inner{padding:10px 16px}
 }
-
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
-  *,*::before,*::after{
-    animation-duration:.01ms !important;
-    animation-iteration-count:1 !important;
-    transition-duration:.01ms !important;
-  }
-  .js .reveal{opacity:1;transform:none}
-  .ring{animation:none}
+  *,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important}
+  .js .reveal{opacity:1;transform:none;filter:none}
+  #aurora i,.marquee-track,.ring{animation:none}
+  #grain{display:none}
 }
 </style>
-
-<script>
-  /* 首屏前决定主题，避免闪白/闪黑 */
-  (function () {
-    var saved = null;
-    try { saved = localStorage.getItem('theme'); } catch (e) {}
-    var prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
-    var theme = saved || (prefersLight ? 'light' : 'dark');
-    document.documentElement.setAttribute('data-theme', theme);
-  })();
-</script>
 </head>
 
 <body>
-<a class="skip" href="#main">跳到主要内容</a>
+<a class="skip" href="#main" data-i18n="skip">跳到主要内容</a>
 <div id="progress" aria-hidden="true"></div>
+
+<div id="aurora" aria-hidden="true"><i></i><i></i><i></i></div>
+<canvas id="stars" aria-hidden="true"></canvas>
+<div id="grain" aria-hidden="true"></div>
+<div id="cdot" aria-hidden="true"></div>
+<div id="cring" aria-hidden="true"></div>
 
 <nav class="site-nav" aria-label="主导航">
   <div class="nav-inner">
-    <a class="logo" href="#top">王孙阳</a>
+    <a class="logo" href="#top"><span class="lg-mark">王</span><span>王孙阳</span></a>
     <div class="nav-links">
-      <a href="#about">关于</a>
-      <a href="#now">现在</a>
-      <a href="#skills">技能</a>
-      <a href="#works">作品</a>
-      <a href="blog.html">笔记</a>
-      <a href="#contact">联系</a>
+      <a href="#about" data-i18n="nav.about">关于</a>
+      <a href="#projects" data-i18n="nav.projects">作品</a>
+      <a href="#stack" data-i18n="nav.stack">技术栈</a>
+      <a href="#philosophy" data-i18n="nav.phil">理念</a>
+      <a href="#journey" data-i18n="nav.journey">轨迹</a>
+      <a href="blog.html" data-i18n="nav.notes">笔记</a>
+      <a href="#contact" data-i18n="nav.contact">联系</a>
     </div>
-    <button class="theme-toggle" id="themeToggle" type="button" aria-label="切换深浅色" aria-pressed="false">
-      <svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4"/></svg>
-      <svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
-    </button>
+    <div class="nav-tools">
+      <button class="tool-btn lang-btn" id="langBtn" type="button" aria-label="切换语言 / Switch language" aria-haspopup="true" aria-expanded="false">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"/></svg>
+        <span id="langLabel">简体中文</span>
+      </button>
+      <button class="tool-btn" id="themeToggle" type="button" aria-label="切换深浅色" aria-pressed="false">
+        <svg class="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4"/></svg>
+        <svg class="i-moon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      </button>
+    </div>
   </div>
 </nav>
 
+<div id="langPanel" role="dialog" aria-label="选择语言 / Choose language">
+  <div class="lang-head">
+    <b data-i18n="ui.langTitle">选择语言 / Language</b>
+    <button class="lang-close" id="langClose" type="button" aria-label="关闭">✕</button>
+  </div>
+  <div class="lang-list" id="langList"></div>
+</div>
+
 <main id="main">
   <header class="hero" id="top">
-    <div class="wrap">
-      <div class="hero-grid">
-        <div>
-          <div class="chip"><span class="dot" aria-hidden="true"></span>在读学生 · 前端 / 设计 / AI 工具</div>
-          <h1>你好，我是<br><span>王孙阳</span></h1>
-          <p class="lead">
-            一个爱折腾、爱学习的在读学生。喜欢把想法动手做出来，
-            也乐于在一次次尝试里，把「不会」变成「会了」。
-          </p>
-          <div class="btns">
-            <a href="#works" class="btn primary">看看我的作品 <span class="arrow" aria-hidden="true">→</span></a>
-            <a href="blog.html" class="btn ghost">读我的笔记</a>
-          </div>
-        </div>
-        <div class="avatar-wrap">
-          <div class="ring" aria-hidden="true"></div>
-          <div class="ring two" aria-hidden="true"></div>
-          <div class="avatar" role="img" aria-label="王孙阳的头像">王</div>
-        </div>
+    <div class="wrap hero-inner">
+      <div class="chip"><span class="dot" aria-hidden="true"></span><span data-i18n="hero.status">独立开发者 · 长夜拾星工作室</span></div>
+      <h1><span class="glyph">王孙阳</span><span class="latin">Wang Sunyang · Nightglean Studio</span></h1>
+      <div class="type-line"><span id="typed"></span><span class="caret" aria-hidden="true"></span></div>
+      <p class="lead" data-i18n="hero.lead">少一层抽象，就少一类 bug。一个人做完产品、开发、测试、发布——用原生代码与最少的依赖，把想法做成能跑的东西。</p>
+      <div class="btns">
+        <a href="#projects" class="btn primary"><span data-i18n="hero.cta1">看看作品</span> <span class="arrow" aria-hidden="true">→</span></a>
+        <a href="#contact" class="btn ghost" data-i18n="hero.cta2">联系我</a>
       </div>
+      <div class="scroll-hint" aria-hidden="true"><span data-i18n="hero.scroll">向下滚动</span><span class="mouse"></span></div>
     </div>
   </header>
+
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track" id="marqueeTrack"></div>
+  </div>
 
   <section id="about">
     <div class="wrap">
       <div class="sec-head reveal">
-        <div class="sec-tag">About</div>
-        <h2>关于我</h2>
-        <p>简单介绍一下自己，让你更快认识我。</p>
+        <div class="sec-tag" data-i18n="about.tag">ABOUT</div>
+        <h2 data-i18n="about.title">关于我</h2>
+        <p data-i18n="about.subtitle">中职在读，同时是一人成军的独立开发者。</p>
       </div>
       <div class="about-grid">
-        <div class="card about-text reveal">
-          <p>
-            你好，我是<strong>王孙阳</strong>。目前在校就读，对互联网、设计与技术都很感兴趣。
-            平时喜欢研究各种新鲜的软件和工具，遇到不懂的就去查、去问、去试。
-          </p>
-          <p>
-            我相信<strong>做出来</strong>比<strong>想清楚</strong>更重要——先动手，再优化。
-            课余时间会做一些小项目练手，也喜欢把学到的东西整理分享给身边的人。
-          </p>
-          <p>
-            这个网站是我的数字名片，记录我的成长、作品和想法。欢迎随便逛逛，也欢迎找我聊聊。
-          </p>
+        <div class="card glow-card about-text reveal">
+          <p data-i18n="about.p1">我是王孙阳，长夜拾星工作室（Nightglean Studio）的创始人。产品、编码、测试、发版，全流程自己一个人跑。</p>
+          <p data-i18n="about.p2">技术取向是「原生优先」：能用平台 API 就不引框架，能用系统工具链就不上构建系统。我笃信——依赖越少，出问题的面越小。</p>
+          <p data-i18n="about.p3">这个网站是我的零依赖数字名片：纯手写 HTML / CSS / JS，没有框架、没有构建、没有第三方请求，改完 git push 就发布。</p>
         </div>
         <div class="stats reveal">
-          <div class="stat"><b>03</b><span>个人项目</span></div>
-          <div class="stat"><b>08</b><span>常用工具</span></div>
-          <div class="stat"><b>∞</b><span>好奇心</span></div>
+          <div class="stat" data-tilt><b data-count="5">05</b><span data-i18n="about.s1k">开源项目</span></div>
+          <div class="stat" data-tilt><b data-count="20">20</b><span data-i18n="about.s2k">界面语言</span></div>
+          <div class="stat" data-tilt><b data-count="0">0</b><span data-i18n="about.s3k">第三方依赖</span></div>
+          <div class="stat" data-tilt><b data-count="100" data-suffix="%">100%</b><span data-i18n="about.s4k">原生实现</span></div>
         </div>
       </div>
     </div>
   </section>
 
-  <section id="now">
+  <section id="projects">
     <div class="wrap">
       <div class="sec-head reveal">
-        <div class="sec-tag">Now</div>
-        <h2>现在在做什么</h2>
-        <p>比简历更即时的一页，随时更新。</p>
-      </div>
-      <div class="now-grid">
-        <div class="card now-card reveal">
-          <div class="k">Learning</div>
-          <h3>在学</h3>
-          <p>JavaScript 的交互逻辑，以及怎么让页面动得自然、不吵闹。</p>
-        </div>
-        <div class="card now-card reveal">
-          <div class="k">Building</div>
-          <h3>在做</h3>
-          <p>把这个个人主页一点点补完整，从内容、排版到手机端体验。</p>
-        </div>
-        <div class="card now-card reveal">
-          <div class="k">Exploring</div>
-          <h3>在看</h3>
-          <p>设计类与效率类的内容，试着把好用的方法用到自己的日常里。</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="skills">
-    <div class="wrap">
-      <div class="sec-head reveal">
-        <div class="sec-tag">Skills</div>
-        <h2>我在学什么</h2>
-        <p>不标分数，只讲一件件具体能做的事。</p>
-      </div>
-      <div class="skills">
-        <div class="card reveal">
-          <div class="skill-top"><b>网页开发</b><i>HTML / CSS / JS</i></div>
-          <p class="skill-desc">能独立写出结构清晰的单页站点，正在啃 JS 的交互与状态处理。</p>
-        </div>
-        <div class="card reveal">
-          <div class="skill-top"><b>设计与排版</b><i>视觉 / 配色</i></div>
-          <p class="skill-desc">在意留白、对比和可读性，习惯先把信息层级理清楚再动手调样式。</p>
-        </div>
-        <div class="card reveal">
-          <div class="skill-top"><b>内容创作</b><i>写作 / 短视频</i></div>
-          <p class="skill-desc">能把复杂的事讲成人话，也做过从选题到剪辑的完整流程。</p>
-        </div>
-        <div class="card reveal">
-          <div class="skill-top"><b>AI 工具应用</b><i>效率提升</i></div>
-          <p class="skill-desc">习惯把重复劳动交给工具，把省下来的时间用在判断和打磨上。</p>
-        </div>
-      </div>
-      <div class="tags reveal">
-        <span class="tag">HTML5</span>
-        <span class="tag">CSS3</span>
-        <span class="tag">JavaScript</span>
-        <span class="tag">Figma</span>
-        <span class="tag">剪映</span>
-        <span class="tag">AI 工具</span>
-        <span class="tag">信息检索</span>
-        <span class="tag">团队协作</span>
-      </div>
-    </div>
-  </section>
-
-  <section id="works">
-    <div class="wrap">
-      <div class="sec-head reveal">
-        <div class="sec-tag">Works</div>
-        <h2>我的作品</h2>
-        <p>一些小尝试，边做边改，欢迎点开看看。</p>
+        <div class="sec-tag" data-i18n="projects.tag">PROJECTS</div>
+        <h2 data-i18n="projects.title">开源作品</h2>
+        <p data-i18n="projects.subtitle">原生优先、最少依赖，每一个都在跑、都能复现。</p>
       </div>
       <div class="projects">
-        <a class="card proj reveal" href="https://wang-sunyang.github.io/">
-          <div class="ico" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="M3 9h18"/><path d="M6.6 6.5h.01M9.4 6.5h.01"/></svg>
-          </div>
-          <h3>个人主页 <span class="go" aria-hidden="true">查看 →</span></h3>
-          <p>你正在浏览的这个网站，纯手写 HTML/CSS/JS，无框架依赖，支持双主题与键盘访问。</p>
-          <div class="meta"><span>HTML</span><span>CSS</span><span>响应式</span></div>
+        <a class="card glow-card proj reveal" data-tilt href="https://github.com/wang-sunyang/onestar" target="_blank" rel="noopener noreferrer">
+          <span class="idx" aria-hidden="true">01</span>
+          <span class="glare" aria-hidden="true"></span>
+          <div class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M13 2 4.5 13.5H11l-1 8.5 8.5-11.5H12z"/></svg></div>
+          <h3><span data-i18n="projects.p1name">拾光 · OneStar</span> <span class="go" aria-hidden="true">→</span></h3>
+          <p data-i18n="projects.p1d">不用 Gradle / AGP 的原生 Android 构建实验：aapt2 + javac + d8 + apksigner + zig cc，一条 build.sh 走完全程。</p>
+          <div class="meta"><span>Kotlin</span><span>aapt2 · d8</span><span>zig cc</span><span data-i18n="projects.view">查看仓库</span></div>
         </a>
-
-        <a class="card proj reveal" href="blog.html">
-          <div class="ico" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v16H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M8 7h8M8 11h6"/></svg>
-          </div>
-          <h3>学习笔记 <span class="go" aria-hidden="true">查看 →</span></h3>
-          <p>把零散的知识点整理成结构化笔记，配合检索，复习时不再到处翻。</p>
-          <div class="meta"><span>整理</span><span>写作</span></div>
+        <a class="card glow-card proj reveal" data-tilt href="https://github.com/wang-sunyang/appfunction-guard" target="_blank" rel="noopener noreferrer">
+          <span class="idx" aria-hidden="true">02</span>
+          <span class="glare" aria-hidden="true"></span>
+          <div class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2 20 6v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6z"/><path d="M9 12l2 2 4-4"/></svg></div>
+          <h3><span data-i18n="projects.p2name">AppFunction Guard</span> <span class="go" aria-hidden="true">→</span></h3>
+          <p data-i18n="projects.p2d">Android 16 让 AI Agent 能直接调用你 App 里的函数；它补上平台没给的门卫——逐函数授权、限流、PII 脱敏与审计。</p>
+          <div class="meta"><span>Kotlin</span><span>AppFunctions</span><span>MIT</span><span data-i18n="projects.view">查看仓库</span></div>
         </a>
-
-        <a class="card proj reveal" href="#lab">
-          <div class="ico" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M13 2 4.5 13.5H11l-1 8.5 8.5-11.5H12z"/></svg>
-          </div>
-          <h3>效率工具小实验 <span class="go" aria-hidden="true">查看 →</span></h3>
-          <p>用脚本和 AI 工具把重复操作自动化，比如批量重命名、资料汇总。</p>
-          <div class="meta"><span>自动化</span><span>AI</span></div>
+        <a class="card glow-card proj reveal" data-tilt href="https://github.com/wang-sunyang/moltdisk" target="_blank" rel="noopener noreferrer">
+          <span class="idx" aria-hidden="true">03</span>
+          <span class="glare" aria-hidden="true"></span>
+          <div class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.66 3.58 3 8 3s8-1.34 8-3V5"/><path d="M4 12c0 1.66 3.58 3 8 3s8-1.34 8-3"/></svg></div>
+          <h3><span data-i18n="projects.p3name">蜕冗 · moltdisk</span> <span class="go" aria-hidden="true">→</span></h3>
+          <p data-i18n="projects.p3d">磁盘里最占地方的，往往是能由源码重建的构建产物。找出它们、算清体积、给出证据，然后停手——它不删任何东西。</p>
+          <div class="meta"><span>Rust</span><span>CLI</span><span>audit-only</span><span data-i18n="projects.view">查看仓库</span></div>
         </a>
+        <a class="card glow-card proj reveal" data-tilt href="https://github.com/wang-sunyang/marvis-persona-spec" target="_blank" rel="noopener noreferrer">
+          <span class="idx" aria-hidden="true">04</span>
+          <span class="glare" aria-hidden="true"></span>
+          <div class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9 17 7M7 17l-2.1 2.1"/></svg></div>
+          <h3><span data-i18n="projects.p4name">Marvis · Persona Spec</span> <span class="go" aria-hidden="true">→</span></h3>
+          <p data-i18n="projects.p4d">一份可被程序检查的人格规范：30 格台词位、20 条禁句、可运行的 lint 与基准测试，附 Fault Bloom 视觉系统。</p>
+          <div class="meta"><span>Python</span><span>lint</span><span>design-system</span><span data-i18n="projects.view">查看仓库</span></div>
+        </a>
+        <a class="card glow-card proj reveal" data-tilt href="https://github.com/wang-sunyang/wang-sunyang.github.io" target="_blank" rel="noopener noreferrer">
+          <span class="idx" aria-hidden="true">05</span>
+          <span class="glare" aria-hidden="true"></span>
+          <div class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="M3 9h18"/><path d="M6.6 6.5h.01M9.4 6.5h.01"/></svg></div>
+          <h3><span data-i18n="projects.p5name">本站 · 零依赖个人站</span> <span class="go" aria-hidden="true">→</span></h3>
+          <p data-i18n="projects.p5d">你正在看的这个页面：纯手写、零依赖、20 种语言实时切换，没有框架也没有构建步骤。</p>
+          <div class="meta"><span>HTML/CSS/JS</span><span>i18n</span><span>zero-dep</span><span data-i18n="projects.view">查看仓库</span></div>
+        </a>
+        <div class="card reveal" style="display:flex;flex-direction:column;justify-content:center;gap:14px;background:var(--grad);color:#06120f">
+          <div style="font-size:38px;font-weight:800;line-height:1.05;letter-spacing:-.02em" data-i18n="projects.moreTitle">还有更多在路上。</div>
+          <p style="font-size:14.5px;opacity:.85" data-i18n="projects.moreDesc">长夜拾星，慢慢打磨每一个作品。</p>
+          <a href="https://github.com/wang-sunyang?tab=repositories" target="_blank" rel="noopener noreferrer" style="color:#06120f;font-weight:700;text-decoration:underline;text-underline-offset:4px" data-i18n="projects.moreLink">去 GitHub 逛逛 →</a>
+        </div>
       </div>
     </div>
   </section>
 
-  <section id="lab">
+  <section id="stack">
     <div class="wrap">
       <div class="sec-head reveal">
-        <div class="sec-tag">Lab</div>
-        <h2>效率工具小实验</h2>
-        <p>真正省时间的往往不是大动作，而是把一件重复的事彻底做一次。下面是我在日常里跑着的几个。</p>
+        <div class="sec-tag" data-i18n="stack.tag">STACK</div>
+        <h2 data-i18n="stack.title">技术栈</h2>
+        <p data-i18n="stack.subtitle">能自己动手的，就不交给黑盒。</p>
       </div>
-      <div class="lab">
-        <article class="lab-item reveal">
-          <div class="lab-no">01</div>
-          <div class="lab-body">
-            <h3><span class="dot-s"></span>批量重命名与归档</h3>
-            <p>手机拍的图、随手截的图，文件名一串乱码，找一张要翻半天。</p>
-            <p class="how">做法：<b>先定一套命名规则</b>（日期_主题_序号），再用一段脚本批量改名，顺手按月份分好文件夹。</p>
+      <div class="stack-wrap">
+        <div class="stack-group reveal">
+          <div class="k" data-i18n="stack.lang">语言</div>
+          <div class="stack-tags">
+            <span>Kotlin</span><span>Java</span><span>Rust</span><span>Python</span><span>Bash</span><span>HTML5</span><span>CSS3</span><span>JavaScript</span>
           </div>
-          <div class="lab-tags"><span>脚本</span><span>归档</span></div>
-        </article>
-        <article class="lab-item reveal">
-          <div class="lab-no">02</div>
-          <div class="lab-body">
-            <h3><span class="dot-s"></span>资料汇总成索引</h3>
-            <p>查资料时链接、截图、笔记散在各处，过一周就忘了当初为什么存它。</p>
-            <p class="how">做法：<b>存的时候多写一行「它解决什么问题」</b>，再按主题归到一个索引页，回头靠关键词就能找回来。</p>
+        </div>
+        <div class="stack-group reveal">
+          <div class="k" data-i18n="stack.tool">平台与工具链</div>
+          <div class="stack-tags">
+            <span>Android</span><span>aapt2</span><span>d8</span><span>apksigner</span><span>JNI</span><span>zig cc</span><span>GitHub Actions</span><span>GitHub Pages</span>
           </div>
-          <div class="lab-tags"><span>索引</span><span>笔记</span></div>
-        </article>
-        <article class="lab-item reveal">
-          <div class="lab-no">03</div>
-          <div class="lab-body">
-            <h3><span class="dot-s"></span>写作时先要结构，再动笔</h3>
-            <p>面对空白文档最难的不是写字，是不知道先说哪句。</p>
-            <p class="how">做法：<b>先让 AI 给出几种结构草案</b>，自己挑一个、按自己的话重写，最后逐句核对事实。</p>
-          </div>
-          <div class="lab-tags"><span>AI</span><span>写作</span></div>
-        </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="philosophy">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div class="sec-tag" data-i18n="phil.tag">PHILOSOPHY</div>
+        <h2 data-i18n="phil.title">我的信条</h2>
+        <p data-i18n="phil.subtitle">几条让我少踩坑、把东西做出来的原则。</p>
+      </div>
+      <div class="phil">
+        <div class="card glow-card phil-item reveal" data-tilt>
+          <div class="n">01</div>
+          <h3 data-i18n="phil.i1t">少一层抽象，就少一类 bug</h3>
+          <p data-i18n="phil.i1d">能用平台 API 就绝不引框架；每少一层，出问题的面就小一圈。</p>
+        </div>
+        <div class="card glow-card phil-item reveal" data-tilt>
+          <div class="n">02</div>
+          <h3 data-i18n="phil.i2t">可复现的构建 &gt; 聪明的构建</h3>
+          <p data-i18n="phil.i2d">无缓存、无守护进程，构建时间可预期——比「快但玄学」更值钱。</p>
+        </div>
+        <div class="card glow-card phil-item reveal" data-tilt>
+          <div class="n">03</div>
+          <h3 data-i18n="phil.i3t">先做出来，再优化</h3>
+          <p data-i18n="phil.i3d">做出来比想清楚更重要；先跑通，再打磨。</p>
+        </div>
+        <div class="card glow-card phil-item reveal" data-tilt>
+          <div class="n">04</div>
+          <h3 data-i18n="phil.i4t">只审计，不删除</h3>
+          <p data-i18n="phil.i4d">工具应给出证据、把决定权留给人，而不是替人动手。</p>
+        </div>
       </div>
     </div>
   </section>
@@ -819,25 +561,30 @@ footer a:hover{color:var(--accent)}
   <section id="journey">
     <div class="wrap">
       <div class="sec-head reveal">
-        <div class="sec-tag">Journey</div>
-        <h2>成长轨迹</h2>
-        <p>一步步走到现在，每一步都算数。</p>
+        <div class="sec-tag" data-i18n="journey.tag">JOURNEY</div>
+        <h2 data-i18n="journey.title">成长轨迹</h2>
+        <p data-i18n="journey.subtitle">一步步走到现在，每一步都算数。</p>
       </div>
       <div class="timeline">
         <div class="tl-item reveal">
-          <time>现在</time>
-          <h4>探索与积累</h4>
-          <p>在学习之余接触网页开发与 AI 工具，尝试把想法做成看得见的东西。</p>
+          <time data-i18n="journey.j1w">现在</time>
+          <h4 data-i18n="journey.j1t">五个项目独立维护</h4>
+          <p data-i18n="journey.j1d">一条无 Gradle 的构建链、一套 AI Agent 权限闸门、一个只审计不删除的 CLI。</p>
         </div>
         <div class="tl-item reveal">
-          <time>在校期间</time>
-          <h4>打基础</h4>
-          <p>认真上课、参加实践活动，在团队里学会沟通与配合。</p>
+          <time data-i18n="journey.j2w">长夜拾星</time>
+          <h4 data-i18n="journey.j2t">成立 Nightglean Studio</h4>
+          <p data-i18n="journey.j2d">把「少一层抽象」做成工作室的信条：原生优先、最少依赖。</p>
         </div>
         <div class="tl-item reveal">
-          <time>起点</time>
-          <h4>对互联网产生兴趣</h4>
-          <p>从好奇「网站是怎么做出来的」，到开始自己动手试一试。</p>
+          <time data-i18n="journey.j3w">入门原生 Android</time>
+          <h4 data-i18n="journey.j3t">绕开框架直连工具链</h4>
+          <p data-i18n="journey.j3d">从 JNI、aapt2 到 zig cc，直接和平台工具链打交道。</p>
+        </div>
+        <div class="tl-item reveal">
+          <time data-i18n="journey.j4w">起点</time>
+          <h4 data-i18n="journey.j4t">好奇一个 App 如何诞生</h4>
+          <p data-i18n="journey.j4d">从「一个 App 到底是怎么从代码变成安装包的」开始自己动手。</p>
         </div>
       </div>
     </div>
@@ -846,28 +593,24 @@ footer a:hover{color:var(--accent)}
   <section id="contact">
     <div class="wrap">
       <div class="contact-card reveal">
-        <h2>一起聊聊？</h2>
-        <p>无论是合作、提问还是单纯打个招呼，我都很欢迎。</p>
+        <h2 data-i18n="contact.title">一起聊聊？</h2>
+        <p data-i18n="contact.subtitle">合作、提问或单纯打个招呼，我都欢迎；开 Issue 通常比邮件更快。</p>
         <div class="links">
           <a class="link-item" href="mailto:3383927177@qq.com">
-            <span class="ico-s" aria-hidden="true">
-              <svg viewBox="0 0 16 16" focusable="false"><path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414.05 3.555ZM0 4.697v7.104l5.803-3.558L0 4.697ZM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586l-1.239-.757Zm3.436-.586L16 11.801V4.697l-5.803 3.546Z"/></svg>
-            </span>
-            <span><b>邮箱</b><span>3383927177@qq.com</span></span>
+            <span class="ico-s" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414.05 3.555ZM0 4.697v7.104l5.803-3.558L0 4.697ZM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586l-1.239-.757Zm3.436-.586L16 11.801V4.697l-5.803 3.546Z"/></svg></span>
+            <span><b data-i18n="contact.email">邮箱</b><span class="t">3383927177@qq.com</span></span>
           </a>
-
-          <button class="link-item" id="copyWechat" type="button" data-copy="ILOVEHUTAOMUCH" aria-label="复制微信号 ILOVEHUTAOMUCH">
-            <span class="ico-s" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><path d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 0 1 .213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.326.326 0 0 0 .167-.054l1.903-1.114a.864.864 0 0 1 .717-.098 10.16 10.16 0 0 0 2.837.403c.276 0 .543-.027.811-.05-.857-2.578.157-4.972 1.932-6.446 1.703-1.415 3.882-1.98 5.853-1.838-.576-3.583-4.196-6.348-8.596-6.348zM5.785 5.991c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178A1.17 1.17 0 0 1 4.623 7.17c0-.651.52-1.18 1.162-1.18zm5.813 0c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178 1.17 1.17 0 0 1-1.162-1.178c0-.651.52-1.18 1.162-1.18zm5.34 2.867c-1.797-.052-3.746.512-5.28 1.786-1.72 1.428-2.687 3.72-1.78 6.22.942 2.453 3.666 4.229 6.884 4.229.826 0 1.622-.12 2.361-.336a.722.722 0 0 1 .598.082l1.584.926a.272.272 0 0 0 .14.047c.134 0 .24-.111.24-.247 0-.06-.023-.12-.038-.177l-.327-1.233a.582.582 0 0 1-.023-.156.49.49 0 0 1 .201-.398C23.024 18.48 24 16.82 24 14.98c0-3.21-2.931-5.837-6.656-6.088V8.89c-.135-.01-.27-.027-.407-.03zm-2.53 3.274c.535 0 .969.44.969.982a.976.976 0 0 1-.969.983.976.976 0 0 1-.969-.983c0-.542.434-.982.97-.982zm4.844 0c.535 0 .969.44.969.982a.976.976 0 0 1-.968.983.976.976 0 0 1-.969-.983c0-.542.433-.982.968-.982z"/></svg>
-            </span>
-            <span><b>微信</b><span id="wechatValue" aria-live="polite">ILOVEHUTAOMUCH</span></span>
+          <button class="link-item" id="copyWechat" type="button" data-copy="ILOVEHUTAOMUCH" aria-label="复制微信号">
+            <span class="ico-s" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 0 1 .213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.326.326 0 0 0 .167-.054l1.903-1.114a.864.864 0 0 1 .717-.098 10.16 10.16 0 0 0 2.837.403c.276 0 .543-.027.811-.05-.857-2.578.157-4.972 1.932-6.446 1.703-1.415 3.882-1.98 5.853-1.838-.576-3.583-4.196-6.348-8.596-6.348zM5.785 5.991c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178A1.17 1.17 0 0 1 4.623 7.17c0-.651.52-1.18 1.162-1.18zm5.813 0c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178 1.17 1.17 0 0 1-1.162-1.178c0-.651.52-1.18 1.162-1.18zm5.34 2.867c-1.797-.052-3.746.512-5.28 1.786-1.72 1.428-2.687 3.72-1.78 6.22.942 2.453 3.666 4.229 6.884 4.229.826 0 1.622-.12 2.361-.336a.722.722 0 0 1 .598.082l1.584.926a.272.272 0 0 0 .14.047c.134 0 .24-.111.24-.247 0-.06-.023-.12-.038-.177l-.327-1.233a.582.582 0 0 1-.023-.156.49.49 0 0 1 .201-.398C23.024 18.48 24 16.82 24 14.98c0-3.21-2.931-5.837-6.656-6.088V8.89c-.135-.01-.27-.027-.407-.03zm-2.53 3.274c.535 0 .969.44.969.982a.976.976 0 0 1-.969.983.976.976 0 0 1-.969-.983c0-.542.434-.982.97-.982zm4.844 0c.535 0 .969.44.969.982a.976.976 0 0 1-.968.983.976.976 0 0 1-.969-.983c0-.542.433-.982.968-.982z"/></svg></span>
+            <span><b data-i18n="contact.wechat">微信</b><span class="t" id="wechatValue">ILOVEHUTAOMUCH</span></span>
           </button>
-
           <a class="link-item" href="https://github.com/wang-sunyang" target="_blank" rel="noopener noreferrer">
-            <span class="ico-s" aria-hidden="true">
-              <svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
-            </span>
-            <span><b>GitHub</b><span>@wang-sunyang</span></span>
+            <span class="ico-s" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg></span>
+            <span><b>GitHub</b><span class="t">@wang-sunyang</span></span>
+          </a>
+          <a class="link-item" href="https://github.com/nightglean" target="_blank" rel="noopener noreferrer">
+            <span class="ico-s" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.2H22l-6 4.4 2.3 7.4-6.3-4.6-6.3 4.6L8 13.6 2 9.2h7.6z"/></svg></span>
+            <span><b data-i18n="contact.studio">工作室</b><span class="t">Nightglean Studio</span></span>
           </a>
         </div>
       </div>
@@ -877,136 +620,620 @@ footer a:hover{color:var(--accent)}
 
 <footer>
   <div class="wrap foot-inner">
-    <div>© <span id="year">2026</span> <b>王孙阳</b> · 用好奇心搭建</div>
-    <div><a href="#top">回到顶部 ↑</a></div>
+    <div>© <span id="year">2026</span> <b>王孙阳</b> · <span class="motto" data-i18n="footer.line">少一层抽象，就少一类 bug。</span></div>
+    <div><a href="#top" data-i18n="footer.top">回到顶部 ↑</a></div>
   </div>
 </footer>
 
+<button id="toTop" type="button" aria-label="回到顶部"><svg viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
+
 <script>
-  document.documentElement.classList.add('js');
+/* ============================================================
+   i18n dictionary — 20 languages
+   ============================================================ */
+var LANGS=[
+  {code:"zh",native:"简体中文",sub:"Simplified Chinese"},
+  {code:"zh-TW",native:"繁體中文",sub:"Traditional Chinese"},
+  {code:"en",native:"English",sub:"English"},
+  {code:"ja",native:"日本語",sub:"Japanese"},
+  {code:"ko",native:"한국어",sub:"Korean"},
+  {code:"fr",native:"Français",sub:"French"},
+  {code:"de",native:"Deutsch",sub:"German"},
+  {code:"es",native:"Español",sub:"Spanish"},
+  {code:"pt",native:"Português",sub:"Portuguese"},
+  {code:"it",native:"Italiano",sub:"Italian"},
+  {code:"ru",native:"Русский",sub:"Russian"},
+  {code:"uk",native:"Українська",sub:"Ukrainian"},
+  {code:"pl",native:"Polski",sub:"Polish"},
+  {code:"nl",native:"Nederlands",sub:"Dutch"},
+  {code:"tr",native:"Türkçe",sub:"Turkish"},
+  {code:"ar",native:"العربية",sub:"Arabic",rtl:true},
+  {code:"hi",native:"हिन्दी",sub:"Hindi"},
+  {code:"id",native:"Bahasa Indonesia",sub:"Indonesian"},
+  {code:"vi",native:"Tiếng Việt",sub:"Vietnamese"},
+  {code:"th",native:"ไทย",sub:"Thai"}
+];
 
-  document.getElementById('year').textContent = new Date().getFullYear();
+var I18N={
+"zh":{skip:"跳到主要内容",ui:{langTitle:"选择语言 / Language"},
+nav:{about:"关于",projects:"作品",stack:"技术栈",phil:"理念",journey:"轨迹",notes:"笔记",contact:"联系"},
+hero:{status:"独立开发者 · 长夜拾星工作室",lead:"少一层抽象，就少一类 bug。一个人做完产品、开发、测试、发布——用原生代码与最少的依赖，把想法做成能跑的东西。",cta1:"看看作品",cta2:"联系我",scroll:"向下滚动",roles:["独立开发者","原生 Android 工程师","无 Gradle 构建链实践者","AI Agent 安全研究者","一人成军的创作者"]},
+about:{tag:"ABOUT",title:"关于我",subtitle:"中职在读，同时是一人成军的独立开发者。",p1:"我是王孙阳，长夜拾星工作室（Nightglean Studio）的创始人。产品、编码、测试、发版，全流程自己一个人跑。",p2:"技术取向是「原生优先」：能用平台 API 就不引框架，能用系统工具链就不上构建系统。我笃信——依赖越少，出问题的面越小。",p3:"这个网站是我的零依赖数字名片：纯手写 HTML / CSS / JS，没有框架、没有构建、没有第三方请求，改完 git push 就发布。",s1k:"开源项目",s2k:"界面语言",s3k:"第三方依赖",s4k:"原生实现"},
+projects:{tag:"PROJECTS",title:"开源作品",subtitle:"原生优先、最少依赖，每一个都在跑、都能复现。",view:"查看仓库",moreTitle:"还有更多在路上。",moreDesc:"长夜拾星，慢慢打磨每一个作品。",moreLink:"去 GitHub 逛逛 →",p1name:"拾光 · OneStar",p1d:"不用 Gradle / AGP 的原生 Android 构建实验：aapt2 + javac + d8 + apksigner + zig cc，一条 build.sh 走完全程。",p2name:"AppFunction Guard",p2d:"Android 16 让 AI Agent 能直接调用你 App 里的函数；它补上平台没给的门卫——逐函数授权、限流、PII 脱敏与审计。",p3name:"蜕冗 · moltdisk",p3d:"磁盘里最占地方的，往往是能由源码重建的构建产物。找出它们、算清体积、给出证据，然后停手——它不删任何东西。",p4name:"Marvis · Persona Spec",p4d:"一份可被程序检查的人格规范：30 格台词位、20 条禁句、可运行的 lint 与基准测试，附 Fault Bloom 视觉系统。",p5name:"本站 · 零依赖个人站",p5d:"你正在看的这个页面：纯手写、零依赖、20 种语言实时切换，没有框架也没有构建步骤。"},
+stack:{tag:"STACK",title:"技术栈",subtitle:"能自己动手的，就不交给黑盒。",lang:"语言",tool:"平台与工具链"},
+phil:{tag:"PHILOSOPHY",title:"我的信条",subtitle:"几条让我少踩坑、把东西做出来的原则。",i1t:"少一层抽象，就少一类 bug",i1d:"能用平台 API 就绝不引框架；每少一层，出问题的面就小一圈。",i2t:"可复现的构建 > 聪明的构建",i2d:"无缓存、无守护进程，构建时间可预期——比「快但玄学」更值钱。",i3t:"先做出来，再优化",i3d:"做出来比想清楚更重要；先跑通，再打磨。",i4t:"只审计，不删除",i4d:"工具应给出证据、把决定权留给人，而不是替人动手。"},
+journey:{tag:"JOURNEY",title:"成长轨迹",subtitle:"一步步走到现在，每一步都算数。",j1w:"现在",j1t:"五个项目独立维护",j1d:"一条无 Gradle 的构建链、一套 AI Agent 权限闸门、一个只审计不删除的 CLI。",j2w:"长夜拾星",j2t:"成立 Nightglean Studio",j2d:"把「少一层抽象」做成工作室的信条：原生优先、最少依赖。",j3w:"入门原生 Android",j3t:"绕开框架直连工具链",j3d:"从 JNI、aapt2 到 zig cc，直接和平台工具链打交道。",j4w:"起点",j4t:"好奇一个 App 如何诞生",j4d:"从「一个 App 到底是怎么从代码变成安装包的」开始自己动手。"},
+contact:{title:"一起聊聊？",subtitle:"合作、提问或单纯打个招呼，我都欢迎；开 Issue 通常比邮件更快。",email:"邮箱",wechat:"微信",studio:"工作室",copied:"已复制，去微信搜我"},
+footer:{line:"少一层抽象，就少一类 bug。",top:"回到顶部 ↑"}},
 
-  /* 主题切换 */
-  (function () {
-    var root = document.documentElement;
-    var btn = document.getElementById('themeToggle');
+"zh-TW":{skip:"跳到主要內容",ui:{langTitle:"選擇語言 / Language"},
+nav:{about:"關於",projects:"作品",stack:"技術棧",phil:"理念",journey:"軌跡",notes:"筆記",contact:"聯繫"},
+hero:{status:"獨立開發者 · 長夜拾星工作室",lead:"少一層抽象，就少一類 bug。一個人做完產品、開發、測試、發佈——用原生程式碼與最少的依賴，把想法做成能跑的東西。",cta1:"看看作品",cta2:"聯絡我",scroll:"向下捲動",roles:["獨立開發者","原生 Android 工程師","無 Gradle 建置鏈實踐者","AI Agent 安全研究者","一人成軍的創作者"]},
+about:{tag:"ABOUT",title:"關於我",subtitle:"中職在讀，同時是一人成軍的獨立開發者。",p1:"我是王孫陽，長夜拾星工作室（Nightglean Studio）的創辦人。產品、編碼、測試、發版，全流程自己一個人跑。",p2:"技術取向是「原生優先」：能用平台 API 就不引框架，能用系統工具鏈就不上建置系統。我深信——依賴越少，出問題的面越小。",p3:"這個網站是我的零依賴數位名片：純手寫 HTML / CSS / JS，沒有框架、沒有建置、沒有第三方請求，改完 git push 就發佈。",s1k:"開源專案",s2k:"介面語言",s3k:"第三方依賴",s4k:"原生實作"},
+projects:{tag:"PROJECTS",title:"開源作品",subtitle:"原生優先、最少依賴，每一個都在跑、都能重現。",view:"查看倉庫",moreTitle:"還有更多在路上。",moreDesc:"長夜拾星，慢慢打磨每一個作品。",moreLink:"去 GitHub 逛逛 →",p1name:"拾光 · OneStar",p1d:"不用 Gradle / AGP 的原生 Android 建置實驗：aapt2 + javac + d8 + apksigner + zig cc，一條 build.sh 走完全程。",p2name:"AppFunction Guard",p2d:"Android 16 讓 AI Agent 能直接呼叫你 App 裡的函式；它補上平台沒給的守衛——逐函式授權、限流、PII 去識別化與稽核。",p3name:"蛻冗 · moltdisk",p3d:"磁碟裡最佔地方的，往往是能由原始碼重建的建置產物。找出它們、算清體積、給出證據，然後停手——它不刪任何東西。",p4name:"Marvis · Persona Spec",p4d:"一份可被程式檢查的人格規範：30 格臺詞位、20 條禁句、可執行的 lint 與基準測試，附 Fault Bloom 視覺系統。",p5name:"本站 · 零依賴個人站",p5d:"你正在看的這個頁面：純手寫、零依賴、20 種語言即時切換，沒有框架也沒有建置步驟。"},
+stack:{tag:"STACK",title:"技術棧",subtitle:"能自己動手的，就不交給黑盒。",lang:"語言",tool:"平台與工具鏈"},
+phil:{tag:"PHILOSOPHY",title:"我的信條",subtitle:"幾條讓我少踩坑、把東西做出來的原則。",i1t:"少一層抽象，就少一類 bug",i1d:"能用平台 API 就絕不引框架；每少一層，出問題的面就小一圈。",i2t:"可重現的建置 > 聰明的建置",i2d:"無快取、無守護行程，建置時間可預期——比「快但玄學」更值錢。",i3t:"先做出來，再最佳化",i3d:"做出來比想清楚更重要；先跑通，再打磨。",i4t:"只稽核，不刪除",i4d:"工具應給出證據、把決定權留給人，而不是替人動手。"},
+journey:{tag:"JOURNEY",title:"成長軌跡",subtitle:"一步步走到現在，每一步都算數。",j1w:"現在",j1t:"五個專案獨立維護",j1d:"一條無 Gradle 的建置鏈、一套 AI Agent 權限閘門、一個只稽核不刪除的 CLI。",j2w:"長夜拾星",j2t:"成立 Nightglean Studio",j2d:"把「少一層抽象」做成工作室的信條：原生優先、最少依賴。",j3w:"入門原生 Android",j3t:"繞開框架直連工具鏈",j3d:"從 JNI、aapt2 到 zig cc，直接和平台工具鏈打交道。",j4w:"起點",j4t:"好奇一個 App 如何誕生",j4d:"從「一個 App 到底是怎麼從程式碼變成安裝包的」開始自己動手。"},
+contact:{title:"一起聊聊？",subtitle:"合作、提問或單純打個招呼，我都歡迎；開 Issue 通常比郵件更快。",email:"信箱",wechat:"微信",studio:"工作室",copied:"已複製，去微信搜我"},
+footer:{line:"少一層抽象，就少一類 bug。",top:"回到頂部 ↑"}},
 
-    function syncLabel(t) {
-      var toLight = t !== 'light';
-      btn.setAttribute('aria-pressed', t === 'light' ? 'true' : 'false');
-      btn.setAttribute('aria-label', toLight ? '切换到浅色模式' : '切换到深色模式');
-      var tc = document.querySelector('meta[name="theme-color"]');
-      if (tc) tc.setAttribute('content', t === 'light' ? '#f6f7fb' : '#060a14');
-    }
+"en":{skip:"Skip to content",ui:{langTitle:"Choose language / Language"},
+nav:{about:"About",projects:"Projects",stack:"Stack",phil:"Philosophy",journey:"Journey",notes:"Notes",contact:"Contact"},
+hero:{status:"Independent Developer · Nightglean Studio",lead:"One fewer layer of abstraction is one fewer class of bug. I ship product, code, tests and releases solo — native code, minimal dependencies, ideas turned into things that run.",cta1:"See my work",cta2:"Get in touch",scroll:"Scroll down",roles:["Independent Developer","Native Android Engineer","No-Gradle Build-Chain Builder","AI-Agent Security Researcher","One-Person Studio"]},
+about:{tag:"ABOUT",title:"About me",subtitle:"A student, and a one-person indie studio.",p1:"I'm Wang Sunyang, founder of Nightglean Studio. I run the whole loop myself — product, code, test, release.",p2:"My bias is native-first: use platform APIs instead of pulling in a framework, use the system toolchain instead of a build system. Fewer dependencies, a smaller surface for things to break.",p3:"This site is my zero-dependency calling card — hand-written HTML / CSS / JS, no framework, no build, no third-party requests. Edit, git push, published.",s1k:"Open-source projects",s2k:"UI languages",s3k:"Third-party deps",s4k:"Native-first"},
+projects:{tag:"PROJECTS",title:"Open-source work",subtitle:"Native-first, minimal dependencies — each one runs and reproduces.",view:"View repo",moreTitle:"More on the way.",moreDesc:"Nightglean — polishing every project, one at a time.",moreLink:"Browse on GitHub →",p1name:"OneStar",p1d:"A native Android build without Gradle / AGP: aapt2 + javac + d8 + apksigner + zig cc, the whole pipeline in one build.sh.",p2name:"AppFunction Guard",p2d:"Android 16 lets AI agents call functions inside your app. This adds the guard the platform left out — per-function authorization, rate limits, PII redaction and an audit trail.",p3name:"moltdisk",p3d:"The heaviest things on a disk are often build artifacts rebuildable from source. Find them, size them, show the evidence — then stop. It never deletes.",p4name:"Marvis · Persona Spec",p4d:"A persona contract that code can check: 30 dialogue slots, 20 forbidden lines, a runnable linter and benchmarks, plus the Fault Bloom visual system.",p5name:"This site",p5d:"The page you're reading: hand-written, zero dependencies, 20 languages switching live, no framework and no build step."},
+stack:{tag:"STACK",title:"Tech stack",subtitle:"What I can do myself, I don't hand to a black box.",lang:"Languages",tool:"Platform & toolchain"},
+phil:{tag:"PHILOSOPHY",title:"What I believe",subtitle:"A few principles that keep me out of trouble and ship things.",i1t:"One fewer abstraction, one fewer bug",i1d:"Use a platform API before a framework; every layer you skip shrinks the surface for failure.",i2t:"Reproducible builds > clever builds",i2d:"No cache, no daemon, predictable build times — worth more than fast-but-mystical.",i3t:"Ship it, then refine",i3d:"Making it real matters more than thinking it through; get it running first, then polish.",i4t:"Audit, never delete",i4d:"A tool should present evidence and leave the decision to a human, not act for them."},
+journey:{tag:"JOURNEY",title:"The journey",subtitle:"Step by step to here — every step counted.",j1w:"Now",j1t:"Five projects, one maintainer",j1d:"A no-Gradle build chain, an AI-agent guard SDK, an audit-only disk CLI.",j2w:"Nightglean",j2t:"Founded Nightglean Studio",j2d:"Turned \"one fewer layer\" into a studio creed: native-first, minimal dependencies.",j3w:"Native Android",j3t:"Skipping the framework",j3d:"From JNI and aapt2 to zig cc, working with the platform toolchain directly.",j4w:"The start",j4t:"How is an app born?",j4d:"It began with curiosity: how does code actually become an installable app?"},
+contact:{title:"Let's talk?",subtitle:"Collabs, questions or just a hello — all welcome; an issue is usually faster than email.",email:"Email",wechat:"WeChat",studio:"Studio",copied:"Copied — find me on WeChat"},
+footer:{line:"One fewer layer of abstraction, one fewer bug.",top:"Back to top ↑"}},
 
-    syncLabel(root.getAttribute('data-theme'));
+"ja":{skip:"本文へスキップ",ui:{langTitle:"言語を選択 / Language"},
+nav:{about:"私について",projects:"作品",stack:"技術スタック",phil:"信条",journey:"軌跡",notes:"ノート",contact:"連絡"},
+hero:{status:"独立開発者 · Nightglean Studio",lead:"抽象を 1 つ減らせば、バグは 1 種類減る。製品・開発・テスト・リリースをすべて一人で——ネイティブコードと最小限の依存で、アイデアを動くものに。",cta1:"作品を見る",cta2:"連絡する",scroll:"スクロール",roles:["独立開発者","ネイティブ Android エンジニア","Gradle レスビルドの実践者","AI エージェントのセキュリティ研究者","一人スタジオ"]},
+about:{tag:"ABOUT",title:"私について",subtitle:"学生であり、一人完結のインディー開発者。",p1:"王孫陽、Nightglean Studio の創業者です。製品・コーディング・テスト・リリースの全工程を自分ひとりで回しています。",p2:"「ネイティブ優先」が信条です。プラットフォーム API で済むならフレームワークは入れない、システムのツールチェーンで済むならビルドシステムは入れない。依存が少ないほど、壊れる面も小さくなる。",p3:"このサイトは依存ゼロの名刺です。素の HTML / CSS / JS で、フレームワークもビルドもサードパーティ通信もなし。編集して git push するだけ。",s1k:"オープンソース",s2k:"UI 言語",s3k:"サードパーティ依存",s4k:"ネイティブ実装"},
+projects:{tag:"PROJECTS",title:"オープンソース作品",subtitle:"ネイティブ優先・最小依存。どれも動き、再現できる。",view:"リポジトリへ",moreTitle:"さらに続々と進行中。",moreDesc:"Nightglean——ひとつずつ、じっくり磨いていく。",moreLink:"GitHub を見る →",p1name:"OneStar",p1d:"Gradle / AGP を使わないネイティブ Android ビルドの実験：aapt2 + javac + d8 + apksigner + zig cc、build.sh 一本で完結。",p2name:"AppFunction Guard",p2d:"Android 16 は AI エージェントにアプリ内関数の直接呼び出しを許す。これが欠けている門番を補う——関数単位の認可・レート制限・PII の秘匿化・監査。",p3name:"moltdisk",p3d:"ディスクで一番場所を取るのは、ソースから再構築できるビルド成果物であることが多い。見つけ出し、サイズを計算し、根拠を示して、そこで止まる——決して削除しない。",p4name:"Marvis · Persona Spec",p4d:"プログラムで検査できる人格仕様：30 の台詞スロット、20 の禁句、実行可能な linter とベンチマーク、Fault Bloom ビジュアルシステム付き。",p5name:"このサイト",p5d:"いま読んでいるこのページ。素の手書き、依存ゼロ、20 言語のリアルタイム切替、フレームワークもビルドもなし。"},
+stack:{tag:"STACK",title:"技術スタック",subtitle:"自分でできることをブラックボックスに渡さない。",lang:"言語",tool:"プラットフォームとツールチェーン"},
+phil:{tag:"PHILOSOPHY",title:"私の信条",subtitle:"失敗を減らし、ものを形にするためのいくつかの原則。",i1t:"抽象を 1 つ減らせば、バグは 1 つ減る",i1d:"フレームワークより先にプラットフォーム API。省いた層の分だけ、壊れる面は小さくなる。",i2t:"再現できるビルド > 賢いビルド",i2d:"キャッシュなし、デーモンなし、予測可能なビルド時間——「速いけれど不確か」より価値がある。",i3t:"まず形に、それから磨く",i3d:"考え抜くより形にすることが大事。まず動かし、それから磨く。",i4t:"監査する、削除しない",i4d:"ツールは根拠を示し、判断は人に委ねるべきで、人の代わりに手を下さない。"},
+journey:{tag:"JOURNEY",title:"軌跡",subtitle:"一歩ずつ今へ——どの一歩も意味があった。",j1w:"現在",j1t:"5 つのプロジェクトを一人で維持",j1d:"Gradle レスビルド、AI エージェント向け権限 SDK、監査専用ディスク CLI。",j2w:"Nightglean",j2t:"Nightglean Studio を設立",j2d:"「1 つ少ない抽象」をスタジオの信条に：ネイティブ優先・最小依存。",j3w:"ネイティブ Android",j3t:"フレームワークを回避",j3d:"JNI や aapt2 から zig cc まで、プラットフォームのツールチェーンと直接向き合う。",j4w:"原点",j4t:"アプリはどう生まれるのか",j4d:"「コードがどうやってインストール可能なアプリになるのか」という好奇心から始まった。"},
+contact:{title:"話しませんか？",subtitle:"協業・質問・ただの挨拶、どれも歓迎。Issue の方がメールより早いことが多い。",email:"メール",wechat:"WeChat",studio:"スタジオ",copied:"コピーしました、WeChat で検索を"},
+footer:{line:"抽象を 1 つ減らせば、バグは 1 種類減る。",top:"トップへ ↑"}},
 
-    btn.addEventListener('click', function () {
-      var next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
-      root.setAttribute('data-theme', next);
-      syncLabel(next);
-      try { localStorage.setItem('theme', next); } catch (e) {}
-    });
+"ko":{skip:"본문으로 건너뛰기",ui:{langTitle:"언어 선택 / Language"},
+nav:{about:"소개",projects:"프로젝트",stack:"스택",phil:"신념",journey:"여정",notes:"노트",contact:"연락처"},
+hero:{status:"독립 개발자 · Nightglean Studio",lead:"추상화 한 겹을 줄이면 버그도 한 부류 줄어든다. 기획·개발·테스트·배포를 혼자서——네이티브 코드와 최소한의 의존성으로 아이디어를 실제로 돌아가는 것으로.",cta1:"작업물 보기",cta2:"연락하기",scroll:"스크롤",roles:["독립 개발자","네이티브 Android 엔지니어","무-Gradle 빌드 실천가","AI 에이전트 보안 연구자","1인 스튜디오"]},
+about:{tag:"ABOUT",title:"소개",subtitle:"학생이자, 1인 완결형 독립 개발자.",p1:"저는 Nightglean Studio의 창립자 왕쑨양입니다. 기획·코딩·테스트·배포 전 과정을 혼자서 돌립니다.",p2:"'네이티브 우선'이 원칙입니다. 플랫폼 API로 해결되면 프레임워크를 안 쓰고, 시스템 툴체인으로 되면 빌드 시스템을 안 씁니다. 의존성이 적을수록 문제가 생길 면도 작아집니다.",p3:"이 사이트는 의존성 제로인 제 명함입니다. 순수 HTML / CSS / JS로, 프레임워크도 빌드도 서드파티 요청도 없이 git push만 하면 배포됩니다.",s1k:"오픈소스 프로젝트",s2k:"UI 언어",s3k:"서드파티 의존성",s4k:"네이티브 구현"},
+projects:{tag:"PROJECTS",title:"오픈소스 작업",subtitle:"네이티브 우선·최소 의존. 모두 실행되고 재현됩니다.",view:"저장소 보기",moreTitle:"더 많은 작업이 진행 중입니다.",moreDesc:"Nightglean——하나씩, 천천히 다듬어갑니다.",moreLink:"GitHub 둘러보기 →",p1name:"OneStar",p1d:"Gradle / AGP 없이 네이티브 Android 빌드 실험: aapt2 + javac + d8 + apksigner + zig cc, build.sh 하나로 전체 파이프라인 완결.",p2name:"AppFunction Guard",p2d:"Android 16은 AI 에이전트가 앱 안의 함수를 직접 호출하게 합니다. 플랫폼이 빠뜨린 경비를 보완——함수 단위 인가, 속도 제한, PII 비식별화, 감사 기록.",p3name:"moltdisk",p3d:"디스크에서 가장 많은 공간을 차지하는 건 소스로 재구축 가능한 빌드 산출물인 경우가 많습니다. 찾아내고, 크기를 계산하고, 근거를 제시한 뒤 멈춥니다——절대 삭제하지 않습니다.",p4name:"Marvis · Persona Spec",p4d:"코드로 검사할 수 있는 페르소나 규약: 30개 대사 슬롯, 20개 금지 문장, 실행 가능한 linter와 벤치마크, Fault Bloom 비주얼 시스템 포함.",p5name:"이 사이트",p5d:"지금 읽고 있는 이 페이지. 순수 수작업, 의존성 제로, 20개 언어 실시간 전환, 프레임워크도 빌드도 없음."},
+stack:{tag:"STACK",title:"기술 스택",subtitle:"직접 할 수 있는 일은 블랙박스에 맡기지 않습니다.",lang:"언어",tool:"플랫폼 및 툴체인"},
+phil:{tag:"PHILOSOPHY",title:"저의 신념",subtitle:"실수를 줄이고 결과물을 만들어내는 몇 가지 원칙.",i1t:"추상화 한 겹을 줄이면 버그도 한 부류 줄어든다",i1d:"프레임워크보다 플랫폼 API를 먼저. 건너뛴 층만큼 실패할 면도 줄어듭니다.",i2t:"재현 가능한 빌드 > 영리한 빌드",i2d:"캐시도 데몬도 없이 예측 가능한 빌드 시간——'빠르지만 미신 같은' 것보다 가치 있습니다.",i3t:"먼저 만들고, 그다음 다듬기",i3d:"완벽히 구상하는 것보다 실제로 만드는 게 중요합니다. 먼저 돌리고, 그다음 다듬습니다.",i4t:"감사하되, 삭제하지 않는다",i4d:"도구는 근거를 제시하고 결정은 사람에게 남겨야 합니다. 대신 손을 대지 않습니다."},
+journey:{tag:"JOURNEY",title:"여정",subtitle:"한 걸음씩 여기까지——모든 걸음이 의미 있었다.",j1w:"지금",j1t:"프로젝트 5개, 유지보수는 혼자",j1d:"무-Gradle 빌드 체인, AI 에이전트 권한 SDK, 감사 전용 디스크 CLI.",j2w:"Nightglean",j2t:"Nightglean Studio 설립",j2d:"'한 겹 적은 추상화'를 스튜디오의 신조로: 네이티브 우선·최소 의존.",j3w:"네이티브 Android",j3t:"프레임워크 우회하기",j3d:"JNI와 aapt2에서 zig cc까지, 플랫폼 툴체인과 직접 마주합니다.",j4w:"시작",j4t:"앱은 어떻게 태어나는가",j4d:"'코드가 어떻게 설치 가능한 앱이 되는가'라는 호기심에서 출발했습니다."},
+contact:{title:"이야기해볼까요?",subtitle:"협업·질문·가벼운 인사 모두 환영합니다. 이슈가 메일보다 빠를 때가 많습니다.",email:"이메일",wechat:"위챗",studio:"스튜디오",copied:"복사됨, 위챗에서 검색하세요"},
+footer:{line:"추상화 한 겹을 줄이면 버그도 한 부류 줄어든다.",top:"맨 위로 ↑"}},
 
-    /* 用户没手动选过时，跟随系统变化 */
-    if (window.matchMedia) {
-      var mq = window.matchMedia('(prefers-color-scheme: light)');
-      var onChange = function (e) {
-        var saved = null;
-        try { saved = localStorage.getItem('theme'); } catch (err) {}
-        if (saved) return;
-        var t = e.matches ? 'light' : 'dark';
-        root.setAttribute('data-theme', t);
-        syncLabel(t);
-      };
-      if (mq.addEventListener) mq.addEventListener('change', onChange);
-      else if (mq.addListener) mq.addListener(onChange);
-    }
-  })();
+"fr":{skip:"Aller au contenu",ui:{langTitle:"Choisir la langue / Language"},
+nav:{about:"À propos",projects:"Projets",stack:"Stack",phil:"Philosophie",journey:"Parcours",notes:"Notes",contact:"Contact"},
+hero:{status:"Développeur indépendant · Nightglean Studio",lead:"Une couche d'abstraction en moins, c'est une classe de bugs en moins. Produit, code, tests, releases — je fais tout seul, en code natif et avec un minimum de dépendances.",cta1:"Voir mes projets",cta2:"Me contacter",scroll:"Défiler",roles:["Développeur indépendant","Ingénieur Android natif","Bâtisseur de build sans Gradle","Chercheur en sécurité IA","Studio d'une personne"]},
+about:{tag:"À PROPOS",title:"À propos",subtitle:"Étudiant, et studio indépendant d'une personne.",p1:"Je suis Wang Sunyang, fondateur de Nightglean Studio. Je gère toute la boucle moi-même — produit, code, tests, release.",p2:"Mon parti pris : le natif d'abord. Utiliser les API de la plateforme plutôt qu'un framework, la chaîne d'outils du système plutôt qu'un système de build. Moins de dépendances, moins de surface pour casser.",p3:"Ce site est ma carte de visite zéro dépendance — HTML / CSS / JS écrits à la main, sans framework, sans build, sans requête tierce. On édite, git push, c'est publié.",s1k:"Projets open source",s2k:"Langues de l'UI",s3k:"Dépendances tierces",s4k:"Natif d'abord"},
+projects:{tag:"PROJETS",title:"Travaux open source",subtitle:"Natif d'abord, dépendances minimales — chacun tourne et se reproduit.",view:"Voir le dépôt",moreTitle:"D'autres arrivent bientôt.",moreDesc:"Nightglean — polir chaque projet, un à la fois.",moreLink:"Parcourir GitHub →",p1name:"OneStar",p1d:"Un build Android natif sans Gradle / AGP : aapt2 + javac + d8 + apksigner + zig cc, tout le pipeline dans un build.sh.",p2name:"AppFunction Guard",p2d:"Android 16 laisse les agents IA appeler des fonctions dans votre app. Ceci ajoute le garde manquant — autorisation par fonction, limites de débit, masquage PII et journal d'audit.",p3name:"moltdisk",p3d:"Ce qui pèse le plus sur un disque, ce sont souvent des artefacts rebuildables depuis les sources. Les trouver, les mesurer, montrer la preuve — puis s'arrêter. Il ne supprime jamais.",p4name:"Marvis · Persona Spec",p4d:"Un contrat de persona vérifiable par du code : 30 emplacements de répliques, 20 lignes interdites, un linter exécutable et des benchmarks, plus le système visuel Fault Bloom.",p5name:"Ce site",p5d:"La page que vous lisez : écrite à la main, zéro dépendance, 20 langues en direct, sans framework ni étape de build."},
+stack:{tag:"STACK",title:"Stack technique",subtitle:"Ce que je peux faire moi-même, je ne le confie pas à une boîte noire.",lang:"Langages",tool:"Plateforme & chaîne d'outils"},
+phil:{tag:"PHILOSOPHIE",title:"Ce que je crois",subtitle:"Quelques principes qui m'évitent des ennuis et font aboutir les choses.",i1t:"Une abstraction en moins, un bug en moins",i1d:"Une API de plateforme avant un framework ; chaque couche sautée réduit la surface de panne.",i2t:"Builds reproductibles > builds malins",i2d:"Pas de cache, pas de démon, des temps de build prévisibles — plus précieux que rapide-mais-mystique.",i3t:"Livrer d'abord, affiner ensuite",i3d:"Rendre réel compte plus que tout penser ; faire tourner d'abord, polir ensuite.",i4t:"Auditer, jamais supprimer",i4d:"Un outil doit présenter des preuves et laisser la décision à un humain, pas agir à sa place."},
+journey:{tag:"PARCOURS",title:"Le parcours",subtitle:"Pas à pas jusqu'ici — chaque pas a compté.",j1w:"Maintenant",j1t:"Cinq projets, un mainteneur",j1d:"Une chaîne de build sans Gradle, un SDK de garde pour agents IA, un CLI disque audit-only.",j2w:"Nightglean",j2t:"Fondation de Nightglean Studio",j2d:"Faire d'« une couche en moins » un credo : natif d'abord, dépendances minimales.",j3w:"Android natif",j3t:"Contourner le framework",j3d:"De JNI et aapt2 à zig cc, travailler directement avec la chaîne d'outils de la plateforme.",j4w:"Le départ",j4t:"Comment naît une app ?",j4d:"Tout est parti d'une curiosité : comment le code devient-il une app installable ?"},
+contact:{title:"On en parle ?",subtitle:"Collabs, questions ou simple bonjour — bienvenus ; une issue est souvent plus rapide qu'un mail.",email:"E-mail",wechat:"WeChat",studio:"Studio",copied:"Copié — retrouvez-moi sur WeChat"},
+footer:{line:"Une couche d'abstraction en moins, une classe de bugs en moins.",top:"Retour en haut ↑"}},
 
-  /* 滚动进度 */
-  var bar = document.getElementById('progress');
-  var ticking = false;
-  window.addEventListener('scroll', function () {
-    if (ticking) return;
-    ticking = true;
-    requestAnimationFrame(function () {
-      var h = document.documentElement;
-      var max = h.scrollHeight - h.clientHeight;
-      bar.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + '%';
-      ticking = false;
-    });
-  }, {passive: true});
+"de":{skip:"Zum Inhalt springen",ui:{langTitle:"Sprache wählen / Language"},
+nav:{about:"Über",projects:"Projekte",stack:"Stack",phil:"Prinzipien",journey:"Weg",notes:"Notizen",contact:"Kontakt"},
+hero:{status:"Unabhängiger Entwickler · Nightglean Studio",lead:"Eine Abstraktionsschicht weniger heißt eine Fehlerklasse weniger. Produkt, Code, Tests, Releases — alles allein, mit nativem Code und minimalen Abhängigkeiten.",cta1:"Meine Arbeit ansehen",cta2:"Kontakt aufnehmen",scroll:"Scrollen",roles:["Unabhängiger Entwickler","Nativer Android-Engineer","Builder ohne Gradle","AI-Agent-Sicherheitsforscher","Ein-Personen-Studio"]},
+about:{tag:"ÜBER",title:"Über mich",subtitle:"Student und Ein-Personen-Indie-Studio.",p1:"Ich bin Wang Sunyang, Gründer von Nightglean Studio. Den ganzen Kreislauf mache ich selbst — Produkt, Code, Test, Release.",p2:"Meine Devise: native first. Plattform-APIs statt Framework, System-Toolchain statt Build-System. Weniger Abhängigkeiten, weniger Angriffsfläche für Fehler.",p3:"Diese Seite ist meine abhängigkeitsfreie Visitenkarte — handgeschriebenes HTML / CSS / JS, kein Framework, kein Build, keine Drittanbieter-Requests. Editieren, git push, veröffentlicht.",s1k:"Open-Source-Projekte",s2k:"UI-Sprachen",s3k:"Dritt-Abhängigkeiten",s4k:"Native first"},
+projects:{tag:"PROJEKTE",title:"Open-Source-Arbeit",subtitle:"Native first, minimale Abhängigkeiten — jedes läuft und reproduziert.",view:"Repo ansehen",moreTitle:"Weitere sind unterwegs.",moreDesc:"Nightglean — jedes Projekt einzeln poliert.",moreLink:"Auf GitHub stöbern →",p1name:"OneStar",p1d:"Ein nativer Android-Build ohne Gradle / AGP: aapt2 + javac + d8 + apksigner + zig cc, die ganze Pipeline in einem build.sh.",p2name:"AppFunction Guard",p2d:"Android 16 lässt KI-Agenten Funktionen in deiner App aufrufen. Dies ergänzt den fehlenden Wächter — Autorisierung pro Funktion, Ratenlimits, PII-Maskierung und Audit-Trail.",p3name:"moltdisk",p3d:"Das Schwerste auf einer Platte sind oft Build-Artefakte, die sich aus dem Quellcode neu bauen lassen. Finden, messen, Beleg zeigen — dann aufhören. Es löscht nie.",p4name:"Marvis · Persona Spec",p4d:"Ein per Code prüfbarer Persona-Vertrag: 30 Dialogslots, 20 verbotene Zeilen, ein lauffähiger Linter und Benchmarks, plus das Fault-Bloom-Visualsystem.",p5name:"Diese Seite",p5d:"Die Seite, die du liest: handgeschrieben, null Abhängigkeiten, 20 Sprachen live, kein Framework und kein Build-Schritt."},
+stack:{tag:"STACK",title:"Tech-Stack",subtitle:"Was ich selbst kann, gebe ich keiner Blackbox.",lang:"Sprachen",tool:"Plattform & Toolchain"},
+phil:{tag:"PRINZIPIEN",title:"Woran ich glaube",subtitle:"Ein paar Prinzipien, die mir Ärger ersparen und Dinge fertig werden lassen.",i1t:"Eine Abstraktion weniger, ein Bug weniger",i1d:"Erst Plattform-API, dann Framework; jede übersprungene Schicht verkleinert die Fehlerfläche.",i2t:"Reproduzierbare Builds > clevere Builds",i2d:"Kein Cache, kein Daemon, vorhersagbare Buildzeiten — mehr wert als schnell-aber-mystisch.",i3t:"Erst ausliefern, dann verfeinern",i3d:"Realisieren zählt mehr als Durchdenken; erst zum Laufen bringen, dann polieren.",i4t:"Prüfen, nie löschen",i4d:"Ein Tool soll Belege liefern und die Entscheidung dem Menschen lassen, nicht selbst handeln."},
+journey:{tag:"WEG",title:"Der Weg",subtitle:"Schritt für Schritt hierher — jeder Schritt zählte.",j1w:"Jetzt",j1t:"Fünf Projekte, ein Maintainer",j1d:"Eine Gradle-lose Build-Kette, ein Guard-SDK für KI-Agenten, ein audit-only Disk-CLI.",j2w:"Nightglean",j2t:"Nightglean Studio gegründet",j2d:"Aus „eine Schicht weniger“ ein Credo gemacht: native first, minimale Abhängigkeiten.",j3w:"Natives Android",j3t:"Am Framework vorbei",j3d:"Von JNI und aapt2 bis zig cc, direkt mit der Plattform-Toolchain arbeiten.",j4w:"Der Anfang",j4t:"Wie entsteht eine App?",j4d:"Es begann mit Neugier: Wie wird Code eigentlich zu einer installierbaren App?"},
+contact:{title:"Reden wir?",subtitle:"Kooperationen, Fragen oder einfach ein Hallo — willkommen; ein Issue ist meist schneller als Mail.",email:"E-Mail",wechat:"WeChat",studio:"Studio",copied:"Kopiert — finde mich auf WeChat"},
+footer:{line:"Eine Abstraktionsschicht weniger, eine Fehlerklasse weniger.",top:"Nach oben ↑"}},
 
-  /* 入场揭示 */
-  var revealEls = document.querySelectorAll('.reveal');
-  if ('IntersectionObserver' in window) {
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) {
-        if (!e.isIntersecting) return;
-        e.target.classList.add('in');
-        io.unobserve(e.target);
-      });
-    }, {threshold: 0.12, rootMargin: '0px 0px -60px 0px'});
+"es":{skip:"Saltar al contenido",ui:{langTitle:"Elegir idioma / Language"},
+nav:{about:"Sobre mí",projects:"Proyectos",stack:"Stack",phil:"Filosofía",journey:"Trayectoria",notes:"Notas",contact:"Contacto"},
+hero:{status:"Desarrollador independiente · Nightglean Studio",lead:"Una capa de abstracción menos es una clase de bugs menos. Producto, código, tests y releases — todo en solitario, con código nativo y dependencias mínimas.",cta1:"Ver mi trabajo",cta2:"Contactar",scroll:"Desplázate",roles:["Desarrollador independiente","Ingeniero Android nativo","Constructor sin Gradle","Investigador de seguridad IA","Estudio unipersonal"]},
+about:{tag:"SOBRE MÍ",title:"Sobre mí",subtitle:"Estudiante y estudio independiente de una sola persona.",p1:"Soy Wang Sunyang, fundador de Nightglean Studio. Llevo todo el ciclo yo mismo — producto, código, test, release.",p2:"Mi sesgo es lo nativo primero: APIs de plataforma antes que un framework, la toolchain del sistema antes que un build system. Menos dependencias, menos superficie para que algo se rompa.",p3:"Este sitio es mi tarjeta de visita sin dependencias — HTML / CSS / JS a mano, sin framework, sin build, sin peticiones de terceros. Editas, git push, publicado.",s1k:"Proyectos open source",s2k:"Idiomas de la UI",s3k:"Dependencias de terceros",s4k:"Nativo primero"},
+projects:{tag:"PROYECTOS",title:"Trabajo open source",subtitle:"Nativo primero, dependencias mínimas — cada uno corre y se reproduce.",view:"Ver repo",moreTitle:"Hay más en camino.",moreDesc:"Nightglean — puliendo cada proyecto, uno a uno.",moreLink:"Explorar GitHub →",p1name:"OneStar",p1d:"Un build Android nativo sin Gradle / AGP: aapt2 + javac + d8 + apksigner + zig cc, toda la pipeline en un build.sh.",p2name:"AppFunction Guard",p2d:"Android 16 deja que agentes de IA llamen funciones dentro de tu app. Esto añade el guardián que faltaba — autorización por función, límites de tasa, redacción de PII y auditoría.",p3name:"moltdisk",p3d:"Lo más pesado en un disco suelen ser artefactos de build reconstruibles desde el código. Encontrarlos, medirlos, mostrar la evidencia — y parar. Nunca borra.",p4name:"Marvis · Persona Spec",p4d:"Un contrato de persona verificable por código: 30 ranuras de diálogo, 20 líneas prohibidas, un linter ejecutable y benchmarks, más el sistema visual Fault Bloom.",p5name:"Este sitio",p5d:"La página que lees: a mano, cero dependencias, 20 idiomas en vivo, sin framework ni paso de build."},
+stack:{tag:"STACK",title:"Stack tecnológico",subtitle:"Lo que puedo hacer yo, no se lo dejo a una caja negra.",lang:"Lenguajes",tool:"Plataforma y toolchain"},
+phil:{tag:"FILOSOFÍA",title:"En lo que creo",subtitle:"Unos principios que me ahorran problemas y hacen que las cosas salgan.",i1t:"Una abstracción menos, un bug menos",i1d:"API de plataforma antes que framework; cada capa que saltas reduce la superficie de fallo.",i2t:"Builds reproducibles > builds ingeniosos",i2d:"Sin caché, sin demonio, tiempos de build predecibles — valen más que rápido-pero-místico.",i3t:"Primero entrégalo, luego refina",i3d:"Hacerlo real importa más que pensarlo todo; primero hazlo correr, luego pule.",i4t:"Auditar, nunca borrar",i4d:"Una herramienta debe presentar evidencia y dejar la decisión a una persona, no actuar por ella."},
+journey:{tag:"TRAYECTORIA",title:"La trayectoria",subtitle:"Paso a paso hasta aquí — cada paso contó.",j1w:"Ahora",j1t:"Cinco proyectos, un mantenedor",j1d:"Una cadena de build sin Gradle, un SDK de guardia para agentes IA, un CLI de disco solo-auditoría.",j2w:"Nightglean",j2t:"Fundé Nightglean Studio",j2d:"Convertí «una capa menos» en un credo: nativo primero, dependencias mínimas.",j3w:"Android nativo",j3t:"Saltándome el framework",j3d:"De JNI y aapt2 a zig cc, trabajando directo con la toolchain de la plataforma.",j4w:"El inicio",j4t:"¿Cómo nace una app?",j4d:"Empezó con curiosidad: ¿cómo se convierte el código en una app instalable?"},
+contact:{title:"¿Hablamos?",subtitle:"Colaboraciones, preguntas o solo un saludo — bienvenido; un issue suele ser más rápido que un correo.",email:"Correo",wechat:"WeChat",studio:"Estudio",copied:"Copiado — búscame en WeChat"},
+footer:{line:"Una capa de abstracción menos, una clase de bugs menos.",top:"Volver arriba ↑"}},
 
-    revealEls.forEach(function (el, i) {
-      el.style.transitionDelay = (i % 4) * 70 + 'ms';
-      io.observe(el);
-    });
-  } else {
-    revealEls.forEach(function (el) { el.classList.add('in'); });
+"pt":{skip:"Ir ao conteúdo",ui:{langTitle:"Escolher idioma / Language"},
+nav:{about:"Sobre",projects:"Projetos",stack:"Stack",phil:"Filosofia",journey:"Trajetória",notes:"Notas",contact:"Contato"},
+hero:{status:"Desenvolvedor independente · Nightglean Studio",lead:"Uma camada de abstração a menos é uma classe de bugs a menos. Produto, código, testes e releases — tudo sozinho, com código nativo e dependências mínimas.",cta1:"Ver meu trabalho",cta2:"Entrar em contato",scroll:"Rolar",roles:["Desenvolvedor independente","Engenheiro Android nativo","Construtor sem Gradle","Pesquisador de segurança em IA","Estúdio de uma pessoa"]},
+about:{tag:"SOBRE",title:"Sobre mim",subtitle:"Estudante e estúdio independente de uma pessoa só.",p1:"Sou Wang Sunyang, fundador do Nightglean Studio. Eu mesmo cuido de todo o ciclo — produto, código, teste, release.",p2:"Minha preferência é nativo primeiro: APIs da plataforma antes de um framework, a toolchain do sistema antes de um build system. Menos dependências, menos superfície para quebrar.",p3:"Este site é meu cartão de visita sem dependências — HTML / CSS / JS escritos à mão, sem framework, sem build, sem requisições de terceiros. Edita, git push, publicado.",s1k:"Projetos open source",s2k:"Idiomas da UI",s3k:"Dependências de terceiros",s4k:"Nativo primeiro"},
+projects:{tag:"PROJETOS",title:"Trabalho open source",subtitle:"Nativo primeiro, dependências mínimas — cada um roda e se reproduz.",view:"Ver repositório",moreTitle:"Mais está a caminho.",moreDesc:"Nightglean — polindo cada projeto, um por vez.",moreLink:"Explorar no GitHub →",p1name:"OneStar",p1d:"Um build Android nativo sem Gradle / AGP: aapt2 + javac + d8 + apksigner + zig cc, todo o pipeline em um build.sh.",p2name:"AppFunction Guard",p2d:"O Android 16 deixa agentes de IA chamarem funções no seu app. Isto adiciona o guarda que faltava — autorização por função, limites de taxa, redação de PII e trilha de auditoria.",p3name:"moltdisk",p3d:"O mais pesado em um disco costuma ser artefatos de build reconstruíveis a partir do código. Encontrá-los, medi-los, mostrar a evidência — e parar. Nunca apaga.",p4name:"Marvis · Persona Spec",p4d:"Um contrato de persona verificável por código: 30 slots de falas, 20 linhas proibidas, um linter executável e benchmarks, mais o sistema visual Fault Bloom.",p5name:"Este site",p5d:"A página que você está lendo: feita à mão, zero dependências, 20 idiomas ao vivo, sem framework nem etapa de build."},
+stack:{tag:"STACK",title:"Stack de tecnologia",subtitle:"O que eu consigo fazer, não entrego a uma caixa-preta.",lang:"Linguagens",tool:"Plataforma e toolchain"},
+phil:{tag:"FILOSOFIA",title:"No que acredito",subtitle:"Alguns princípios que me poupam problemas e fazem as coisas saírem.",i1t:"Uma abstração a menos, um bug a menos",i1d:"API da plataforma antes de framework; cada camada pulada reduz a superfície de falha.",i2t:"Builds reproduzíveis > builds espertos",i2d:"Sem cache, sem daemon, tempos de build previsíveis — valem mais que rápido-mas-místico.",i3t:"Entregue primeiro, refine depois",i3d:"Tornar real importa mais que pensar tudo; primeiro faça rodar, depois polir.",i4t:"Auditar, nunca apagar",i4d:"Uma ferramenta deve apresentar evidências e deixar a decisão com uma pessoa, não agir por ela."},
+journey:{tag:"TRAJETÓRIA",title:"A trajetória",subtitle:"Passo a passo até aqui — cada passo contou.",j1w:"Agora",j1t:"Cinco projetos, um mantenedor",j1d:"Uma cadeia de build sem Gradle, um SDK de guarda para agentes de IA, um CLI de disco só-auditoria.",j2w:"Nightglean",j2t:"Fundei o Nightglean Studio",j2d:"Transformei «uma camada a menos» em credo: nativo primeiro, dependências mínimas.",j3w:"Android nativo",j3t:"Pulando o framework",j3d:"De JNI e aapt2 a zig cc, trabalhando direto com a toolchain da plataforma.",j4w:"O início",j4t:"Como nasce um app?",j4d:"Começou com curiosidade: como o código vira um app instalável?"},
+contact:{title:"Vamos conversar?",subtitle:"Parcerias, perguntas ou só um oi — bem-vindo; uma issue costuma ser mais rápida que e-mail.",email:"E-mail",wechat:"WeChat",studio:"Estúdio",copied:"Copiado — me ache no WeChat"},
+footer:{line:"Uma camada de abstração a menos, uma classe de bugs a menos.",top:"Voltar ao topo ↑"}},
+
+"it":{skip:"Vai al contenuto",ui:{langTitle:"Scegli lingua / Language"},
+nav:{about:"Su di me",projects:"Progetti",stack:"Stack",phil:"Filosofia",journey:"Percorso",notes:"Note",contact:"Contatti"},
+hero:{status:"Sviluppatore indipendente · Nightglean Studio",lead:"Uno strato di astrazione in meno è una classe di bug in meno. Prodotto, codice, test, release — tutto da solo, con codice nativo e dipendenze minime.",cta1:"Guarda i miei lavori",cta2:"Contattami",scroll:"Scorri",roles:["Sviluppatore indipendente","Ingegnere Android nativo","Costruttore senza Gradle","Ricercatore di sicurezza IA","Studio di una persona"]},
+about:{tag:"SU DI ME",title:"Su di me",subtitle:"Studente e studio indipendente di una sola persona.",p1:"Sono Wang Sunyang, fondatore di Nightglean Studio. Giro tutto il ciclo da solo — prodotto, codice, test, release.",p2:"La mia priorità è il nativo: API di piattaforma prima di un framework, la toolchain di sistema prima di un build system. Meno dipendenze, meno superficie per i guasti.",p3:"Questo sito è il mio biglietto da visita a zero dipendenze — HTML / CSS / JS scritti a mano, niente framework, niente build, niente richieste di terze parti. Modifichi, git push, pubblicato.",s1k:"Progetti open source",s2k:"Lingue dell'interfaccia",s3k:"Dipendenze di terze parti",s4k:"Nativo prima di tutto"},
+projects:{tag:"PROGETTI",title:"Lavori open source",subtitle:"Nativo prima di tutto, dipendenze minime — ognuno gira e si riproduce.",view:"Vedi repo",moreTitle:"Altri sono in arrivo.",moreDesc:"Nightglean — a lucidare ogni progetto, uno alla volta.",moreLink:"Sfoglia su GitHub →",p1name:"OneStar",p1d:"Una build Android nativa senza Gradle / AGP: aapt2 + javac + d8 + apksigner + zig cc, tutta la pipeline in un build.sh.",p2name:"AppFunction Guard",p2d:"Android 16 lascia che gli agenti IA chiamino funzioni nella tua app. Questo aggiunge il guardiano mancante — autorizzazione per funzione, rate limiting, redazione PII e audit trail.",p3name:"moltdisk",p3d:"La cosa più pesante su un disco sono spesso artefatti di build ricostruibili dal sorgente. Trovarli, misurarli, mostrare le prove — e fermarsi. Non cancella mai.",p4name:"Marvis · Persona Spec",p4d:"Un contratto di persona verificabile dal codice: 30 slot di battute, 20 righe proibite, un linter eseguibile e benchmark, più il sistema visivo Fault Bloom.",p5name:"Questo sito",p5d:"La pagina che stai leggendo: scritta a mano, zero dipendenze, 20 lingue dal vivo, senza framework né step di build."},
+stack:{tag:"STACK",title:"Stack tecnologico",subtitle:"Ciò che posso fare da me, non lo affido a una scatola nera.",lang:"Linguaggi",tool:"Piattaforma e toolchain"},
+phil:{tag:"FILOSOFIA",title:"In cosa credo",subtitle:"Alcuni principi che mi risparmiano guai e fanno uscire le cose.",i1t:"Un'astrazione in meno, un bug in meno",i1d:"API di piattaforma prima di un framework; ogni strato saltato riduce la superficie di guasto.",i2t:"Build riproducibili > build ingegnose",i2d:"Niente cache, niente demone, tempi di build prevedibili — valgono più di veloce-ma-misterioso.",i3t:"Prima consegna, poi rifinisci",i3d:"Renderlo reale conta più che pensarci tutto; prima fallo girare, poi lucida.",i4t:"Controlla, non cancellare mai",i4d:"Uno strumento deve presentare prove e lasciare la decisione a una persona, non agire al suo posto."},
+journey:{tag:"PERCORSO",title:"Il percorso",subtitle:"Passo dopo passo fin qui — ogni passo è contato.",j1w:"Ora",j1t:"Cinque progetti, un manutentore",j1d:"Una catena di build senza Gradle, un SDK di guardia per agenti IA, una CLI disco solo-audit.",j2w:"Nightglean",j2t:"Fondato Nightglean Studio",j2d:"Trasformato «uno strato in meno» in un credo: nativo prima di tutto, dipendenze minime.",j3w:"Android nativo",j3t:"Aggirando il framework",j3d:"Da JNI e aapt2 a zig cc, lavorando direttamente con la toolchain della piattaforma.",j4w:"L'inizio",j4t:"Come nasce un'app?",j4d:"È iniziato con la curiosità: come fa il codice a diventare un'app installabile?"},
+contact:{title:"Parliamone?",subtitle:"Collaborazioni, domande o solo un saluto — benvenuto; un'issue è spesso più veloce di una mail.",email:"Email",wechat:"WeChat",studio:"Studio",copied:"Copiato — trovami su WeChat"},
+footer:{line:"Uno strato di astrazione in meno, una classe di bug in meno.",top:"Torna su ↑"}},
+
+"ru":{skip:"К содержанию",ui:{langTitle:"Выбрать язык / Language"},
+nav:{about:"Обо мне",projects:"Проекты",stack:"Стек",phil:"Принципы",journey:"Путь",notes:"Заметки",contact:"Контакты"},
+hero:{status:"Независимый разработчик · Nightglean Studio",lead:"На один слой абстракции меньше — на один класс багов меньше. Продукт, код, тесты, релизы — всё в одиночку, на нативном коде и с минимумом зависимостей.",cta1:"Мои работы",cta2:"Связаться",scroll:"Листайте вниз",roles:["Независимый разработчик","Нативный Android-инженер","Строитель сборок без Gradle","Исследователь безопасности ИИ","Студия из одного человека"]},
+about:{tag:"ОБО МНЕ",title:"Обо мне",subtitle:"Студент и независимая студия из одного человека.",p1:"Я Ван Суньян, основатель Nightglean Studio. Весь цикл веду сам — продукт, код, тесты, релиз.",p2:"Мой принцип — натив в первую очередь: API платформы вместо фреймворка, системный тулчейн вместо системы сборки. Меньше зависимостей — меньше поверхность для поломок.",p3:"Этот сайт — моя визитка без зависимостей: чистые HTML / CSS / JS, без фреймворков, без сборки, без сторонних запросов. Правка, git push — опубликовано.",s1k:"Открытые проекты",s2k:"Языки интерфейса",s3k:"Сторонние зависимости",s4k:"Натив в первую очередь"},
+projects:{tag:"ПРОЕКТЫ",title:"Открытые работы",subtitle:"Натив в первую очередь, минимум зависимостей — каждый запускается и воспроизводится.",view:"Открыть репозиторий",moreTitle:"Впереди ещё больше.",moreDesc:"Nightglean — шлифую каждый проект по очереди.",moreLink:"Смотреть на GitHub →",p1name:"OneStar",p1d:"Нативная сборка Android без Gradle / AGP: aapt2 + javac + d8 + apksigner + zig cc, весь пайплайн в одном build.sh.",p2name:"AppFunction Guard",p2d:"Android 16 позволяет ИИ-агентам вызывать функции в вашем приложении. Это добавляет недостающий «караул» — авторизацию по функциям, лимиты, маскировку PII и аудит.",p3name:"moltdisk",p3d:"Самое тяжёлое на диске — часто артефакты сборки, которые можно пересобрать из исходников. Найти их, измерить, показать доказательства — и остановиться. Ничего не удаляет.",p4name:"Marvis · Persona Spec",p4d:"Контракт персоны, проверяемый кодом: 30 слотов реплик, 20 запрещённых фраз, исполняемый линтер и бенчмарки, плюс визуальная система Fault Bloom.",p5name:"Этот сайт",p5d:"Страница, которую вы читаете: написана вручную, ноль зависимостей, 20 языков на лету, без фреймворков и сборки."},
+stack:{tag:"СТЕК",title:"Технологический стек",subtitle:"Что могу сделать сам — не отдаю чёрному ящику.",lang:"Языки",tool:"Платформа и тулчейн"},
+phil:{tag:"ПРИНЦИПЫ",title:"Во что я верю",subtitle:"Несколько принципов, которые экономят нервы и доводят дело до конца.",i1t:"Слоем меньше — багом меньше",i1d:"Сначала API платформы, потом фреймворк; каждый пропущенный слой уменьшает поверхность сбоя.",i2t:"Воспроизводимые сборки > хитрые сборки",i2d:"Без кеша, без демона, предсказуемое время сборки — ценнее, чем «быстро, но непонятно как».",i3t:"Сначала выпустить, потом отшлифовать",i3d:"Сделать реальным важнее, чем всё продумать; сначала запусти, потом отполируй.",i4t:"Проверять, но не удалять",i4d:"Инструмент должен показывать доказательства и оставлять решение человеку, а не действовать за него."},
+journey:{tag:"ПУТЬ",title:"Путь",subtitle:"Шаг за шагом сюда — каждый шаг имел значение.",j1w:"Сейчас",j1t:"Пять проектов, один мейнтейнер",j1d:"Цепочка сборки без Gradle, SDK-«караул» для ИИ-агентов, CLI для диска только с аудитом.",j2w:"Nightglean",j2t:"Основал Nightglean Studio",j2d:"Сделал «слоем меньше» кредо студии: натив в первую очередь, минимум зависимостей.",j3w:"Нативный Android",j3t:"В обход фреймворка",j3d:"От JNI и aapt2 до zig cc — работа напрямую с тулчейном платформы.",j4w:"Начало",j4t:"Как рождается приложение?",j4d:"Всё началось с любопытства: как код превращается в устанавливаемое приложение?"},
+contact:{title:"Поговорим?",subtitle:"Сотрудничество, вопросы или просто привет — добро пожаловать; issue обычно быстрее письма.",email:"Почта",wechat:"WeChat",studio:"Студия",copied:"Скопировано — найдите меня в WeChat"},
+footer:{line:"На один слой абстракции меньше — на один класс багов меньше.",top:"Наверх ↑"}},
+
+"uk":{skip:"До змісту",ui:{langTitle:"Обрати мову / Language"},
+nav:{about:"Про мене",projects:"Проєкти",stack:"Стек",phil:"Принципи",journey:"Шлях",notes:"Нотатки",contact:"Контакти"},
+hero:{status:"Незалежний розробник · Nightglean Studio",lead:"На один шар абстракції менше — на один клас багів менше. Продукт, код, тести, релізи — все самотужки, нативним кодом і з мінімумом залежностей.",cta1:"Мої роботи",cta2:"Зв'язатися",scroll:"Гортайте вниз",roles:["Незалежний розробник","Нативний Android-інженер","Будівничий збірок без Gradle","Дослідник безпеки ШІ","Студія однієї людини"]},
+about:{tag:"ПРО МЕНЕ",title:"Про мене",subtitle:"Студент і незалежна студія однієї людини.",p1:"Я Ван Суньян, засновник Nightglean Studio. Веду весь цикл сам — продукт, код, тести, реліз.",p2:"Мій принцип — натив передусім: API платформи замість фреймворка, системний тулчейн замість системи збірки. Менше залежностей — менша поверхня для поломок.",p3:"Цей сайт — моя візитівка без залежностей: чистий HTML / CSS / JS, без фреймворків, без збірки, без сторонніх запитів. Правка, git push — опубліковано.",s1k:"Відкриті проєкти",s2k:"Мови інтерфейсу",s3k:"Сторонні залежності",s4k:"Натив передусім"},
+projects:{tag:"ПРОЄКТИ",title:"Відкриті роботи",subtitle:"Натив передусім, мінімум залежностей — кожен запускається й відтворюється.",view:"Відкрити репозиторій",moreTitle:"Попереду ще більше.",moreDesc:"Nightglean — шліфую кожен проєкт по черзі.",moreLink:"Дивитись на GitHub →",p1name:"OneStar",p1d:"Нативна збірка Android без Gradle / AGP: aapt2 + javac + d8 + apksigner + zig cc, весь пайплайн в одному build.sh.",p2name:"AppFunction Guard",p2d:"Android 16 дозволяє ШІ-агентам викликати функції у вашому застосунку. Це додає брак «вартового» — авторизацію за функціями, ліміти, маскування PII та аудит.",p3name:"moltdisk",p3d:"Найважче на диску — часто артефакти збірки, які можна перезібрати з джерел. Знайти їх, виміряти, показати докази — і зупинитися. Нічого не видаляє.",p4name:"Marvis · Persona Spec",p4d:"Контракт персони, який перевіряється кодом: 30 слотів реплік, 20 заборонених фраз, виконуваний лінтер і бенчмарки, плюс візуальна система Fault Bloom.",p5name:"Цей сайт",p5d:"Сторінка, яку ви читаєте: написана вручну, нуль залежностей, 20 мов на льоту, без фреймворків і збірки."},
+stack:{tag:"СТЕК",title:"Технологічний стек",subtitle:"Що можу зробити сам — не віддаю чорній скриньці.",lang:"Мови",tool:"Платформа і тулчейн"},
+phil:{tag:"ПРИНЦИПИ",title:"У що я вірю",subtitle:"Кілька принципів, що економлять нерви й доводять справу до кінця.",i1t:"Шаром менше — багом менше",i1d:"Спочатку API платформи, потім фреймворк; кожен пропущений шар зменшує поверхню збою.",i2t:"Відтворювані збірки > хитрі збірки",i2d:"Без кешу, без демона, передбачуваний час збірки — цінніше за «швидко, але незрозуміло як».",i3t:"Спершу випустити, потім відшліфувати",i3d:"Зробити реальним важливіше, ніж усе продумати; спершу запусти, потім відполіруй.",i4t:"Перевіряти, але не видаляти",i4d:"Інструмент має показувати докази й лишати рішення людині, а не діяти замість неї."},
+journey:{tag:"ШЛЯХ",title:"Шлях",subtitle:"Крок за кроком сюди — кожен крок мав значення.",j1w:"Зараз",j1t:"П'ять проєктів, один мейнтейнер",j1d:"Ланцюг збірки без Gradle, SDK-«вартовий» для ШІ-агентів, CLI для диска лише з аудитом.",j2w:"Nightglean",j2t:"Заснував Nightglean Studio",j2d:"Зробив «шаром менше» кредо студії: натив передусім, мінімум залежностей.",j3w:"Нативний Android",j3t:"В обхід фреймворка",j3d:"Від JNI і aapt2 до zig cc — робота напряму з тулчейном платформи.",j4w:"Початок",j4t:"Як народжується застосунок?",j4d:"Усе почалося з цікавості: як код перетворюється на встановлюваний застосунок?"},
+contact:{title:"Поговорімо?",subtitle:"Співпраця, запитання чи просто привіт — ласкаво просимо; issue зазвичай швидше за лист.",email:"Пошта",wechat:"WeChat",studio:"Студія",copied:"Скопійовано — знайдіть мене в WeChat"},
+footer:{line:"На один шар абстракції менше — на один клас багів менше.",top:"Догори ↑"}},
+
+"pl":{skip:"Przejdź do treści",ui:{langTitle:"Wybierz język / Language"},
+nav:{about:"O mnie",projects:"Projekty",stack:"Stack",phil:"Zasady",journey:"Droga",notes:"Notatki",contact:"Kontakt"},
+hero:{status:"Niezależny deweloper · Nightglean Studio",lead:"O jedną warstwę abstrakcji mniej to o jedną klasę bugów mniej. Produkt, kod, testy, release — wszystko sam, w natywnym kodzie i z minimalnymi zależnościami.",cta1:"Zobacz moje prace",cta2:"Skontaktuj się",scroll:"Przewiń",roles:["Niezależny deweloper","Inżynier natywnego Androida","Budowniczy bez Gradle","Badacz bezpieczeństwa AI","Studio jednoosobowe"]},
+about:{tag:"O MNIE",title:"O mnie",subtitle:"Student i jednoosobowe niezależne studio.",p1:"Jestem Wang Sunyang, założyciel Nightglean Studio. Cały cykl robię sam — produkt, kod, testy, release.",p2:"Moja zasada: najpierw natywnie. API platformy zamiast frameworka, systemowy toolchain zamiast systemu budowania. Mniej zależności, mniejsza powierzchnia awarii.",p3:"Ta strona to moja wizytówka bez zależności — ręcznie pisany HTML / CSS / JS, bez frameworków, bez builda, bez żądań do stron trzecich. Edytujesz, git push, opublikowane.",s1k:"Projekty open source",s2k:"Języki interfejsu",s3k:"Zależności zewnętrzne",s4k:"Natywnie najpierw"},
+projects:{tag:"PROJEKTY",title:"Prace open source",subtitle:"Natywnie najpierw, minimalne zależności — każdy działa i się odtwarza.",view:"Zobacz repo",moreTitle:"Więcej jest w drodze.",moreDesc:"Nightglean — poleruję każdy projekt po kolei.",moreLink:"Przeglądaj GitHub →",p1name:"OneStar",p1d:"Natywny build Androida bez Gradle / AGP: aapt2 + javac + d8 + apksigner + zig cc, cały pipeline w jednym build.sh.",p2name:"AppFunction Guard",p2d:"Android 16 pozwala agentom AI wywoływać funkcje w Twojej aplikacji. To dodaje brakującego strażnika — autoryzację per funkcja, limity, maskowanie PII i audyt.",p3name:"moltdisk",p3d:"Najcięższe na dysku to często artefakty builda odtwarzalne ze źródeł. Znaleźć je, zmierzyć, pokazać dowód — i zatrzymać się. Nigdy nie usuwa.",p4name:"Marvis · Persona Spec",p4d:"Kontrakt persony sprawdzalny kodem: 30 slotów kwestii, 20 zakazanych zdań, wykonywalny linter i benchmarki, plus system wizualny Fault Bloom.",p5name:"Ta strona",p5d:"Strona, którą czytasz: pisana ręcznie, zero zależności, 20 języków na żywo, bez frameworka i builda."},
+stack:{tag:"STACK",title:"Stack technologiczny",subtitle:"Czego mogę dokonać sam, nie oddaję czarnej skrzynce.",lang:"Języki",tool:"Platforma i toolchain"},
+phil:{tag:"ZASADY",title:"W co wierzę",subtitle:"Kilka zasad, które oszczędzają nerwów i doprowadzają rzeczy do końca.",i1t:"O abstrakcję mniej, o bug mniej",i1d:"Najpierw API platformy, potem framework; każda pominięta warstwa zmniejsza powierzchnię awarii.",i2t:"Odtwarzalne buildy > sprytne buildy",i2d:"Bez cache, bez demona, przewidywalny czas builda — cenniejsze niż szybko-ale-magicznie.",i3t:"Najpierw wydaj, potem szlifuj",i3d:"Liczy się zrobienie, nie przemyślenie; najpierw uruchom, potem dopracuj.",i4t:"Audytuj, nigdy nie usuwaj",i4d:"Narzędzie ma pokazywać dowody i zostawiać decyzję człowiekowi, nie działać za niego."},
+journey:{tag:"DROGA",title:"Droga",subtitle:"Krok po kroku aż tutaj — każdy krok się liczył.",j1w:"Teraz",j1t:"Pięć projektów, jeden opiekun",j1d:"Łańcuch builda bez Gradle, SDK-strażnik dla agentów AI, dyskowe CLI tylko do audytu.",j2w:"Nightglean",j2t:"Założyłem Nightglean Studio",j2d:"Zrobiłem z „o warstwę mniej” credo studia: natywnie najpierw, minimalne zależności.",j3w:"Natywny Android",j3t:"Omijając framework",j3d:"Od JNI i aapt2 po zig cc — praca wprost z toolchainem platformy.",j4w:"Początek",j4t:"Jak rodzi się aplikacja?",j4d:"Zaczęło się od ciekawości: jak kod staje się instalowalną aplikacją?"},
+contact:{title:"Porozmawiajmy?",subtitle:"Współpraca, pytania czy samo „cześć” — zapraszam; issue jest zwykle szybsze niż mail.",email:"E-mail",wechat:"WeChat",studio:"Studio",copied:"Skopiowano — znajdź mnie na WeChat"},
+footer:{line:"O jedną warstwę abstrakcji mniej to o jedną klasę bugów mniej.",top:"Do góry ↑"}},
+
+"nl":{skip:"Naar inhoud",ui:{langTitle:"Kies taal / Language"},
+nav:{about:"Over",projects:"Projecten",stack:"Stack",phil:"Filosofie",journey:"Pad",notes:"Notities",contact:"Contact"},
+hero:{status:"Onafhankelijk ontwikkelaar · Nightglean Studio",lead:"Eén abstractielaag minder is één klasse bugs minder. Product, code, tests, releases — alles solo, in native code en met minimale afhankelijkheden.",cta1:"Bekijk mijn werk",cta2:"Neem contact op",scroll:"Scroll",roles:["Onafhankelijk ontwikkelaar","Native Android-engineer","Bouwer zonder Gradle","AI-beveiligingsonderzoeker","Eenpersoonsstudio"]},
+about:{tag:"OVER",title:"Over mij",subtitle:"Student en eenpersoons indie-studio.",p1:"Ik ben Wang Sunyang, oprichter van Nightglean Studio. Ik draai de hele cyclus zelf — product, code, test, release.",p2:"Mijn voorkeur: native first. Platform-API's vóór een framework, de systeem-toolchain vóór een buildsysteem. Minder afhankelijkheden, minder oppervlak om te breken.",p3:"Deze site is mijn afhankelijkheidsvrije visitekaartje — handgeschreven HTML / CSS / JS, geen framework, geen build, geen verzoeken naar derden. Bewerken, git push, gepubliceerd.",s1k:"Open-sourceprojecten",s2k:"UI-talen",s3k:"Externe afhankelijkheden",s4k:"Native first"},
+projects:{tag:"PROJECTEN",title:"Open-sourcewerk",subtitle:"Native first, minimale afhankelijkheden — elk draait en reproduceert.",view:"Bekijk repo",moreTitle:"Meer is onderweg.",moreDesc:"Nightglean — elk project één voor één gepolijst.",moreLink:"Blader op GitHub →",p1name:"OneStar",p1d:"Een native Android-build zonder Gradle / AGP: aapt2 + javac + d8 + apksigner + zig cc, de hele pipeline in één build.sh.",p2name:"AppFunction Guard",p2d:"Android 16 laat AI-agents functies aanroepen in je app. Dit voegt de ontbrekende bewaker toe — autorisatie per functie, rate limits, PII-redactie en een audit trail.",p3name:"moltdisk",p3d:"Het zwaarste op een schijf zijn vaak build-artefacten die uit de bron herbouwbaar zijn. Vind ze, meet ze, toon het bewijs — en stop. Het verwijdert nooit.",p4name:"Marvis · Persona Spec",p4d:"Een per code controleerbaar persona-contract: 30 dialoogslots, 20 verboden regels, een draaibare linter en benchmarks, plus het Fault Bloom-visualsysteem.",p5name:"Deze site",p5d:"De pagina die je leest: handgeschreven, nul afhankelijkheden, 20 talen live, geen framework en geen buildstap."},
+stack:{tag:"STACK",title:"Tech-stack",subtitle:"Wat ik zelf kan, geef ik niet aan een zwarte doos.",lang:"Talen",tool:"Platform en toolchain"},
+phil:{tag:"FILOSOFIE",title:"Waar ik in geloof",subtitle:"Een paar principes die me uit de problemen houden en dingen afmaken.",i1t:"Eén abstractie minder, één bug minder",i1d:"Platform-API vóór framework; elke overgeslagen laag verkleint het foutoppervlak.",i2t:"Reproduceerbare builds > slimme builds",i2d:"Geen cache, geen daemon, voorspelbare buildtijden — meer waard dan snel-maar-mystiek.",i3t:"Eerst leveren, dan verfijnen",i3d:"Realiseren telt meer dan doordenken; eerst laten draaien, dan polijsten.",i4t:"Auditen, nooit verwijderen",i4d:"Een tool moet bewijs tonen en de beslissing aan een mens laten, niet zelf handelen."},
+journey:{tag:"PAD",title:"Het pad",subtitle:"Stap voor stap hierheen — elke stap telde.",j1w:"Nu",j1t:"Vijf projecten, één maintainer",j1d:"Een Gradle-loze buildketen, een guard-SDK voor AI-agents, een audit-only schijf-CLI.",j2w:"Nightglean",j2t:"Nightglean Studio opgericht",j2d:"Maakte van „één laag minder” een credo: native first, minimale afhankelijkheden.",j3w:"Native Android",j3t:"Om het framework heen",j3d:"Van JNI en aapt2 tot zig cc, direct werken met de platform-toolchain.",j4w:"Het begin",j4t:"Hoe ontstaat een app?",j4d:"Het begon met nieuwsgierigheid: hoe wordt code eigenlijk een installeerbare app?"},
+contact:{title:"Zullen we praten?",subtitle:"Samenwerkingen, vragen of gewoon een hallo — welkom; een issue is meestal sneller dan mail.",email:"E-mail",wechat:"WeChat",studio:"Studio",copied:"Gekopieerd — vind me op WeChat"},
+footer:{line:"Eén abstractielaag minder, één klasse bugs minder.",top:"Naar boven ↑"}},
+
+"tr":{skip:"İçeriğe geç",ui:{langTitle:"Dil seçin / Language"},
+nav:{about:"Hakkında",projects:"Projeler",stack:"Stack",phil:"İlkeler",journey:"Yol",notes:"Notlar",contact:"İletişim"},
+hero:{status:"Bağımsız geliştirici · Nightglean Studio",lead:"Bir soyutlama katmanı eksikse, bir bug sınıfı eksiktir. Ürün, kod, test, sürüm — hepsi tek başıma, native kod ve minimum bağımlılıkla.",cta1:"İşlerime bak",cta2:"İletişime geç",scroll:"Kaydır",roles:["Bağımsız geliştirici","Native Android mühendisi","Gradle'sız build kurucusu","Yapay zekâ güvenlik araştırmacısı","Tek kişilik stüdyo"]},
+about:{tag:"HAKKINDA",title:"Hakkımda",subtitle:"Öğrenci ve tek kişilik bağımsız stüdyo.",p1:"Ben Wang Sunyang, Nightglean Studio'nun kurucusu. Tüm döngüyü kendim yürütüyorum — ürün, kod, test, sürüm.",p2:"Önceliğim native: framework yerine platform API'leri, build sistemi yerine sistem toolchain'i. Daha az bağımlılık, daha küçük bozulma yüzeyi.",p3:"Bu site, bağımlılıksız kartvizitim — elle yazılmış HTML / CSS / JS, framework yok, build yok, üçüncü taraf isteği yok. Düzenle, git push, yayında.",s1k:"Açık kaynak proje",s2k:"Arayüz dili",s3k:"Üçüncü taraf bağımlılık",s4k:"Önce native"},
+projects:{tag:"PROJELER",title:"Açık kaynak işler",subtitle:"Önce native, minimum bağımlılık — her biri çalışır ve yeniden üretilir.",view:"Depoya git",moreTitle:"Daha fazlası yolda.",moreDesc:"Nightglean — her projeyi tek tek parlatıyor.",moreLink:"GitHub'da gezin →",p1name:"OneStar",p1d:"Gradle / AGP'siz native Android build'i: aapt2 + javac + d8 + apksigner + zig cc, tüm pipeline tek build.sh içinde.",p2name:"AppFunction Guard",p2d:"Android 16, yapay zekâ ajanlarının uygulamanızdaki fonksiyonları çağırmasına izin verir. Bu, eksik kapı bekçisini ekler — fonksiyon başına yetki, hız limitleri, PII maskeleme ve denetim izi.",p3name:"moltdisk",p3d:"Diskteki en ağır şeyler çoğu zaman kaynaktan yeniden derlenebilir build çıktılarıdır. Bul, ölç, kanıtı göster — sonra dur. Asla silmez.",p4name:"Marvis · Persona Spec",p4d:"Kodla denetlenebilen bir persona sözleşmesi: 30 replik yuvası, 20 yasak cümle, çalıştırılabilir bir linter ve benchmark'lar, ayrıca Fault Bloom görsel sistemi.",p5name:"Bu site",p5d:"Okuduğunuz bu sayfa: elle yazılmış, sıfır bağımlılık, 20 dil canlı, framework ve build adımı yok."},
+stack:{tag:"STACK",title:"Teknoloji yığını",subtitle:"Kendim yapabildiğimi kara kutuya vermem.",lang:"Diller",tool:"Platform ve toolchain"},
+phil:{tag:"İLKELER",title:"İnandıklarım",subtitle:"Beni dertten kurtaran ve işleri bitiren birkaç ilke.",i1t:"Bir soyutlama eksik, bir bug eksik",i1d:"Framework'ten önce platform API'si; atlanan her katman hata yüzeyini küçültür.",i2t:"Yeniden üretilebilir build > akıllı build",i2d:"Cache yok, daemon yok, öngörülebilir build süresi — hızlı-ama-gizemli'den daha değerli.",i3t:"Önce yayınla, sonra cilala",i3d:"Gerçek kılmak, her şeyi düşünmekten önemli; önce çalıştır, sonra parlat.",i4t:"Denetle, asla silme",i4d:"Araç kanıt sunmalı ve kararı insana bırakmalı; onun yerine hareket etmemeli."},
+journey:{tag:"YOL",title:"Yol",subtitle:"Adım adım buraya — her adım değerdi.",j1w:"Şimdi",j1t:"Beş proje, tek bakıcı",j1d:"Gradle'sız build zinciri, yapay zekâ ajanları için guard SDK, yalnızca denetleyen disk CLI.",j2w:"Nightglean",j2t:"Nightglean Studio'yu kurdum",j2d:"„Bir katman eksik“i stüdyo ilkesi yaptım: önce native, minimum bağımlılık.",j3w:"Native Android",j3t:"Framework'ü atlayarak",j3d:"JNI ve aapt2'den zig cc'ye, platform toolchain'iyle doğrudan çalışmak.",j4w:"Başlangıç",j4t:"Bir uygulama nasıl doğar?",j4d:"Merakla başladı: kod nasıl kurulabilir bir uygulamaya dönüşür?"},
+contact:{title:"Konuşalım mı?",subtitle:"İş birlikleri, sorular ya da sadece selam — hepsi hoş geldi; issue genellikle e-postadan hızlıdır.",email:"E-posta",wechat:"WeChat",studio:"Stüdyo",copied:"Kopyalandı — beni WeChat'te bul"},
+footer:{line:"Bir soyutlama katmanı eksikse, bir bug sınıfı eksiktir.",top:"Yukarı ↑"}},
+
+"ar":{skip:"الانتقال إلى المحتوى",ui:{langTitle:"اختر اللغة / Language"},
+nav:{about:"عنّي",projects:"المشاريع",stack:"التقنيات",phil:"المبادئ",journey:"المسار",notes:"ملاحظات",contact:"تواصل"},
+hero:{status:"مطوّر مستقل · Nightglean Studio",lead:"طبقة تجريد أقل تعني فئة أخطاء أقل. المنتج والكود والاختبارات والإصدارات — كل ذلك وحدي، بكود أصلي وبأقل قدر من الاعتماديات.",cta1:"شاهد أعمالي",cta2:"تواصل معي",scroll:"مرِّر للأسفل",roles:["مطوّر مستقل","مهندس Android أصلي","باني سلاسل بناء بلا Gradle","باحث أمان في الذكاء الاصطناعي","استوديو من شخص واحد"]},
+about:{tag:"عنّي",title:"من أنا",subtitle:"طالب، واستوديو مستقل من شخص واحد.",p1:"أنا وانغ سونيانغ، مؤسس Nightglean Studio. أدير الحلقة كاملة بنفسي — المنتج والكود والاختبار والإصدار.",p2:"ميلي إلى الأصل أولًا: واجهات المنصة قبل أي إطار، وسلسلة أدوات النظام قبل نظام البناء. اعتماديات أقل تعني سطحًا أصغر للأعطال.",p3:"هذا الموقع هو بطاقة تعريفي بلا اعتماديات — HTML / CSS / JS مكتوبة يدويًا، بلا إطار ولا بناء ولا طلبات طرف ثالث. عدّل، git push، فيُنشر.",s1k:"مشاريع مفتوحة المصدر",s2k:"لغات الواجهة",s3k:"اعتماديات طرف ثالث",s4k:"الأصل أولًا"},
+projects:{tag:"مشاريع",title:"أعمال مفتوحة المصدر",subtitle:"الأصل أولًا وبأقل الاعتماديات — كل مشروع يعمل وقابل للتكرار.",view:"عرض المستودع",moreTitle:"المزيد في الطريق.",moreDesc:"Nightglean — نصقل كل مشروع واحدًا تلو الآخر.",moreLink:"تصفّح GitHub ←",p1name:"OneStar",p1d:"بناء Android أصلي بلا Gradle / AGP: aapt2 + javac + d8 + apksigner + zig cc، كل خط الإنتاج في build.sh واحد.",p2name:"AppFunction Guard",p2d:"يتيح Android 16 لوكلاء الذكاء الاصطناعي استدعاء دوال داخل تطبيقك. يضيف هذا المشروع الحارس الناقص — تفويضًا لكل دالة، وحدود معدل، وتنقيح PII ومسار تدقيق.",p3name:"moltdisk",p3d:"أثقل ما على القرص غالبًا مخرجات بناء قابلة لإعادة البناء من المصدر. اعثر عليها وقِسها وأظهر الدليل — ثم توقف. إنه لا يحذف أبدًا.",p4name:"Marvis · Persona Spec",p4d:"عقد شخصية قابل للفحص بالكود: 30 خانة حوار، و20 جملة ممنوعة، وlinter قابل للتشغيل واختبارات أداء، إضافة إلى نظام Fault Bloom البصري.",p5name:"هذا الموقع",p5d:"الصفحة التي تقرؤها الآن: مكتوبة يدويًا، بلا اعتماديات، 20 لغة فورية، بلا إطار ولا خطوة بناء."},
+stack:{tag:"التقنيات",title:"التقنيات",subtitle:"ما أستطيع فعله بنفسي لا أسلمه لصندوق أسود.",lang:"اللغات",tool:"المنصة وسلسلة الأدوات"},
+phil:{tag:"المبادئ",title:"ما أؤمن به",subtitle:"مبادئ قليلة تُبعدني عن المتاعب وتُنجز الأشياء.",i1t:"طبقة تجريد أقل، خطأ أقل",i1d:"واجهة المنصة قبل الإطار؛ كل طبقة تتجاوزها تصغّر سطح العطل.",i2t:"البناء القابل للتكرار > البناء الذكي",i2d:"بلا ذاكرة مخبأة ولا خادم خلفي، وأوقات بناء متوقعة — أثمن من سريع-لكن-غامض.",i3t:"أطلق أولًا، ثم صقّل",i3d:"تحقيق الواقع أهم من التفكير في كل شيء؛ اجعله يعمل أولًا ثم اصقله.",i4t:"دقّق، ولا تحذف أبدًا",i4d:"يجب أن تقدم الأداة الدليل وتترك القرار للإنسان، لا أن تتصرف عنه."},
+journey:{tag:"المسار",title:"المسار",subtitle:"خطوة بخطوة إلى هنا — كل خطوة كانت لها قيمة.",j1w:"الآن",j1t:"خمسة مشاريع ومشرف واحد",j1d:"سلسلة بناء بلا Gradle، وSDK حراسة لوكلاء الذكاء الاصطناعي، وCLI للقرص للتدقيق فقط.",j2w:"Nightglean",j2t:"أسست Nightglean Studio",j2d:"جعلت «طبقة أقل» شعار الاستوديو: الأصل أولًا وبأقل الاعتماديات.",j3w:"Android الأصلي",j3t:"تجاوز الإطار",j3d:"من JNI وaapt2 إلى zig cc، العمل مباشرة مع سلسلة أدوات المنصة.",j4w:"البداية",j4t:"كيف يولد التطبيق؟",j4d:"بدأ الأمر بالفضول: كيف يتحول الكود إلى تطبيق قابل للتثبيت؟"},
+contact:{title:"هل نتحدث؟",subtitle:"تعاون أو أسئلة أو مجرد تحية — أهلًا بك؛ فتح issue غالبًا أسرع من البريد.",email:"البريد",wechat:"WeChat",studio:"الاستوديو",copied:"نُسخ — ابحث عني في WeChat"},
+footer:{line:"طبقة تجريد أقل تعني فئة أخطاء أقل.",top:"إلى الأعلى ↑"}},
+
+"hi":{skip:"सामग्री पर जाएँ",ui:{langTitle:"भाषा चुनें / Language"},
+nav:{about:"परिचय",projects:"प्रोजेक्ट",stack:"स्टैक",phil:"सिद्धांत",journey:"सफ़र",notes:"नोट्स",contact:"संपर्क"},
+hero:{status:"स्वतंत्र डेवलपर · Nightglean Studio",lead:"एक परत कम, एक तरह के बग कम। प्रोडक्ट, कोड, टेस्ट, रिलीज़ — सब अकेले, नेटिव कोड और न्यूनतम निर्भरताओं के साथ।",cta1:"मेरा काम देखें",cta2:"संपर्क करें",scroll:"नीचे स्क्रॉल करें",roles:["स्वतंत्र डेवलपर","नेटिव Android इंजीनियर","बिना Gradle बिल्ड-चेन बनाने वाला","AI एजेंट सुरक्षा शोधकर्ता","एक-व्यक्ति स्टूडियो"]},
+about:{tag:"परिचय",title:"मेरे बारे में",subtitle:"छात्र, और एक-व्यक्ति स्वतंत्र स्टूडियो।",p1:"मैं वांग सुनयांग हूँ, Nightglean Studio का संस्थापक। पूरा चक्र मैं खुद चलाता हूँ — प्रोडक्ट, कोड, टेस्ट, रिलीज़।",p2:"मेरा झुकाव नेटिव-फर्स्ट है: फ्रेमवर्क के बजाय प्लेटफ़ॉर्म API, बिल्ड सिस्टम के बजाय सिस्टम टूलचेन। कम निर्भरताएँ, टूटने की कम सतह।",p3:"यह साइट मेरा शून्य-निर्भरता परिचय-पत्र है — हाथ से लिखा HTML / CSS / JS, न फ्रेमवर्क, न बिल्ड, न तृतीय-पक्ष अनुरोध। संपादन, git push, प्रकाशित।",s1k:"ओपन-सोर्स प्रोजेक्ट",s2k:"UI भाषाएँ",s3k:"तृतीय-पक्ष निर्भरताएँ",s4k:"नेटिव-फर्स्ट"},
+projects:{tag:"प्रोजेक्ट",title:"ओपन-सोर्स काम",subtitle:"नेटिव-फर्स्ट, न्यूनतम निर्भरताएँ — हर एक चलता और पुनरुत्पादित होता है।",view:"रेपो देखें",moreTitle:"और भी रास्ते में है।",moreDesc:"Nightglean — हर प्रोजेक्ट को एक-एक करके निखारते हैं।",moreLink:"GitHub पर देखें →",p1name:"OneStar",p1d:"बिना Gradle / AGP का नेटिव Android बिल्ड: aapt2 + javac + d8 + apksigner + zig cc, पूरी पाइपलाइन एक build.sh में।",p2name:"AppFunction Guard",p2d:"Android 16 AI एजेंटों को आपके ऐप के फ़ंक्शन कॉल करने देता है। यह गायब प्रहरी जोड़ता है — प्रति-फ़ंक्शन प्राधिकरण, दर सीमा, PII रिडैक्शन और ऑडिट ट्रेल।",p3name:"moltdisk",p3d:"डिस्क पर सबसे भारी चीज़ें अक्सर स्रोत से फिर से बनने योग्य बिल्ड आर्टिफ़ैक्ट होते हैं। खोजें, मापें, सबूत दिखाएँ — फिर रुकें। यह कभी नहीं हटाता।",p4name:"Marvis · Persona Spec",p4d:"कोड से जाँचा जा सकने वाला पर्सोना अनुबंध: 30 संवाद स्लॉट, 20 वर्जित पंक्तियाँ, चलने योग्य linter और बेंचमार्क, साथ में Fault Bloom विज़ुअल सिस्टम।",p5name:"यह साइट",p5d:"जो पेज आप पढ़ रहे हैं: हाथ से लिखा, शून्य निर्भरता, 20 भाषाएँ लाइव, न फ्रेमवर्क न बिल्ड स्टेप।"},
+stack:{tag:"स्टैक",title:"टेक स्टैक",subtitle:"जो मैं खुद कर सकता हूँ, उसे ब्लैक बॉक्स को नहीं सौंपता।",lang:"भाषाएँ",tool:"प्लेटफ़ॉर्म और टूलचेन"},
+phil:{tag:"सिद्धांत",title:"मैं क्या मानता हूँ",subtitle:"कुछ सिद्धांत जो मुझे मुसीबत से बचाते हैं और काम पूरा कराते हैं।",i1t:"एक परत कम, एक बग कम",i1d:"फ्रेमवर्क से पहले प्लेटफ़ॉर्म API; हर छोड़ी गई परत विफलता की सतह घटाती है।",i2t:"पुनरुत्पादनीय बिल्ड > चालाक बिल्ड",i2d:"न कैश, न डेमन, अनुमानित बिल्ड समय — तेज़-लेकिन-रहस्यमय से अधिक मूल्यवान।",i3t:"पहले जारी करो, फिर निखारो",i3d:"असली बनाना सब सोचने से ज़्यादा मायने रखता है; पहले चलाओ, फिर पॉलिश करो।",i4t:"ऑडिट करो, कभी हटाओ मत",i4d:"टूल को सबूत देना चाहिए और निर्णय इंसान पर छोड़ना चाहिए, उसकी जगह काम नहीं करना।"},
+journey:{tag:"सफ़र",title:"सफ़र",subtitle:"कदम-दर-कदम यहाँ तक — हर कदम मायने रखता था।",j1w:"अभी",j1t:"पाँच प्रोजेक्ट, एक मेंटेनर",j1d:"बिना Gradle की बिल्ड चेन, AI एजेंटों के लिए गार्ड SDK, केवल-ऑडिट डिस्क CLI।",j2w:"Nightglean",j2t:"Nightglean Studio की स्थापना",j2d:"'एक परत कम' को स्टूडियो का मूलमंत्र बनाया: नेटिव-फर्स्ट, न्यूनतम निर्भरताएँ।",j3w:"नेटिव Android",j3t:"फ्रेमवर्क को छोड़कर",j3d:"JNI और aapt2 से zig cc तक, सीधे प्लेटफ़ॉर्म टूलचेन के साथ काम।",j4w:"शुरुआत",j4t:"ऐप कैसे जन्म लेता है?",j4d:"जिज्ञासा से शुरू हुआ: कोड आख़िर इंस्टॉल होने वाला ऐप कैसे बनता है?"},
+contact:{title:"बात करें?",subtitle:"सहयोग, सवाल या सिर्फ़ नमस्ते — सबका स्वागत है; issue अक्सर ईमेल से तेज़ होता है।",email:"ईमेल",wechat:"WeChat",studio:"स्टूडियो",copied:"कॉपी हो गया — मुझे WeChat पर खोजें"},
+footer:{line:"एक परत कम, एक तरह के बग कम।",top:"ऊपर ↑"}},
+
+"id":{skip:"Langsung ke konten",ui:{langTitle:"Pilih bahasa / Language"},
+nav:{about:"Tentang",projects:"Proyek",stack:"Stack",phil:"Prinsip",journey:"Perjalanan",notes:"Catatan",contact:"Kontak"},
+hero:{status:"Pengembang independen · Nightglean Studio",lead:"Satu lapisan abstraksi lebih sedikit berarti satu kelas bug lebih sedikit. Produk, kode, tes, rilis — semua sendiri, dengan kode native dan dependensi minimal.",cta1:"Lihat karya saya",cta2:"Hubungi saya",scroll:"Gulir ke bawah",roles:["Pengembang independen","Insinyur Android native","Pembangun build tanpa Gradle","Peneliti keamanan AI","Studio satu orang"]},
+about:{tag:"TENTANG",title:"Tentang saya",subtitle:"Pelajar, dan studio independen satu orang.",p1:"Saya Wang Sunyang, pendiri Nightglean Studio. Seluruh siklus saya jalankan sendiri — produk, kode, tes, rilis.",p2:"Kecenderungan saya native-first: API platform alih-alih framework, toolchain sistem alih-alih build system. Lebih sedikit dependensi, lebih kecil permukaan untuk rusak.",p3:"Situs ini kartu nama tanpa dependensi saya — HTML / CSS / JS ditulis tangan, tanpa framework, tanpa build, tanpa permintaan pihak ketiga. Edit, git push, terbit.",s1k:"Proyek open source",s2k:"Bahasa antarmuka",s3k:"Dependensi pihak ketiga",s4k:"Native-first"},
+projects:{tag:"PROYEK",title:"Karya open source",subtitle:"Native-first, dependensi minimal — masing-masing berjalan dan dapat direproduksi.",view:"Lihat repo",moreTitle:"Lebih banyak lagi sedang dikerjakan.",moreDesc:"Nightglean — memoles setiap proyek, satu per satu.",moreLink:"Jelajahi GitHub →",p1name:"OneStar",p1d:"Build Android native tanpa Gradle / AGP: aapt2 + javac + d8 + apksigner + zig cc, seluruh pipeline dalam satu build.sh.",p2name:"AppFunction Guard",p2d:"Android 16 mengizinkan agen AI memanggil fungsi di dalam aplikasi Anda. Ini menambahkan penjaga yang hilang — otorisasi per fungsi, pembatasan laju, redaksi PII, dan jejak audit.",p3name:"moltdisk",p3d:"Hal terberat di disk sering kali artefak build yang bisa dibangun ulang dari sumber. Temukan, ukur, tunjukkan buktinya — lalu berhenti. Tidak pernah menghapus.",p4name:"Marvis · Persona Spec",p4d:"Kontrak persona yang bisa diperiksa kode: 30 slot dialog, 20 kalimat terlarang, linter yang dapat dijalankan dan benchmark, plus sistem visual Fault Bloom.",p5name:"Situs ini",p5d:"Halaman yang sedang Anda baca: ditulis tangan, nol dependensi, 20 bahasa langsung, tanpa framework dan tanpa langkah build."},
+stack:{tag:"STACK",title:"Stack teknologi",subtitle:"Yang bisa saya kerjakan sendiri, tidak saya serahkan ke kotak hitam.",lang:"Bahasa",tool:"Platform dan toolchain"},
+phil:{tag:"PRINSIP",title:"Yang saya yakini",subtitle:"Beberapa prinsip yang menjauhkan saya dari masalah dan menyelesaikan pekerjaan.",i1t:"Satu abstraksi lebih sedikit, satu bug lebih sedikit",i1d:"API platform sebelum framework; setiap lapisan yang dilewati memperkecil permukaan kegagalan.",i2t:"Build yang dapat direproduksi > build yang cerdik",i2d:"Tanpa cache, tanpa daemon, waktu build dapat diprediksi — lebih berharga daripada cepat-tapi-misterius.",i3t:"Terbitkan dulu, lalu poles",i3d:"Mewujudkan lebih penting daripada memikirkan semuanya; jalankan dulu, lalu poles.",i4t:"Audit, jangan pernah hapus",i4d:"Sebuah alat harus menunjukkan bukti dan menyerahkan keputusan pada manusia, bukan bertindak untuknya."},
+journey:{tag:"PERJALANAN",title:"Perjalanan",subtitle:"Selangkah demi selangkah sampai di sini — setiap langkah berarti.",j1w:"Sekarang",j1t:"Lima proyek, satu maintainer",j1d:"Rantai build tanpa Gradle, SDK penjaga untuk agen AI, CLI disk khusus audit.",j2w:"Nightglean",j2t:"Mendirikan Nightglean Studio",j2d:"Menjadikan «satu lapisan lebih sedikit» sebagai kredo studio: native-first, dependensi minimal.",j3w:"Android native",j3t:"Melewati framework",j3d:"Dari JNI dan aapt2 hingga zig cc, bekerja langsung dengan toolchain platform.",j4w:"Awal",j4t:"Bagaimana sebuah aplikasi lahir?",j4d:"Berawal dari rasa ingin tahu: bagaimana kode menjadi aplikasi yang bisa dipasang?"},
+contact:{title:"Mari bicara?",subtitle:"Kolaborasi, pertanyaan, atau sekadar sapaan — semuanya diterima; issue biasanya lebih cepat daripada email.",email:"Email",wechat:"WeChat",studio:"Studio",copied:"Disalin — temukan saya di WeChat"},
+footer:{line:"Satu lapisan abstraksi lebih sedikit berarti satu kelas bug lebih sedikit.",top:"Ke atas ↑"}},
+
+"vi":{skip:"Đến nội dung",ui:{langTitle:"Chọn ngôn ngữ / Language"},
+nav:{about:"Giới thiệu",projects:"Dự án",stack:"Stack",phil:"Nguyên tắc",journey:"Hành trình",notes:"Ghi chú",contact:"Liên hệ"},
+hero:{status:"Nhà phát triển độc lập · Nightglean Studio",lead:"Bớt một lớp trừu tượng là bớt một lớp lỗi. Sản phẩm, code, test, release — tất cả một mình, bằng code native và ít phụ thuộc nhất.",cta1:"Xem việc của tôi",cta2:"Liên hệ",scroll:"Cuộn xuống",roles:["Nhà phát triển độc lập","Kỹ sư Android native","Người xây build không Gradle","Nhà nghiên cứu bảo mật AI","Studio một người"]},
+about:{tag:"GIỚI THIỆU",title:"Về tôi",subtitle:"Học viên, và studio độc lập một người.",p1:"Tôi là Wang Sunyang, người sáng lập Nightglean Studio. Tôi tự vận hành toàn bộ vòng lặp — sản phẩm, code, test, release.",p2:"Thiên hướng của tôi là native-first: API nền tảng thay vì framework, toolchain hệ thống thay vì build system. Ít phụ thuộc hơn, bề mặt hỏng hóc nhỏ hơn.",p3:"Trang này là danh thiếp không phụ thuộc của tôi — HTML / CSS / JS viết tay, không framework, không build, không yêu cầu bên thứ ba. Sửa, git push, là xuất bản.",s1k:"Dự án mã nguồn mở",s2k:"Ngôn ngữ giao diện",s3k:"Phụ thuộc bên thứ ba",s4k:"Native-first"},
+projects:{tag:"DỰ ÁN",title:"Việc mã nguồn mở",subtitle:"Native-first, ít phụ thuộc nhất — mỗi dự án đều chạy và tái tạo được.",view:"Xem repo",moreTitle:"Còn nhiều dự án đang tới.",moreDesc:"Nightglean — trau chuốt từng dự án, từng cái một.",moreLink:"Xem trên GitHub →",p1name:"OneStar",p1d:"Build Android native không cần Gradle / AGP: aapt2 + javac + d8 + apksigner + zig cc, toàn bộ pipeline trong một build.sh.",p2name:"AppFunction Guard",p2d:"Android 16 cho phép agent AI gọi hàm bên trong ứng dụng của bạn. Dự án này bổ sung người gác cổng còn thiếu — ủy quyền theo từng hàm, giới hạn tốc độ, ẩn PII và nhật ký kiểm toán.",p3name:"moltdisk",p3d:"Thứ nặng nhất trên ổ đĩa thường là các artifact build có thể xây lại từ mã nguồn. Tìm chúng, đo kích thước, đưa bằng chứng — rồi dừng lại. Nó không bao giờ xóa.",p4name:"Marvis · Persona Spec",p4d:"Một hợp đồng persona có thể kiểm tra bằng code: 30 slot thoại, 20 câu cấm, một linter chạy được và benchmark, kèm hệ thống hình ảnh Fault Bloom.",p5name:"Trang web này",p5d:"Trang bạn đang đọc: viết tay, không phụ thuộc, 20 ngôn ngữ chuyển tức thì, không framework và không bước build."},
+stack:{tag:"STACK",title:"Stack công nghệ",subtitle:"Điều tôi tự làm được, tôi không giao cho hộp đen.",lang:"Ngôn ngữ",tool:"Nền tảng và toolchain"},
+phil:{tag:"NGUYÊN TẮC",title:"Điều tôi tin",subtitle:"Một vài nguyên tắc giúp tôi tránh rắc rối và hoàn thành mọi việc.",i1t:"Bớt một trừu tượng, bớt một lỗi",i1d:"API nền tảng trước framework; mỗi lớp bỏ qua làm nhỏ bề mặt lỗi.",i2t:"Build tái tạo được > build khéo léo",i2d:"Không cache, không daemon, thời gian build dự đoán được — đáng giá hơn nhanh-nhưng-bí ẩn.",i3t:"Xuất bản trước, trau chuốt sau",i3d:"Biến thành hiện thực quan trọng hơn nghĩ cho hết; chạy được trước, rồi mới đánh bóng.",i4t:"Kiểm toán, không bao giờ xóa",i4d:"Công cụ nên đưa bằng chứng và để quyết định cho con người, không hành động thay họ."},
+journey:{tag:"HÀNH TRÌNH",title:"Hành trình",subtitle:"Từng bước đến đây — mỗi bước đều đáng.",j1w:"Bây giờ",j1t:"Năm dự án, một người bảo trì",j1d:"Chuỗi build không Gradle, SDK canh gác cho agent AI, CLI ổ đĩa chỉ-kiểm-toán.",j2w:"Nightglean",j2t:"Thành lập Nightglean Studio",j2d:"Biến «bớt một lớp» thành tôn chỉ: native-first, ít phụ thuộc nhất.",j3w:"Android native",j3t:"Bỏ qua framework",j3d:"Từ JNI và aapt2 đến zig cc, làm việc trực tiếp với toolchain nền tảng.",j4w:"Khởi đầu",j4t:"Ứng dụng ra đời thế nào?",j4d:"Bắt đầu từ tò mò: code biến thành ứng dụng cài đặt được như thế nào?"},
+contact:{title:"Trò chuyện chứ?",subtitle:"Hợp tác, câu hỏi hay chỉ là lời chào — đều được chào đón; issue thường nhanh hơn email.",email:"Email",wechat:"WeChat",studio:"Studio",copied:"Đã sao chép — tìm tôi trên WeChat"},
+footer:{line:"Bớt một lớp trừu tượng là bớt một lớp lỗi.",top:"Lên đầu trang ↑"}},
+
+"th":{skip:"ข้ามไปยังเนื้อหา",ui:{langTitle:"เลือกภาษา / Language"},
+nav:{about:"เกี่ยวกับ",projects:"โปรเจกต์",stack:"สแตก",phil:"หลักคิด",journey:"เส้นทาง",notes:"บันทึก",contact:"ติดต่อ"},
+hero:{status:"นักพัฒนาอิสระ · Nightglean Studio",lead:"ลดชั้นนามธรรมลงหนึ่งชั้น ก็ลดบั๊กได้หนึ่งประเภท ผลิตภัณฑ์ โค้ด เทสต์ รีลีส — ทั้งหมดคนเดียว ด้วยโค้ดเนทีฟและ dependency น้อยที่สุด",cta1:"ดูผลงานของฉัน",cta2:"ติดต่อ",scroll:"เลื่อนลง",roles:["นักพัฒนาอิสระ","วิศวกร Android เนทีฟ","ผู้สร้าง build ไร้ Gradle","นักวิจัยความปลอดภัย AI","สตูดิโอคนเดียว"]},
+about:{tag:"เกี่ยวกับ",title:"เกี่ยวกับฉัน",subtitle:"นักเรียน และสตูดิโออิสระคนเดียว",p1:"ผมคือ หวัง ซุนหยาง ผู้ก่อตั้ง Nightglean Studio ผมดูแลครบวงจรด้วยตัวเอง — ผลิตภัณฑ์ โค้ด เทสต์ รีลีส",p2:"ผมยึดหลักเนทีฟก่อน: ใช้ API ของแพลตฟอร์มแทน framework ใช้ toolchain ของระบบแทน build system dependency น้อยลง พื้นที่ให้พังก็น้อยลง",p3:"เว็บนี้คือนามบัตรไร้ dependency ของผม — เขียน HTML / CSS / JS ล้วน ๆ ไม่มี framework ไม่มี build ไม่มี request ไปยังบุคคลที่สาม แก้แล้ว git push ก็เผยแพร่",s1k:"โปรเจกต์โอเพนซอร์ส",s2k:"ภาษาของ UI",s3k:"Dependency ภายนอก",s4k:"เนทีฟก่อน"},
+projects:{tag:"โปรเจกต์",title:"ผลงานโอเพนซอร์ส",subtitle:"เนทีฟก่อน dependency น้อยที่สุด — แต่ละตัวรันได้และทำซ้ำได้",view:"ดู repo",moreTitle:"ยังมีอีกมากระหว่างทาง",moreDesc:"Nightglean — ขัดเกลาทุกโปรเจกต์ทีละชิ้น",moreLink:"ชมบน GitHub →",p1name:"OneStar",p1d:"บิลด์ Android เนทีฟแบบไม่ใช้ Gradle / AGP: aapt2 + javac + d8 + apksigner + zig cc ทั้งไพพ์ไลน์ใน build.sh ไฟล์เดียว",p2name:"AppFunction Guard",p2d:"Android 16 ให้ AI agent เรียกฟังก์ชันในแอปคุณได้ โปรเจกต์นี้เพิ่มยามที่แพลตฟอร์มไม่มี — อนุญาตรายฟังก์ชัน จำกัดอัตรา ปกปิด PII และบันทึกการตรวจสอบ",p3name:"moltdisk",p3d:"สิ่งที่หนักที่สุดบนดิสก์มักเป็น build artifact ที่สร้างใหม่จากซอร์สได้ ค้นหา วัดขนาด แสดงหลักฐาน แล้วหยุด — มันไม่เคยลบ",p4name:"Marvis · Persona Spec",p4d:"สัญญาบุคลิกที่ตรวจสอบได้ด้วยโค้ด: 30 ช่องบทพูด 20 ประโยคต้องห้าม linter ที่รันได้และ benchmark พร้อมระบบภาพ Fault Bloom",p5name:"เว็บนี้",p5d:"หน้าที่คุณกำลังอ่าน: เขียนมือ ไร้ dependency 20 ภาษาสลับได้ทันที ไม่มี framework และไม่มีขั้นตอน build"},
+stack:{tag:"สแตก",title:"สแตกเทคโนโลยี",subtitle:"สิ่งที่ผมทำเองได้ จะไม่ยื่นให้กล่องดำ",lang:"ภาษา",tool:"แพลตฟอร์มและ toolchain"},
+phil:{tag:"หลักคิด",title:"สิ่งที่ผมเชื่อ",subtitle:"หลักการไม่กี่ข้อที่ช่วยกันปัญหาและทำให้งานสำเร็จ",i1t:"ลดชั้นนามธรรมลงหนึ่งชั้น ก็ลดบั๊กได้หนึ่งตัว",i1d:"ใช้ API แพลตฟอร์มก่อน framework ทุกชั้นที่ข้ามได้ก็ลดพื้นที่ให้พัง",i2t:"Build ที่ทำซ้ำได้ > build ที่ฉลาด",i2d:"ไม่มี cache ไม่มี daemon เวลาบิลด์คาดการณ์ได้ — มีค่ากว่าเร็วแต่ลึกลับ",i3t:"ปล่อยก่อน แล้วค่อยขัดเกลา",i3d:"ทำให้เป็นจริงสำคัญกว่าคิดให้หมด ทำให้รันได้ก่อน แล้วค่อยขัด",i4t:"ตรวจสอบ ไม่เคยลบ",i4d:"เครื่องมือควรแสดงหลักฐานและปล่อยให้คนตัดสินใจ ไม่ใช่ทำแทน"},
+journey:{tag:"เส้นทาง",title:"เส้นทาง",subtitle:"ก้าวทีละก้าวมาถึงตรงนี้ — ทุกก้าวมีความหมาย",j1w:"ตอนนี้",j1t:"ห้าโปรเจกต์ คนดูแลคนเดียว",j1d:"build chain ไร้ Gradle, SDK กัน AI agent, CLI ตรวจดิสก์แบบไม่ลบ",j2w:"Nightglean",j2t:"ก่อตั้ง Nightglean Studio",j2d:"เปลี่ยน «ลดชั้นลงหนึ่ง» ให้เป็นคติประจำสตูดิโอ: เนทีฟก่อน dependency น้อยที่สุด",j3w:"Android เนทีฟ",j3t:"เลี่ยง framework",j3d:"จาก JNI และ aapt2 ถึง zig cc ทำงานกับ toolchain ของแพลตฟอร์มโดยตรง",j4w:"จุดเริ่มต้น",j4t:"แอปเกิดขึ้นได้อย่างไร?",j4d:"เริ่มจากความสงสัย: โค้ดกลายเป็นแอปที่ติดตั้งได้จริง ๆ ได้อย่างไร?"},
+contact:{title:"คุยกันไหม?",subtitle:"ร่วมงาน สอบถาม หรือแค่ทักทาย — ยินดีทุกอย่าง issue มักเร็วกว่าอีเมล",email:"อีเมล",wechat:"WeChat",studio:"สตูดิโอ",copied:"คัดลอกแล้ว — หาผมใน WeChat"},
+footer:{line:"ลดชั้นนามธรรมลงหนึ่งชั้น ก็ลดบั๊กได้หนึ่งประเภท",top:"ขึ้นบน ↑"}}
+};
+
+/* ============================================================
+   i18n runtime
+   ============================================================ */
+var rootEl=document.documentElement;
+var typedEl=document.getElementById("typed");
+function getPath(obj,path){return path.split(".").reduce(function(o,k){return o?o[k]:undefined;},obj);}
+function currentLang(){
+  try{return localStorage.getItem("lang")||"zh";}catch(e){return "zh";}
+}
+function setLang(code){
+  var lang=I18N[code]||I18N["zh"];
+  try{localStorage.setItem("lang",code);}catch(e){}
+  rootEl.setAttribute("lang",code==="zh-TW"?"zh-TW":code);
+  rootEl.setAttribute("dir", code==="ar"?"rtl":"ltr");
+  document.querySelectorAll("[data-i18n]").forEach(function(el){
+    var v=getPath(lang,el.getAttribute("data-i18n"));
+    if(v!==undefined) el.textContent=v;
+  });
+  document.getElementById("langLabel").textContent=(LANGS.filter(function(l){return l.code===code;})[0]||{}).native||code;
+  document.querySelectorAll(".lang-list button").forEach(function(b){
+    b.classList.toggle("active",b.getAttribute("data-lang")===code);
+  });
+  // typed roles restart
+  stopTyped();startTyped(code);
+  // meta description
+  var desc=getPath(lang,"hero.lead");
+  if(desc){document.querySelector('meta[name="description"]').setAttribute("content",desc.replace(/<[^>]*>/g,""));}
+}
+
+/* build language list */
+(function(){
+  var list=document.getElementById("langList");
+  var html="";
+  LANGS.forEach(function(l){
+    html+='<button type="button" data-lang="'+l.code+'"><span class="lg-dot" aria-hidden="true"></span><span style="flex:1"><span class="lg-native">'+l.native+'</span><br><span class="lg-sub">'+l.sub+'</span></span><span class="chk">✓</span></button>';
+  });
+  list.innerHTML=html;
+})();
+
+/* auto-detect best language on first visit */
+(function(){
+  var saved=null;try{saved=localStorage.getItem("lang");}catch(e){}
+  if(saved && I18N[saved]){setLang(saved);return;}
+  var nav=(navigator.language||"zh").toLowerCase();
+  var cand="zh";
+  if(nav.indexOf("zh-tw")>-1||nav.indexOf("zh-hk")>-1||nav.indexOf("zh-mo")>-1){cand="zh-TW";}
+  else if(nav.indexOf("zh")>-1){cand="zh";}
+  else if(nav.indexOf("en")>-1){cand="en";}
+  else if(nav.indexOf("ja")>-1){cand="ja";}
+  else if(nav.indexOf("ko")>-1){cand="ko";}
+  else if(nav.indexOf("fr")>-1){cand="fr";}
+  else if(nav.indexOf("de")>-1){cand="de";}
+  else if(nav.indexOf("es")>-1){cand="es";}
+  else if(nav.indexOf("pt")>-1){cand="pt";}
+  else if(nav.indexOf("it")>-1){cand="it";}
+  else if(nav.indexOf("ru")>-1){cand="ru";}
+  else if(nav.indexOf("uk")>-1){cand="uk";}
+  else if(nav.indexOf("pl")>-1){cand="pl";}
+  else if(nav.indexOf("nl")>-1){cand="nl";}
+  else if(nav.indexOf("tr")>-1){cand="tr";}
+  else if(nav.indexOf("ar")>-1){cand="ar";}
+  else if(nav.indexOf("hi")>-1){cand="hi";}
+  else if(nav.indexOf("id")>-1){cand="id";}
+  else if(nav.indexOf("vi")>-1){cand="vi";}
+  else if(nav.indexOf("th")>-1){cand="th";}
+  setLang(cand);
+})();
+
+/* language panel open/close */
+var langPanel=document.getElementById("langPanel");
+var langBtn=document.getElementById("langBtn");
+function positionPanel(){
+  var r=langBtn.getBoundingClientRect();
+  langPanel.style.top=(r.bottom+10)+"px";
+  langPanel.style.right=Math.max(12,window.innerWidth-r.right)+"px";
+}
+langBtn.addEventListener("click",function(){
+  var open=langPanel.classList.toggle("open");
+  langBtn.setAttribute("aria-expanded",open?"true":"false");
+  if(open)positionPanel();
+});
+document.getElementById("langClose").addEventListener("click",function(){
+  langPanel.classList.remove("open");
+  langBtn.setAttribute("aria-expanded","false");
+});
+document.addEventListener("click",function(e){
+  if(langPanel.classList.contains("open") && !langPanel.contains(e.target) && e.target!==langBtn && !langBtn.contains(e.target)){
+    langPanel.classList.remove("open");langBtn.setAttribute("aria-expanded","false");
   }
+});
+window.addEventListener("resize",function(){if(langPanel.classList.contains("open"))positionPanel();});
+document.getElementById("langList").addEventListener("click",function(e){
+  var b=e.target.closest("button[data-lang]");
+  if(!b)return;
+  setLang(b.getAttribute("data-lang"));
+  langPanel.classList.remove("open");langBtn.setAttribute("aria-expanded","false");
+});
 
-  /* 导航高亮 */
-  var links = Array.prototype.slice.call(document.querySelectorAll('.nav-links a'));
-  var sections = links.map(function (a) {
-    var h = a.getAttribute('href');
-    return h.charAt(0) === '#' ? document.querySelector(h) : null;
-  }).filter(Boolean);
-
-  if ('IntersectionObserver' in window && sections.length) {
-    var navIo = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) {
-        if (!e.isIntersecting) return;
-        links.forEach(function (a) {
-          a.classList.toggle('active', a.getAttribute('href') === '#' + e.target.id);
-        });
-      });
-    }, {threshold: 0.25, rootMargin: '-20% 0px -55% 0px'});
-    sections.forEach(function (s) { navIo.observe(s); });
+/* ============================================================
+   typed roles
+   ============================================================ */
+var typedEl=document.getElementById("typed");
+var typedTimer=null,roleIdx=0,charIdx=0,deleting=false;
+function startTyped(lang){
+  var roles=(I18N[lang]&&I18N[lang].hero.roles)||[];
+  if(window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches){
+    if(roles.length)typedEl.textContent=roles[0];
+    return;
   }
-
-  /* 微信号：点击复制 */
-  (function () {
-    var btn = document.getElementById('copyWechat');
-    var label = document.getElementById('wechatValue');
-    if (!btn || !label) return;
-    var raw = btn.getAttribute('data-copy') || '';
-    var timer = null;
-
-    function flash(text) {
-      btn.classList.add('copied');
-      label.textContent = text;
-      clearTimeout(timer);
-      timer = setTimeout(function () {
-        btn.classList.remove('copied');
-        label.textContent = raw;
-      }, 1800);
+  roleIdx=0;charIdx=0;deleting=false;
+  clearInterval(typedTimer);
+  function tick(){
+    var role=roles[roleIdx];
+    if(!deleting){
+      charIdx++;
+      typedEl.textContent=role.slice(0,charIdx);
+      if(charIdx>=role.length){deleting=true;typedTimer=setTimeout(tick,1400);return;}
+      typedTimer=setTimeout(tick,45+Math.random()*40);
+    }else{
+      charIdx--;
+      typedEl.textContent=role.slice(0,charIdx);
+      if(charIdx<=0){deleting=false;roleIdx=(roleIdx+1)%roles.length;typedTimer=setTimeout(tick,350);return;}
+      typedTimer=setTimeout(tick,20);
     }
+  }
+  tick();
+}
+function stopTyped(){clearInterval(typedTimer);clearTimeout(typedTimer);}
 
-    btn.addEventListener('click', function () {
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(raw).then(function () {
-          flash('已复制，去微信搜我');
-        }, function () {
-          flash('复制失败，请长按选择');
-        });
-      } else {
-        flash('请长按选择复制');
+/* ============================================================
+   theme
+   ============================================================ */
+(function(){
+  var saved=null;try{saved=localStorage.getItem("theme");}catch(e){}
+  var light=window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches;
+  rootEl.setAttribute("data-theme",saved||(light?"light":"dark"));
+  var btn=document.getElementById("themeToggle");
+  function sync(t){
+    btn.setAttribute("aria-pressed",t==="light"?"true":"false");
+    btn.setAttribute("aria-label",t==="light"?"切换到深色模式":"切换到浅色模式");
+    var tc=document.querySelector('meta[name="theme-color"]');
+    if(tc)tc.setAttribute("content",t==="light"?"#f4f5fb":"#05060e");
+  }
+  sync(rootEl.getAttribute("data-theme"));
+  btn.addEventListener("click",function(){
+    var next=rootEl.getAttribute("data-theme")==="light"?"dark":"light";
+    rootEl.setAttribute("data-theme",next);
+    try{localStorage.setItem("theme",next);}catch(e){}
+    sync(next);
+  });
+  if(window.matchMedia){
+    var mq=window.matchMedia("(prefers-color-scheme: light)");
+    var cb=function(e){var s=null;try{s=localStorage.getItem("theme");}catch(err){};if(s)return;var t=e.matches?"light":"dark";rootEl.setAttribute("data-theme",t);sync(t);};
+    if(mq.addEventListener)mq.addEventListener("change",cb);else if(mq.addListener)mq.addListener(cb);
+  }
+})();
+
+/* ============================================================
+   starfield canvas
+   ============================================================ */
+(function(){
+  var canvas=document.getElementById("stars");
+  var ctx=canvas.getContext("2d");
+  var reduce=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var stars=[],W,H,raf=null,mx=0,my=0;
+  function resize(){
+    W=canvas.width=window.innerWidth;
+    H=canvas.height=window.innerHeight;
+    var n=Math.min(180,Math.floor(W*H/9000));
+    stars=[];
+    for(var i=0;i<n;i++){
+      stars.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.3+0.3,a:Math.random()*0.7+0.2,p:Math.random()*0.02+0.004});
+    }
+  }
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    var light=rootEl.getAttribute("data-theme")==="light";
+    var base=light?"15,23,42":"148,163,184";
+    for(var i=0;i<stars.length;i++){
+      var s=stars[i];
+      s.y-=0.08;if(s.y<-2)s.y=H+2;
+      s.a+=s.p;if(s.a>0.9||s.a<0.2)s.p*=-1;
+      ctx.beginPath();
+      ctx.arc(s.x+(mx*0.02*s.r),s.y,s.r,0,6.283);
+      ctx.fillStyle="rgba("+base+","+s.a+")";
+      ctx.fill();
+    }
+    // constellation lines
+    ctx.strokeStyle=light?"rgba(14,152,135,.10)":"rgba(94,234,212,.10)";
+    ctx.lineWidth=0.5;
+    for(var a=0;a<stars.length;a++){
+      for(var b=a+1;b<stars.length;b++){
+        var dx=stars[a].x-stars[b].x,dy=stars[a].y-stars[b].y;
+        var d=dx*dx+dy*dy;
+        if(d<12000){ctx.beginPath();ctx.moveTo(stars[a].x,stars[a].y);ctx.lineTo(stars[b].x,stars[b].y);ctx.stroke();}
       }
+    }
+    raf=requestAnimationFrame(draw);
+  }
+  resize();
+  if(!reduce)raf=requestAnimationFrame(draw);
+  else{draw();cancelAnimationFrame(raf);}
+  window.addEventListener("resize",resize);
+  window.addEventListener("mousemove",function(e){mx=e.clientX/W-0.5;my=e.clientY/H-0.5;});
+  document.addEventListener("visibilitychange",function(){
+    if(document.hidden){cancelAnimationFrame(raf);}
+    else if(!reduce){cancelAnimationFrame(raf);raf=requestAnimationFrame(draw);}
+  });
+})();
+
+/* ============================================================
+   custom cursor
+   ============================================================ */
+(function(){
+  if(!window.matchMedia||!window.matchMedia("(hover:hover) and (pointer:fine)").matches)return;
+  var dot=document.getElementById("cdot"),ring=document.getElementById("cring");
+  var rx=0,ry=0,tx=0,ty=0,raf=null;
+  document.body.classList.add("cursor-on");
+  window.addEventListener("mousemove",function(e){
+    tx=e.clientX;ty=e.clientY;
+    dot.style.left=tx+"px";dot.style.top=ty+"px";
+  });
+  function loop(){
+    rx+=(tx-rx)*0.16;ry+=(ty-ry)*0.16;
+    ring.style.left=rx+"px";ring.style.top=ry+"px";
+    raf=requestAnimationFrame(loop);
+  }
+  loop();
+  document.addEventListener("mouseover",function(e){
+    if(e.target.closest("a,button,[data-tilt],input,textarea"))ring.classList.add("hot");
+  });
+  document.addEventListener("mouseout",function(e){
+    if(e.target.closest("a,button,[data-tilt],input,textarea"))ring.classList.remove("hot");
+  });
+})();
+
+/* ============================================================
+   marquee
+   ============================================================ */
+(function(){
+  var items=["Kotlin","Java","Rust","Python","Bash","HTML5","CSS3","JavaScript","Android","aapt2","d8","apksigner","JNI","zig cc","GitHub Actions","GitHub Pages","0 dependencies"];
+  var track=document.getElementById("marqueeTrack");
+  var half=items.map(function(x){return "<span>"+x+"</span>";}).join("");
+  track.innerHTML=half+half;
+})();
+
+/* ============================================================
+   scroll progress + reveal + nav highlight + back-to-top
+   ============================================================ */
+var bar=document.getElementById("progress");
+var ticking=false;
+window.addEventListener("scroll",function(){
+  if(ticking)return;ticking=true;
+  requestAnimationFrame(function(){
+    var h=document.documentElement;
+    var max=h.scrollHeight-h.clientHeight;
+    bar.style.width=(max>0?(h.scrollTop/max)*100:0)+"%";
+    var toTop=document.getElementById("toTop");
+    toTop.classList.toggle("show",h.scrollTop>600);
+    ticking=false;
+  });
+},{passive:true});
+document.getElementById("toTop").addEventListener("click",function(){window.scrollTo({top:0,behavior:"smooth"});});
+
+document.documentElement.classList.add("js");
+var revealEls=document.querySelectorAll(".reveal");
+if("IntersectionObserver" in window){
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(!e.isIntersecting)return;
+      e.target.classList.add("in");
+      io.unobserve(e.target);
     });
-  })();
+  },{threshold:0.1,rootMargin:"0px 0px -50px 0px"});
+  revealEls.forEach(function(el,i){el.style.transitionDelay=(i%3)*80+"ms";io.observe(el);});
+}else{revealEls.forEach(function(el){el.classList.add("in");});}
+
+var navLinks=Array.prototype.slice.call(document.querySelectorAll(".nav-links a"));
+var sections=navLinks.map(function(a){var h=a.getAttribute("href");return h&&h.charAt(0)==="#"?document.querySelector(h):null;}).filter(Boolean);
+if("IntersectionObserver" in window&&sections.length){
+  var nio=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(!e.isIntersecting)return;
+      navLinks.forEach(function(a){a.classList.toggle("active",a.getAttribute("href")==="#"+e.target.id);});
+    });
+  },{threshold:0.3,rootMargin:"-20% 0px -55% 0px"});
+  sections.forEach(function(s){nio.observe(s);});
+}
+
+/* ============================================================
+   3D tilt
+   ============================================================ */
+(function(){
+  if(!window.matchMedia||!window.matchMedia("(hover:hover) and (pointer:fine)").matches)return;
+  if(window.matchMedia("(prefers-reduced-motion: reduce)").matches)return;
+  document.querySelectorAll("[data-tilt]").forEach(function(el){
+    var glare=el.querySelector(".glare");
+    el.addEventListener("mousemove",function(e){
+      var r=el.getBoundingClientRect();
+      var px=(e.clientX-r.left)/r.width,py=(e.clientY-r.top)/r.height;
+      var rx=(0.5-py)*8,ry=(px-0.5)*10;
+      el.style.transform="perspective(900px) rotateX("+rx+"deg) rotateY("+ry+"deg) translateY(-4px)";
+      if(glare){glare.style.setProperty("--gx",px*100+"%");glare.style.setProperty("--gy",py*100+"%");}
+    });
+    el.addEventListener("mouseleave",function(){
+      el.style.transform="";
+    });
+  });
+})();
+
+/* ============================================================
+   counters (count-up on reveal)
+   ============================================================ */
+(function(){
+  var counters=document.querySelectorAll("[data-count]");
+  if(!("IntersectionObserver" in window))return;
+  var co=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(!e.isIntersecting)return;
+      var el=e.target;co.unobserve(el);
+      var target=parseInt(el.getAttribute("data-count"),10);
+      var suffix=el.getAttribute("data-suffix")||"";
+      if(window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches){
+        el.textContent=(target<10&&suffix?"0"+target:target)+suffix;return;
+      }
+      var start=null,dur=1200;
+      function step(ts){
+        if(!start)start=ts;
+        var p=Math.min((ts-start)/dur,1);
+        var ease=1-Math.pow(1-p,3);
+        var val=Math.round(target*ease);
+        el.textContent=(target<10&&suffix?"0"+val:val)+suffix;
+        if(p<1)requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    });
+  },{threshold:0.5});
+  counters.forEach(function(c){co.observe(c);});
+})();
+
+/* ============================================================
+   wechat copy
+   ============================================================ */
+(function(){
+  var btn=document.getElementById("copyWechat");
+  var label=document.getElementById("wechatValue");
+  if(!btn||!label)return;
+  var raw=btn.getAttribute("data-copy")||"";
+  var timer=null;
+  btn.addEventListener("click",function(){
+    var done=function(){btn.classList.add("copied");label.textContent=I18N[currentLang()].contact.copied;clearTimeout(timer);timer=setTimeout(function(){btn.classList.remove("copied");label.textContent=raw;},1800);};
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(raw).then(done,function(){done();});}
+    else{done();}
+  });
+})();
+
+/* footer year */
+document.getElementById("year").textContent=new Date().getFullYear();
 </script>
 </body>
 </html>
