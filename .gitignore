@@ -1,0 +1,3 @@
+
+# 校验脚本的本地依赖，不进仓库
+tools/node_modules/

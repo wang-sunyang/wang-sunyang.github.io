@@ -36,7 +36,7 @@
 
 <script>
 /* 首屏前决定主题，避免闪白/闪黑 */
-(function(){var s=null;try{s=localStorage.getItem('theme');}catch(e){}var l=window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)').matches;document.documentElement.setAttribute('data-theme',s||(l?'light':'dark'));})();
+(function(){var s=null;try{s=localStorage.getItem('theme');}catch(e){console.warn("[silent-catch]",e);}var l=window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)').matches;document.documentElement.setAttribute('data-theme',s||(l?'light':'dark'));})();
 </script>
 <script>
 /* 首屏语言判定：读 body 之前先定好 <html lang/dir>；
@@ -45,7 +45,7 @@
   var L=["zh","zh-TW","en","ja","ko","fr","de","es","pt","it","ru","uk","pl","nl","tr","ar","hi","id","vi","th","el","sv","cs","ro","bn","ur","ms","tl","he","fa"];
   var RTL=["ar","he","fa","ur","yi","dv","ps","ckb","sd","ug"];
   var code=null;
-  try{code=localStorage.getItem("lang");}catch(e){}
+  try{code=localStorage.getItem("lang")||sessionStorage.getItem("lang");}catch(e){console.warn("[silent-catch]",e);}
   if(!code||L.indexOf(code)<0){
     code=null;
     var list=(navigator.languages&&navigator.languages.length)?navigator.languages:[navigator.language||"zh"];
@@ -63,7 +63,7 @@
   de.setAttribute("dir",RTL.indexOf(code)>-1?"rtl":"ltr");
   window.__BOOT_LANG__=code;
   if(code!=="zh")de.className=(de.className?de.className+" ":"")+"i18n-boot";
-  setTimeout(function(){if(!window.__LANG_READY__)de.className=de.className.replace(/\s*i18n-boot/g,"");},4000);
+  setTimeout(function(){if(!window.__LANG_READY__)de.className=de.className.replace(/\s*i18n-boot/g,"");},1200);
 })();
 </script>
 <style>
@@ -75,34 +75,27 @@
   --bg:#05060e;
   --bg-2:#090b18;
   --surface:rgba(255,255,255,.04);
-  --surface-2:rgba(255,255,255,.065);
   --line:rgba(255,255,255,.09);
   --line-strong:rgba(255,255,255,.16);
 
   --text:#eef1fb;
   --text-2:#a3adc9;
-  --text-3:#626d8e;
+  --text-3:#7b87ad;
 
   --acc1:#5eead4;
   --acc2:#a78bfa;
-  --acc3:#f5c76a;
   --acc4:#f472b6;
 
   --acc1-soft:rgba(94,234,212,.12);
-  --acc2-soft:rgba(167,139,250,.14);
-  --acc3-soft:rgba(245,199,106,.12);
 
   --grad:linear-gradient(120deg,var(--acc1),var(--acc2) 50%,var(--acc4));
-  --grad-soft:linear-gradient(120deg,rgba(94,234,212,.9),rgba(167,139,250,.9));
   --glow-1:rgba(94,234,212,.55);
-  --glow-2:rgba(167,139,250,.55);
 
   --nav-bg:rgba(5,6,14,.6);
   --card-bg:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.02));
   --hover:rgba(255,255,255,.08);
 
   --radius:24px;
-  --radius-sm:14px;
   --shadow:0 30px 80px -40px rgba(0,0,0,.9);
   --ease:cubic-bezier(.22,.61,.36,1);
   --font:"Inter","SF Pro Display",-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","HarmonyOS Sans SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans","Noto Sans Arabic","Noto Sans Thai","Noto Sans Devanagari",sans-serif;
@@ -111,19 +104,15 @@
   --bg:#f4f5fb;
   --bg-2:#ffffff;
   --surface:rgba(15,23,42,.04);
-  --surface-2:rgba(15,23,42,.06);
   --line:rgba(15,23,42,.10);
   --line-strong:rgba(15,23,42,.18);
   --text:#0e1424;
   --text-2:#46506e;
-  --text-3:#7a849d;
+  --text-3:#616b83;
   --acc1:#0e9887;
   --acc2:#6b5cf0;
-  --acc3:#d98a17;
   --acc4:#db2777;
   --acc1-soft:rgba(14,152,135,.10);
-  --acc2-soft:rgba(107,92,240,.10);
-  --acc3-soft:rgba(217,138,23,.10);
   --nav-bg:rgba(244,245,251,.72);
   --card-bg:linear-gradient(180deg,#ffffff,rgba(255,255,255,.65));
   --hover:rgba(15,23,42,.06);
@@ -191,12 +180,10 @@ a:focus-visible,button:focus-visible,[tabindex]:focus-visible{outline:2px solid 
 @keyframes gradHuePlain{0%{filter:hue-rotate(0deg)}100%{filter:hue-rotate(360deg)}}
 .nav-links{display:flex;gap:2px;margin-left:auto;overflow-x:auto;scrollbar-width:none}
 .nav-links::-webkit-scrollbar{display:none}
-.nav-links a{color:var(--text-2);text-decoration:none;font-size:14px;padding:7px 12px;border-radius:10px;white-space:nowrap;transition:color .25s var(--ease),background .25s var(--ease)}
-.nav-links a:hover{color:var(--text);background:var(--hover)}
+.nav-links a{color:var(--text-2);text-decoration:none;font-size:14px;padding:7px 12px;border-radius:10px;white-space:nowrap;transition:color .25s var(--ease),background .25s var(--ease)}@media (hover:hover){.nav-links a:hover{color:var(--text);background:var(--hover)}}
 .nav-links a.active{color:var(--acc1);background:var(--acc1-soft)}
 .nav-tools{display:flex;align-items:center;gap:8px;flex-shrink:0}
-.tool-btn{width:38px;height:38px;display:grid;place-items:center;background:var(--surface);border:1px solid var(--line);border-radius:11px;color:var(--text-2);cursor:pointer;transition:color .25s var(--ease),border-color .25s var(--ease),background .25s var(--ease),transform .25s var(--ease)}
-.tool-btn:hover{color:var(--acc1);border-color:var(--acc1);background:var(--acc1-soft);transform:translateY(-1px)}
+.tool-btn{width:38px;height:38px;display:grid;place-items:center;background:var(--surface);border:1px solid var(--line);border-radius:11px;color:var(--text-2);cursor:pointer;transition:color .25s var(--ease),border-color .25s var(--ease),background .25s var(--ease),transform .25s var(--ease)}@media (hover:hover){.tool-btn:hover{color:var(--acc1);border-color:var(--acc1);background:var(--acc1-soft);transform:translateY(-1px)}}
 .tool-btn svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 :root[data-theme="dark"] .i-moon{display:none}
 :root[data-theme="light"] .i-sun{display:none}
@@ -206,13 +193,12 @@ a:focus-visible,button:focus-visible,[tabindex]:focus-visible{outline:2px solid 
 .lang-btn svg{width:17px;height:17px}
 #langPanel{position:fixed;z-index:150;width:min(420px,calc(100vw - 32px));max-height:70vh;overflow:hidden;background:var(--bg-2);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);opacity:0;visibility:hidden;transform:translateY(12px) scale(.98);transform-origin:top right;transition:opacity .28s var(--ease),transform .28s var(--ease),visibility .28s}
 #langPanel.open{opacity:1;visibility:visible;transform:none}
+[dir="rtl"] #langPanel{transform-origin:top left;}
 .lang-head{display:flex;align-items:center;justify-content:space-between;padding:16px 18px 12px;border-bottom:1px solid var(--line)}
 .lang-head b{font-size:14px;font-weight:700}
-.lang-close{background:none;border:none;color:var(--text-3);cursor:pointer;width:28px;height:28px;display:grid;place-items:center;border-radius:8px}
-.lang-close:hover{color:var(--text);background:var(--hover)}
+.lang-close{background:none;border:none;color:var(--text-3);cursor:pointer;width:28px;height:28px;display:grid;place-items:center;border-radius:8px}@media (hover:hover){.lang-close:hover{color:var(--text);background:var(--hover)}}
 .lang-list{overflow-y:auto;max-height:calc(70vh - 60px);padding:8px}
-.lang-list button{width:100%;display:flex;align-items:center;gap:12px;background:none;border:none;color:var(--text-2);font-family:inherit;font-size:14px;padding:11px 12px;border-radius:12px;cursor:pointer;text-align:start;transition:background .2s,color .2s}
-.lang-list button:hover{background:var(--hover);color:var(--text)}
+.lang-list button{width:100%;display:flex;align-items:center;gap:12px;background:none;border:none;color:var(--text-2);font-family:inherit;font-size:14px;padding:11px 12px;border-radius:12px;cursor:pointer;text-align:start;transition:background .2s,color .2s}@media (hover:hover){.lang-list button:hover{background:var(--hover);color:var(--text)}}
 .lang-list button.active{background:var(--acc1-soft);color:var(--acc1)}
 .lang-list .lg-dot{width:10px;height:10px;border-radius:50%;background:var(--grad);box-shadow:0 0 8px var(--glow-1);flex:none}
 .lang-list .lg-native{font-weight:600}
@@ -233,16 +219,14 @@ main{position:relative;z-index:5}
 
 /* ---------- filter ---------- */
 .filter-bar{display:flex;gap:9px;flex-wrap:wrap;padding:34px 0 12px}
-.filter{font:inherit;font-size:13.5px;color:var(--text-2);background:var(--surface);border:1px solid var(--line);padding:9px 18px;border-radius:999px;cursor:pointer;display:inline-flex;align-items:center;gap:7px;transition:color .22s var(--ease),border-color .22s var(--ease),background .22s var(--ease),transform .22s var(--ease),box-shadow .22s var(--ease)}
-.filter:hover{color:var(--text);border-color:var(--line-strong);transform:translateY(-1px)}
+.filter{font:inherit;font-size:13.5px;color:var(--text-2);background:var(--surface);border:1px solid var(--line);padding:9px 18px;border-radius:999px;cursor:pointer;display:inline-flex;align-items:center;gap:7px;transition:color .22s var(--ease),border-color .22s var(--ease),background .22s var(--ease),transform .22s var(--ease),box-shadow .22s var(--ease)}@media (hover:hover){.filter:hover{color:var(--text);border-color:var(--line-strong);transform:translateY(-1px)}}
 .filter[aria-pressed="true"]{color:#06120f;background:var(--grad);border-color:transparent;font-weight:650;box-shadow:0 12px 28px -14px var(--glow-1);animation:gradHuePlain 7s linear infinite}
 .filter .count{font-size:11.5px;opacity:.7;font-variant-numeric:tabular-nums}
 
 /* ---------- cards base ---------- */
 .card{background:var(--card-bg);border:1px solid var(--line);border-radius:var(--radius);padding:30px;position:relative;transition:transform .3s var(--ease),border-color .3s var(--ease),box-shadow .3s var(--ease)}
 .glow-card{position:relative}
-.glow-card::before{content:"";position:absolute;inset:-1px;border-radius:inherit;padding:1px;background:conic-gradient(from var(--a,0deg),transparent 0deg,var(--acc1) 60deg,transparent 120deg,var(--acc2) 200deg,transparent 280deg);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;opacity:0;transition:opacity .4s var(--ease)}
-.glow-card:hover::before{opacity:1;animation:spinborder 3.5s linear infinite}
+.glow-card::before{content:"";position:absolute;inset:-1px;border-radius:inherit;padding:1px;background:conic-gradient(from var(--a,0deg),transparent 0deg,var(--acc1) 60deg,transparent 120deg,var(--acc2) 200deg,transparent 280deg);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;opacity:0;transition:opacity .4s var(--ease)}@media (hover:hover){.glow-card:hover::before{opacity:1;animation:spinborder 3.5s linear infinite}}
 @property --a{syntax:"<angle>";initial-value:0deg;inherits:false}
 @keyframes spinborder{to{--a:360deg}}
 
@@ -251,18 +235,15 @@ main{position:relative;z-index:5}
 .post-item{display:contents}
 .post-card{display:flex;flex-direction:column;text-decoration:none;color:inherit;position:relative;overflow:hidden;transform-style:preserve-3d;will-change:transform;padding:30px 34px}
 .post-card .idx{position:absolute;top:20px;right:24px;font-size:46px;font-weight:800;color:var(--text);opacity:.05;line-height:1;font-variant-numeric:tabular-nums}
-.post-card .glare{position:absolute;inset:0;pointer-events:none;background:radial-gradient(320px 200px at var(--gx,50%) var(--gy,0%),rgba(255,255,255,.1),transparent 60%);opacity:0;transition:opacity .3s}
-.post-card:hover .glare{opacity:1}
+.post-card .glare{position:absolute;inset:0;pointer-events:none;background:radial-gradient(320px 200px at var(--gx,50%) var(--gy,0%),rgba(255,255,255,.1),transparent 60%);opacity:0;transition:opacity .3s}@media (hover:hover){.post-card:hover .glare{opacity:1}}
 .post-meta{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:12.5px;color:var(--text-3);margin-bottom:16px}
 .post-meta .cat-chip{display:inline-flex;align-items:center;font-size:12px;font-weight:700;color:var(--acc1);background:var(--acc1-soft);border:1px solid rgba(94,234,212,.3);padding:3px 11px;border-radius:999px}
 .post-meta .sep{opacity:.4}
 .post-meta .read{font-variant-numeric:tabular-nums}
-.post-card h2{font-size:clamp(19px,2.6vw,24px);line-height:1.35;font-weight:750;letter-spacing:-.01em;margin-bottom:12px;transition:color .25s var(--ease)}
-.post-card:hover h2{color:var(--acc1)}
+.post-card h2{font-size:clamp(19px,2.6vw,24px);line-height:1.35;font-weight:750;letter-spacing:-.01em;margin-bottom:12px;transition:color .25s var(--ease)}@media (hover:hover){.post-card:hover h2{color:var(--acc1)}}
 .post-card>p{font-size:15px;color:var(--text-2);line-height:1.8;max-width:68ch;margin-bottom:22px;flex:1}
 .post-foot{display:inline-flex;align-items:center;gap:7px;font-size:13.5px;font-weight:650;color:var(--acc1)}
-.post-foot .arrow{transition:transform .25s var(--ease)}
-.post-card:hover .arrow{transform:translateX(4px)}
+.post-foot .arrow{transition:transform .25s var(--ease)}@media (hover:hover){.post-card:hover .arrow{transform:translateX(4px)}}
 .is-hidden{display:none !important}
 .empty{text-align:center;padding:56px 24px;color:var(--text-3);font-size:14.5px}
 
@@ -274,27 +255,21 @@ main{position:relative;z-index:5}
 .sub-card p{color:var(--text-2);font-size:15px;max-width:52ch}
 .btns{display:flex;gap:14px;flex-wrap:wrap}
 .btn{display:inline-flex;align-items:center;gap:9px;padding:14px 28px;border-radius:999px;font-size:15px;font-weight:650;text-decoration:none;border:1px solid transparent;position:relative;overflow:hidden;transition:transform .25s var(--ease),box-shadow .25s var(--ease),border-color .25s var(--ease)}
-.btn .arrow{transition:transform .25s var(--ease)}
-.btn:hover .arrow{transform:translateX(4px)}
+.btn .arrow{transition:transform .25s var(--ease)}@media (hover:hover){.btn:hover .arrow{transform:translateX(4px)}}
 .btn.primary{background:var(--grad);color:#06120f;box-shadow:0 16px 40px -16px var(--glow-1);animation:gradHuePlain 6s linear infinite}
-.btn.primary::after{content:"";position:absolute;inset:0;background:linear-gradient(120deg,transparent 30%,rgba(255,255,255,.55) 50%,transparent 70%);transform:translateX(-120%);transition:transform .6s var(--ease)}
-.btn.primary:hover::after{transform:translateX(120%)}
-.btn.primary:hover{transform:translateY(-2px);box-shadow:0 22px 50px -16px var(--glow-1)}
-.btn.ghost{color:var(--text);background:var(--surface);border-color:var(--line-strong)}
-.btn.ghost:hover{transform:translateY(-2px);border-color:var(--acc1);background:var(--acc1-soft)}
+.btn.primary::after{content:"";position:absolute;inset:0;background:linear-gradient(120deg,transparent 30%,rgba(255,255,255,.55) 50%,transparent 70%);transform:translateX(-120%);transition:transform .6s var(--ease)}@media (hover:hover){.btn.primary:hover::after{transform:translateX(120%)}}@media (hover:hover){.btn.primary:hover{transform:translateY(-2px);box-shadow:0 22px 50px -16px var(--glow-1)}}
+.btn.ghost{color:var(--text);background:var(--surface);border-color:var(--line-strong)}@media (hover:hover){.btn.ghost:hover{transform:translateY(-2px);border-color:var(--acc1);background:var(--acc1-soft)}}
 
 /* ---------- footer ---------- */
 footer{position:relative;z-index:5;border-top:1px solid var(--line);padding:34px 0;font-size:13.5px;color:var(--text-3)}
 .foot-inner{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
 footer b{color:var(--text-2);font-weight:650}
-footer a{color:var(--text-2);text-decoration:none}
-footer a:hover{color:var(--acc1)}
+footer a{color:var(--text-2);text-decoration:none}@media (hover:hover){footer a:hover{color:var(--acc1)}}
 .motto{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:700;animation:gradHuePlain 9s linear infinite}
 
 /* back to top */
 #toTop{position:fixed;right:22px;bottom:22px;z-index:90;width:46px;height:46px;border-radius:14px;background:var(--bg-2);border:1px solid var(--line);color:var(--text-2);cursor:pointer;display:grid;place-items:center;box-shadow:var(--shadow);opacity:0;visibility:hidden;transform:translateY(10px);transition:.3s var(--ease)}
-#toTop.show{opacity:1;visibility:visible;transform:none}
-#toTop:hover{color:var(--acc1);border-color:var(--acc1)}
+#toTop.show{opacity:1;visibility:visible;transform:none}@media (hover:hover){#toTop:hover{color:var(--acc1);border-color:var(--acc1)}}
 #toTop svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 
 /* reveal */
@@ -305,10 +280,8 @@ footer a:hover{color:var(--acc1)}
 [dir="rtl"] .nav-links{margin-left:0;margin-right:auto}
 [dir="rtl"] .sec-tag::before{order:2}
 [dir="rtl"] .post-card .idx{right:auto;left:24px}
-[dir="rtl"] .post-foot .arrow{transform:rotate(180deg)}
-[dir="rtl"] .post-card:hover .arrow{transform:rotate(180deg) translateX(-4px)}
-[dir="rtl"] .btn .arrow{transform:rotate(180deg)}
-[dir="rtl"] .btn:hover .arrow{transform:rotate(180deg) translateX(-4px)}
+[dir="rtl"] .post-foot .arrow{transform:rotate(180deg)}@media (hover:hover){[dir="rtl"] .post-card:hover .arrow{transform:rotate(180deg) translateX(-4px)}}
+[dir="rtl"] .btn .arrow{transform:rotate(180deg)}@media (hover:hover){[dir="rtl"] .btn:hover .arrow{transform:rotate(180deg) translateX(-4px)}}
 
 /* responsive */
 @media (max-width:860px){
@@ -345,6 +318,30 @@ html.lang-lock,html.lang-lock body{overflow:hidden;}
 html:lang(bn){font-family:"Noto Sans Bengali","Nirmala UI","Segoe UI",system-ui,sans-serif;}
 html:lang(ur){font-family:"Noto Nastaliq Urdu","Noto Naskh Arabic","Segoe UI",Tahoma,system-ui,sans-serif;}
 html:lang(fa),html:lang(he),html:lang(ar),html:lang(sd),html:lang(ps){font-family:"Segoe UI",Tahoma,"Noto Naskh Arabic","Noto Sans Hebrew",system-ui,sans-serif;}
+/* ---- language panel: 记住语言开关 + 列表自适应（修复语言显示不全） ---- */
+#langPanel{display:flex;flex-direction:column}
+.lang-head,.lang-search-wrap,.lang-remember{flex:none}
+#langPanel .lang-list{flex:1 1 auto;min-height:0;max-height:none;overscroll-behavior:contain}
+.lang-remember{display:flex;align-items:center;gap:12px;justify-content:space-between;padding:11px 18px;border-bottom:1px solid var(--line)}
+.lang-remember .lr-text{display:flex;flex-direction:column;gap:2px;min-width:0}
+.lang-remember .lr-text b{font-size:13px;font-weight:650;color:var(--text);line-height:1.25}
+.lang-remember .lr-sub{font-size:11.5px;color:var(--text-3);line-height:1.35}
+.lr-switch{flex:none;position:relative;width:44px;height:25px;padding:0;border-radius:999px;border:1px solid var(--line);background:rgba(128,128,128,.22);cursor:pointer;transition:background .22s var(--ease),border-color .22s var(--ease)}
+.lr-switch .lr-knob{position:absolute;top:2px;left:2px;width:19px;height:19px;border-radius:50%;background:var(--text-3);transition:transform .22s var(--ease),background .22s var(--ease)}
+.lr-switch[aria-checked="true"]{background:var(--acc1-soft);border-color:rgba(94,234,212,.45)}
+.lr-switch[aria-checked="true"] .lr-knob{transform:translateX(19px);background:var(--acc1)}
+.lr-switch:focus-visible{outline:2px solid rgba(120,170,255,.85);outline-offset:2px}
+html[dir="rtl"] .lr-switch .lr-knob{left:auto;right:2px}
+html[dir="rtl"] .lr-switch[aria-checked="true"] .lr-knob{transform:translateX(-19px)}
+#langPanel .lang-list .lg-native,#langPanel .lang-list .lg-sub{overflow-wrap:anywhere}
+/* ---- language panel: 滚动条可见 + 窄屏紧凑 ---- */
+#langPanel .lang-list{scrollbar-width:thin;scrollbar-color:rgba(148,163,184,.45) transparent;scroll-padding-block:6px}
+#langPanel .lang-list::-webkit-scrollbar{width:8px}
+#langPanel .lang-list::-webkit-scrollbar-track{background:transparent}
+#langPanel .lang-list::-webkit-scrollbar-thumb{background:rgba(148,163,184,.4);border-radius:99px;border:2px solid transparent;background-clip:content-box}@media (hover:hover){#langPanel .lang-list::-webkit-scrollbar-thumb:hover{background:rgba(148,163,184,.65);background-clip:content-box}}
+@media (max-width:400px){.lang-remember{padding:9px 16px}.lang-remember .lr-sub{display:none}}
+
+
 /* i18n 首屏防闪：目标语言不是中文时，切换完成前不显示正文 */
 html.i18n-boot body{visibility:hidden}
 html.i18n-boot{background:#05060e}
@@ -374,6 +371,9 @@ html[data-theme="light"].i18n-boot{background:#f4f5fb}
   .prose a{word-break:break-word}
 }
 </style>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Person","@id":"https://wang-sunyang.github.io/#person","name":"王孙阳","alternateName":"Wang Sunyang","url":"https://wang-sunyang.github.io/","jobTitle":"独立开发者","description":"独立开发者，做原生 Android、端侧 ML 与零依赖网页项目；长夜拾星工作室（Nightglean Studio）主理人。","sameAs":["https://github.com/wang-sunyang","https://github.com/nightglean"],"knowsAbout":["Native Android","Kotlin","On-device ML","LiteRT","WebGL","Three.js","静态站点工程"]},{"@type":"Blog","@id":"https://wang-sunyang.github.io/blog.html#blog","url":"https://wang-sunyang.github.io/blog.html","name":"笔记 · 王孙阳","inLanguage":"zh-Hans","author":{"@id":"https://wang-sunyang.github.io/#person"}}]}</script>
+<link rel="alternate" hreflang="zh-Hans" href="https://wang-sunyang.github.io/blog.html">
+<link rel="alternate" hreflang="x-default" href="https://wang-sunyang.github.io/blog.html">
 </head>
 
 <body>
@@ -387,7 +387,7 @@ html[data-theme="light"].i18n-boot{background:#f4f5fb}
 <div id="cdot" aria-hidden="true"></div>
 <div id="cring" aria-hidden="true"></div>
 
-<nav class="site-nav" aria-label="主导航">
+<nav class="site-nav" aria-label="主导航" data-i18n-aria="a11y.mainNav">
   <div class="nav-inner">
     <a class="logo" href="index.html"><span class="lg-mark">王</span><span>王孙阳</span></a>
     <div class="nav-links">
@@ -400,11 +400,11 @@ html[data-theme="light"].i18n-boot{background:#f4f5fb}
       <a href="index.html#contact" data-i18n="nav.contact">联系</a>
     </div>
     <div class="nav-tools">
-      <button class="tool-btn lang-btn" id="langBtn" type="button" aria-label="切换语言 / Switch language" aria-haspopup="true" aria-expanded="false">
+      <button class="tool-btn lang-btn" id="langBtn" type="button" aria-label="切换语言 / Switch language" data-i18n-aria="a11y.langBtn" aria-haspopup="dialog" aria-controls="langPanel" aria-expanded="false">
         <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"/></svg>
         <span id="langLabel">简体中文</span>
       </button>
-      <button class="tool-btn" id="themeToggle" type="button" aria-label="切换深浅色" aria-pressed="false">
+      <button class="tool-btn" id="themeToggle" type="button" aria-label="切换深浅色" data-i18n-aria="a11y.themeToggle" aria-pressed="false">
         <svg class="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4"/></svg>
         <svg class="i-moon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
       </button>
@@ -412,10 +412,14 @@ html[data-theme="light"].i18n-boot{background:#f4f5fb}
   </div>
 </nav>
 
-<div id="langPanel" role="dialog" aria-label="选择语言 / Choose language">
+<div id="langPanel" role="dialog" aria-modal="true" aria-label="选择语言 / Choose language" data-i18n-aria="a11y.langPanel">
   <div class="lang-head">
     <b data-i18n="ui.langTitle">选择语言 / Language</b>
-    <button class="lang-close" id="langClose" type="button" aria-label="关闭">✕</button>
+    <button class="lang-close" id="langClose" type="button" aria-label="关闭" data-i18n-aria="a11y.close">✕</button>
+  </div>
+  <div class="lang-remember">
+    <span class="lr-text"><b id="rememberLangText" data-i18n="ui.remember">记住语言</b><span class="lr-sub" data-i18n="ui.rememberSub">下次访问沿用当前语言</span></span>
+    <button class="lr-switch" id="rememberLang" type="button" role="switch" aria-checked="true" aria-labelledby="rememberLangText"><span class="lr-knob" aria-hidden="true"></span></button>
   </div>
   <div class="lang-list" id="langList"></div>
 </div>
@@ -430,7 +434,7 @@ html[data-theme="light"].i18n-boot{background:#f4f5fb}
   </header>
 
   <div class="wrap">
-    <div class="filter-bar" role="group" aria-label="按分类筛选笔记">
+    <div class="filter-bar" role="group" aria-label="按分类筛选笔记" data-i18n-aria="a11y.filterBar">
       <button class="filter" data-filter="all" aria-pressed="true"><span data-i18n="filter.all">全部</span><span class="count">2</span></button>
       <button class="filter" data-filter="fe" aria-pressed="false"><span data-i18n="cat.fe">前端</span><span class="count">1</span></button>
       <button class="filter" data-filter="prod" aria-pressed="false"><span data-i18n="cat.prod">效率</span><span class="count">1</span></button>
@@ -498,7 +502,7 @@ html[data-theme="light"].i18n-boot{background:#f4f5fb}
   </div>
 </footer>
 
-<button id="toTop" type="button" aria-label="回到顶部"><svg viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
+<button id="toTop" type="button" aria-label="回到顶部" data-i18n-aria="a11y.toTop"><svg viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
 
 <script>
 /* ============================================================
@@ -528,9 +532,9 @@ var LANGS=[
 ];
 
 var I18N={
-"zh":{"skip":"跳到主要内容","ui":{"langTitle":"选择语言 / Language","langSwitched":"已切换为{lang}"},"nav":{"about":"关于","projects":"作品","stack":"技术栈","phil":"理念","journey":"轨迹","notes":"笔记","contact":"联系"},"page":{"eyebrow":"NOTES","title":"写下来，才真正学会","subtitle":"这里放我的学习笔记和技术随笔。不是教程，更像是给未来的自己留的备忘：做过什么、卡在哪里、后来怎么想通的。"},"filter":{"all":"全部"},"cat":{"fe":"前端","prod":"效率"},"p1":{"title":"为什么我用纯手写 HTML 做个人主页","desc":"用框架三分钟能搭出来的页面，我断断续续写了几个晚上。不是不会用工具，而是想把那些被框架藏起来的东西，亲手摸一遍。","date":"2026 年 11 月 8 日","read":"约 6 分钟"},"p2":{"title":"把重复的事交给工具：三个小习惯","desc":"效率提升往往不来自什么大动作，而是来自三个具体的判断：什么该省、什么绝不能省、以及怎么让工具替你记住规则。","date":"2026 年 10 月 21 日","read":"约 5 分钟"},"readMore":"阅读全文","empty":"这个分类下还没有笔记。","sub":{"title":"不定期更新","desc":"有想明白的事就写一篇，不追热点，不硬凑数量。","cta":"订阅更新","back":"回到主页"},"footer":{"line":"少一层抽象，就少一类 bug。","top":"回到顶部 ↑"}},
-"zh-TW":{"skip":"跳到主要內容","ui":{"langTitle":"選擇語言 / Language","langSwitched":"已切換為{lang}"},"nav":{"about":"關於","projects":"作品","stack":"技術棧","phil":"理念","journey":"軌跡","notes":"筆記","contact":"聯繫"},"page":{"eyebrow":"NOTES","title":"寫下來，才真正學會","subtitle":"這裡放我的學習筆記和技術隨筆。不是教學，更像是給未來的自己留的備忘：做過什麼、卡在哪裡、後來怎麼想通的。"},"filter":{"all":"全部"},"cat":{"fe":"前端","prod":"效率"},"p1":{"title":"為什麼我用純手寫 HTML 做個人主頁","desc":"用框架三分鐘能搭出來的頁面，我斷斷續續寫了幾個晚上。不是不會用工具，而是想把那些被框架藏起來的東西，親手摸一遍。","date":"2026 年 11 月 8 日","read":"約 6 分鐘"},"p2":{"title":"把重複的事交給工具：三個小習慣","desc":"效率提升往往不來自什麼大動作，而是來自三個具體的判斷：什麼該省、什麼絕不能省、以及怎麼讓工具替你記住規則。","date":"2026 年 10 月 21 日","read":"約 5 分鐘"},"readMore":"閱讀全文","empty":"這個分類下還沒有筆記。","sub":{"title":"不定期更新","desc":"有想明白的事就寫一篇，不追熱點，不硬湊數量。","cta":"訂閱更新","back":"回到主頁"},"footer":{"line":"少一層抽象，就少一類 bug。","top":"回到頂部 ↑"}},
-"en":{"skip":"Skip to content","ui":{"langTitle":"Choose language / Language","langSwitched":"Switched to {lang}"},"nav":{"about":"About","projects":"Projects","stack":"Stack","phil":"Philosophy","journey":"Journey","notes":"Notes","contact":"Contact"},"page":{"eyebrow":"NOTES","title":"Write it down, then you really learn","subtitle":"My study notes and technical essays. Not tutorials — more like memos for my future self: what I did, where I got stuck, and how I eventually figured it out."},"filter":{"all":"All"},"cat":{"fe":"Frontend","prod":"Productivity"},"p1":{"title":"Why I hand-wrote my homepage in plain HTML","desc":"A page a framework can scaffold in three minutes took me several scattered evenings. Not because I can't use tools, but because I wanted to feel the things frameworks hide away.","date":"Nov 8, 2026","read":"~6 min"},"p2":{"title":"Hand repetitive work to tools: three small habits","desc":"Real efficiency rarely comes from a big move. It comes from three concrete calls: what to skip, what never to skip, and how to make tools remember your rules.","date":"Oct 21, 2026","read":"~5 min"},"readMore":"Read more","empty":"No notes in this category yet.","sub":{"title":"Updates, occasionally","desc":"I write one when I've actually figured something out — no hot takes, no padding the count.","cta":"Subscribe","back":"Back to home"},"footer":{"line":"One fewer layer of abstraction, one fewer bug.","top":"Back to top ↑"}}
+"zh":{"theme":{"toDark":"切换到深色模式","toLight":"切换到浅色模式"},"a11y":{"close":"关闭","langBtn":"切换语言 / Switch language","themeToggle":"切换深浅色","langPanel":"选择语言 / Choose language","mainNav":"主导航","nav":"导航","toTop":"回到顶部","tocSidebar":"本页目录","tocDrawer":"文章目录","kbdPanel":"键盘快捷键","openMenu":"打开菜单","mobileMenu":"移动端菜单","closeMenu":"关闭菜单","copyWechat":"复制微信号","filterBar":"按分类筛选笔记"},"meta":{"title":"笔记 · 王孙阳"},"skip":"跳到主要内容","ui":{"remember":"记住语言","rememberSub":"下次访问沿用当前语言","langTitle":"选择语言 / Language","langSwitched":"已切换为{lang}"},"nav":{"about":"关于","projects":"作品","stack":"技术栈","phil":"理念","journey":"轨迹","notes":"笔记","contact":"联系"},"page":{"eyebrow":"NOTES","title":"写下来，才真正学会","subtitle":"这里放我的学习笔记和技术随笔。不是教程，更像是给未来的自己留的备忘：做过什么、卡在哪里、后来怎么想通的。"},"filter":{"all":"全部"},"cat":{"fe":"前端","prod":"效率"},"p1":{"title":"为什么我用纯手写 HTML 做个人主页","desc":"用框架三分钟能搭出来的页面，我断断续续写了几个晚上。不是不会用工具，而是想把那些被框架藏起来的东西，亲手摸一遍。","date":"2026 年 11 月 8 日","read":"约 6 分钟"},"p2":{"title":"把重复的事交给工具：三个小习惯","desc":"效率提升往往不来自什么大动作，而是来自三个具体的判断：什么该省、什么绝不能省、以及怎么让工具替你记住规则。","date":"2026 年 10 月 21 日","read":"约 5 分钟"},"readMore":"阅读全文","empty":"这个分类下还没有笔记。","sub":{"title":"不定期更新","desc":"有想明白的事就写一篇，不追热点，不硬凑数量。","cta":"订阅更新","back":"回到主页"},"footer":{"line":"少一层抽象，就少一类 bug。","top":"回到顶部 ↑"}},
+"zh-TW":{"meta":{"title":"筆記 · 王孫陽"},"skip":"跳到主要內容","ui":{"remember":"記住語言","rememberSub":"下次造訪沿用目前語言","langTitle":"選擇語言 / Language","langSwitched":"已切換為{lang}"},"nav":{"about":"關於","projects":"作品","stack":"技術棧","phil":"理念","journey":"軌跡","notes":"筆記","contact":"聯繫"},"page":{"eyebrow":"NOTES","title":"寫下來，才真正學會","subtitle":"這裡放我的學習筆記和技術隨筆。不是教學，更像是給未來的自己留的備忘：做過什麼、卡在哪裡、後來怎麼想通的。"},"filter":{"all":"全部"},"cat":{"fe":"前端","prod":"效率"},"p1":{"title":"為什麼我用純手寫 HTML 做個人主頁","desc":"用框架三分鐘能搭出來的頁面，我斷斷續續寫了幾個晚上。不是不會用工具，而是想把那些被框架藏起來的東西，親手摸一遍。","date":"2026 年 11 月 8 日","read":"約 6 分鐘"},"p2":{"title":"把重複的事交給工具：三個小習慣","desc":"效率提升往往不來自什麼大動作，而是來自三個具體的判斷：什麼該省、什麼絕不能省、以及怎麼讓工具替你記住規則。","date":"2026 年 10 月 21 日","read":"約 5 分鐘"},"readMore":"閱讀全文","empty":"這個分類下還沒有筆記。","sub":{"title":"不定期更新","desc":"有想明白的事就寫一篇，不追熱點，不硬湊數量。","cta":"訂閱更新","back":"回到主頁"},"footer":{"line":"少一層抽象，就少一類 bug。","top":"回到頂部 ↑"}},
+"en":{"theme":{"toDark":"Switch to dark mode","toLight":"Switch to light mode"},"a11y":{"close":"Close","langBtn":"Switch language","themeToggle":"Toggle dark / light theme","langPanel":"Choose language","mainNav":"Main navigation","nav":"Navigation","toTop":"Back to top","tocSidebar":"On this page","tocDrawer":"Table of contents","kbdPanel":"Keyboard shortcuts","openMenu":"Open menu","mobileMenu":"Mobile menu","closeMenu":"Close menu","copyWechat":"Copy WeChat ID","filterBar":"Filter notes by category"},"meta":{"title":"Notes · Wang Sunyang"},"skip":"Skip to content","ui":{"remember":"Remember language","rememberSub":"Use this language on your next visit","langTitle":"Choose language / Language","langSwitched":"Switched to {lang}"},"nav":{"about":"About","projects":"Projects","stack":"Stack","phil":"Philosophy","journey":"Journey","notes":"Notes","contact":"Contact"},"page":{"eyebrow":"NOTES","title":"Write it down, then you really learn","subtitle":"My study notes and technical essays. Not tutorials — more like memos for my future self: what I did, where I got stuck, and how I eventually figured it out."},"filter":{"all":"All"},"cat":{"fe":"Frontend","prod":"Productivity"},"p1":{"title":"Why I hand-wrote my homepage in plain HTML","desc":"A page a framework can scaffold in three minutes took me several scattered evenings. Not because I can't use tools, but because I wanted to feel the things frameworks hide away.","date":"Nov 8, 2026","read":"~6 min"},"p2":{"title":"Hand repetitive work to tools: three small habits","desc":"Real efficiency rarely comes from a big move. It comes from three concrete calls: what to skip, what never to skip, and how to make tools remember your rules.","date":"Oct 21, 2026","read":"~5 min"},"readMore":"Read more","empty":"No notes in this category yet.","sub":{"title":"Updates, occasionally","desc":"I write one when I've actually figured something out — no hot takes, no padding the count.","cta":"Subscribe","back":"Back to home"},"footer":{"line":"One fewer layer of abstraction, one fewer bug.","top":"Back to top ↑"}}
 };
 
 /* ============================================================
@@ -561,12 +565,29 @@ LANGS.push({code:"bn",native:"বাংলা",sub:"Bengali"},{code:"ur",native:
 LANGS.push({code:"he",native:"עברית",sub:"Hebrew"},{code:"fa",native:"فارسی",sub:"Persian"});
 var rootEl=document.documentElement;
 function getPath(obj,path){return path.split(".").reduce(function(o,k){return o?o[k]:undefined;},obj);}
-function currentLang(){
-  try{return localStorage.getItem("lang")||"zh";}catch(e){return "zh";}
+/* 记住语言开关
+   开：语言写入 localStorage，下次访问沿用（默认，兼容老行为）
+   关：只写 sessionStorage —— 本标签页刷新/跳页仍保持所选语言，关掉浏览器后回到自动检测
+   读取顺序：localStorage 优先，其次 sessionStorage，最后浏览器语言 */
+var LANG_REMEMBER_KEY="rememberLang";
+function langRememberOn(){
+  try{return localStorage.getItem(LANG_REMEMBER_KEY)!=="0";}catch(e){return true;}
+}
+function __readSavedLang(){
+  try{return localStorage.getItem("lang")||sessionStorage.getItem("lang")||null;}catch(e){return null;}
+}
+function __persistLang(code){
+  try{
+    sessionStorage.setItem("lang",code);
+    if(langRememberOn())localStorage.setItem("lang",code);
+    else localStorage.removeItem("lang");
+  }catch(e){console.warn("[silent-catch]",e);}
 }
 function __renderLang(code){
   var lang=I18N[code]||I18N["zh"];
-  try{localStorage.setItem("lang",code);}catch(e){}
+  __persistLang(code);
+  var __tt=getPath(lang,"meta.title");
+  if(__tt){document.title=__tt;var __og=document.querySelector('meta[property="og:title"]');if(__og)__og.setAttribute("content",__tt);}
   rootEl.setAttribute("lang",langAttrOf(code));
   rootEl.setAttribute("dir", langDirOf(code));
   document.querySelectorAll("[data-i18n]").forEach(function(el){
@@ -574,13 +595,20 @@ function __renderLang(code){
     if(v!==undefined) el.textContent=v;
   });
   document.getElementById("langLabel").textContent=(LANGS.filter(function(l){return l.code===code;})[0]||{}).native||code;
+  document.querySelectorAll("[data-i18n-aria]").forEach(function(el){
+    var __ak=el.getAttribute("data-i18n-aria"),av=getPath(lang,__ak);
+    if(av===undefined) av=getPath(I18N.en||I18N.zh,__ak);
+    if(av!==undefined) el.setAttribute("aria-label",av);
+  });
   document.querySelectorAll(".lang-list button").forEach(function(b){
     b.classList.toggle("active",b.getAttribute("data-lang")===code);
   });
   var desc=getPath(lang,"page.subtitle");
   if(desc){var m=document.querySelector('meta[name="description"]');if(m)m.setAttribute("content",desc);}
   var t=getPath(lang,"page.title");
-  if(t){document.title=t+" · "+(code==="zh-TW"?"王孫陽":"王孙阳");}
+  var __mt=getPath(lang,"meta.title");
+  if(__mt){document.title=__mt;}
+  else if(t){document.title=t+" · "+(code==="zh-TW"?"王孫陽":"王孙阳");}
 }
 
 /* build language list */
@@ -604,10 +632,14 @@ function __loadLang(code,cb){
   var s=document.createElement("script");
   s.src=I18N_EXT_BASE+code+".js";s.async=true;
   function done(ok){
-    if(!ok)I18N[code]=I18N.zh;
+    if(!ok){I18N[code]=I18N.zh;
+      (window.__i18nErrs=window.__i18nErrs||[]).push("langload:"+code);
+      var __de=document.documentElement;
+      if(__de&&__de.className.indexOf("i18n-boot")>-1)__de.className=__de.className.replace(/\s*i18n-boot/g,"");
+    }
     __langBusy[code]=false;
     var q=__langQueue[code]||[];__langQueue[code]=[];
-    for(var i=0;i<q.length;i++){try{q[i]();}catch(e){}}
+    for(var i=0;i<q.length;i++){try{q[i]();}catch(e){console.warn("[silent-catch]",e);}}
   }
   s.onload=function(){done(true);};
   s.onerror=function(){done(false);};
@@ -629,7 +661,7 @@ function __announceLang(code){
 }
 function setLang(code){
   if(!__isKnownLang(code))code="zh";
-  try{localStorage.setItem("lang",code);}catch(e){}
+  __persistLang(code);
   __loadLang(code,function(){
     __renderLang(code);
     __announceLang(code);
@@ -652,7 +684,7 @@ function setLang(code){
 /* auto-detect best language on first visit (script/region aware) */
 (function(){
   var APPLY=(typeof setLang==="function")?setLang:applyLang;
-  var saved=null;try{saved=localStorage.getItem("lang");}catch(e){}
+  var saved=__readSavedLang();
   if(saved && __isKnownLang(saved)){APPLY(saved);return;}
   var list=(navigator.languages&&navigator.languages.length)?navigator.languages:[navigator.language||"zh"];
   var cand="zh";
@@ -680,16 +712,27 @@ var LANG_APPLY=(typeof applyLang==="function")?applyLang:(typeof setLang==="func
 function langDirOf(code){return (["ar","he","fa","ur","yi","dv","ps","ckb","sd","ug"].indexOf(code)>-1)?"rtl":"ltr";}
 function langAttrOf(code){return ({"zh":"zh-CN","zh-TW":"zh-Hant"})[code]||code;}
 function currentLang(){
-  var saved=null;
-  try{saved=localStorage.getItem("lang");}catch(e){}
+  var saved=__readSavedLang();
   return (saved && __isKnownLang(saved))?saved:"zh";
 }
 function positionPanel(){
   if(!langPanel||!langBtn)return;
-  if(window.innerWidth<=680){langPanel.style.top="";langPanel.style.right="";return;}
+  if(window.innerWidth<=680){
+    langPanel.style.top="";langPanel.style.right="";langPanel.style.left="";
+    return;
+  }
   var r=langBtn.getBoundingClientRect();
+  var rtl=document.documentElement.getAttribute("dir")==="rtl";
+  var pw=langPanel.offsetWidth||Math.min(420,window.innerWidth-32);
+  var gap=12;
   langPanel.style.top=(r.bottom+10)+"px";
-  langPanel.style.right=Math.max(12,window.innerWidth-r.right)+"px";
+  if(rtl){
+    langPanel.style.right="";
+    langPanel.style.left=Math.max(gap,Math.min(r.left,window.innerWidth-pw-gap))+"px";
+  }else{
+    langPanel.style.left="";
+    langPanel.style.right=Math.max(gap,window.innerWidth-r.right)+"px";
+  }
 }
 function panelIsOpen(){return !!(langPanel&&langPanel.classList.contains("open"));}
 function setPanelLock(on){
@@ -700,8 +743,8 @@ function focusLangButton(){
   if(!langListEl)return;
   var cur=langListEl.querySelector('button[data-lang="'+currentLang()+'"]')||langListEl.querySelector("button[data-lang]");
   if(!cur)return;
-  try{cur.focus({preventScroll:true});}catch(e){try{cur.focus();}catch(e2){}}
-  if(cur.scrollIntoView)try{cur.scrollIntoView({block:"nearest"});}catch(e3){}
+  try{cur.focus({preventScroll:true});}catch(e){try{cur.focus();}catch(e2){console.warn("[silent-catch]",e2);}}
+  if(cur.scrollIntoView)try{cur.scrollIntoView({block:"nearest"});}catch(e3){console.warn("[silent-catch]",e3);}
 }
 function openPanel(){
   if(!langPanel||panelIsOpen())return;
@@ -718,7 +761,7 @@ function closePanel(refocus){
   setPanelLock(false);
   var s=document.getElementById("langSearch");
   if(s&&s.value){s.value="";filterLangList("");}
-  if(refocus&&langBtn)try{langBtn.focus({preventScroll:true});}catch(e){}
+  if(refocus&&langBtn)try{langBtn.focus({preventScroll:true});}catch(e){console.warn("[silent-catch]",e);}
 }
 function filterLangList(q){
   if(!langListEl)return;
@@ -765,6 +808,33 @@ if(langPanel){
   })();
 }
 
+/* 记住语言开关绑定 */
+var langRememberBtn=document.getElementById("rememberLang");
+function syncRememberUI(){
+  if(!langRememberBtn)return;
+  langRememberBtn.setAttribute("aria-checked",langRememberOn()?"true":"false");
+}
+function __liveLangCode(){
+  var a=document.documentElement.getAttribute("lang")||"";
+  if(a==="zh-CN")return "zh";
+  if(a==="zh-Hant")return "zh-TW";
+  return __isKnownLang(a)?a:currentLang();
+}
+if(langRememberBtn){
+  langRememberBtn.addEventListener("click",function(){
+    var next=!langRememberOn();
+    var cur=__liveLangCode();
+    try{
+      localStorage.setItem(LANG_REMEMBER_KEY,next?"1":"0");
+      sessionStorage.setItem("lang",cur);
+      if(next)localStorage.setItem("lang",cur);
+      else localStorage.removeItem("lang");
+    }catch(e){console.warn("[silent-catch]",e);}
+    syncRememberUI();
+  });
+  syncRememberUI();
+}
+
 if(langBtn)langBtn.addEventListener("click",function(e){e.preventDefault();panelIsOpen()?closePanel(false):openPanel();});
 if(langCloseBtn)langCloseBtn.addEventListener("click",function(){closePanel(true);});
 document.addEventListener("click",function(e){
@@ -782,9 +852,11 @@ document.addEventListener("keydown",function(e){
   if(e.key==="End"){e.preventDefault();btns[btns.length-1].focus();return;}
   if(e.key==="Tab"){
     var items=[];
+    if(langCloseBtn)items.push(langCloseBtn);
+    var rb=document.getElementById("rememberLang");
+    if(rb)items.push(rb);
     var s=document.getElementById("langSearch");
     if(s)items.push(s);
-    if(langCloseBtn)items.push(langCloseBtn);
     items=items.concat(btns);
     var first=items[0],last=items[items.length-1];
     if(e.shiftKey && document.activeElement===first){e.preventDefault();last.focus();}
@@ -801,6 +873,7 @@ if(langListEl)langListEl.addEventListener("click",function(e){
 window.addEventListener("resize",function(){if(panelIsOpen())positionPanel();});
 window.addEventListener("scroll",function(){if(panelIsOpen())positionPanel();},{passive:true});
 window.addEventListener("storage",function(e){
+  if(e.key===LANG_REMEMBER_KEY){syncRememberUI();return;}
   if(e.key!=="lang"||!e.newValue||!__isKnownLang(e.newValue)||!LANG_APPLY)return;
   LANG_APPLY(e.newValue);syncLangUI();
 });
@@ -831,13 +904,14 @@ syncLangUI();
    theme
    ============================================================ */
 (function(){
-  var saved=null;try{saved=localStorage.getItem("theme");}catch(e){}
+  var saved=null;try{saved=localStorage.getItem("theme");}catch(e){console.warn("[silent-catch]",e);}
   var light=window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches;
   rootEl.setAttribute("data-theme",saved||(light?"light":"dark"));
   var btn=document.getElementById("themeToggle");
   function sync(t){
     btn.setAttribute("aria-pressed",t==="light"?"true":"false");
-    btn.setAttribute("aria-label",t==="light"?"切换到深色模式":"切换到浅色模式");
+    var __tl=I18N[currentLang()]||I18N["zh"];
+    btn.setAttribute("aria-label",t==="light"?(__tl.theme&&__tl.theme.toDark):(__tl.theme&&__tl.theme.toLight));
     var tc=document.querySelector('meta[name="theme-color"]');
     if(tc)tc.setAttribute("content",t==="light"?"#f4f5fb":"#05060e");
   }
@@ -845,12 +919,12 @@ syncLangUI();
   btn.addEventListener("click",function(){
     var next=rootEl.getAttribute("data-theme")==="light"?"dark":"light";
     rootEl.setAttribute("data-theme",next);
-    try{localStorage.setItem("theme",next);}catch(e){}
+    try{localStorage.setItem("theme",next);}catch(e){console.warn("[silent-catch]",e);}
     sync(next);
   });
   if(window.matchMedia){
     var mq=window.matchMedia("(prefers-color-scheme: light)");
-    var cb=function(e){var s=null;try{s=localStorage.getItem("theme");}catch(err){};if(s)return;var t=e.matches?"light":"dark";rootEl.setAttribute("data-theme",t);sync(t);};
+    var cb=function(e){var s=null;try{s=localStorage.getItem("theme");}catch(err){console.warn("[silent-catch]",err);};if(s)return;var t=e.matches?"light":"dark";rootEl.setAttribute("data-theme",t);sync(t);};
     if(mq.addEventListener)mq.addEventListener("change",cb);else if(mq.addListener)mq.addListener(cb);
   }
 })();

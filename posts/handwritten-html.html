@@ -40,7 +40,7 @@
   var L=["zh","zh-TW","en","ja","ko","fr","de","es","pt","it","ru","uk","pl","nl","tr","ar","hi","id","vi","th","el","sv","cs","ro","bn","ur","ms","tl","he","fa"];
   var RTL=["ar","he","fa","ur","yi","dv","ps","ckb","sd","ug"];
   var code=null;
-  try{code=localStorage.getItem("lang");}catch(e){}
+  try{code=localStorage.getItem("lang")||sessionStorage.getItem("lang");}catch(e){console.warn("[silent-catch]",e);}
   if(!code||L.indexOf(code)<0){
     code=null;
     var list=(navigator.languages&&navigator.languages.length)?navigator.languages:[navigator.language||"zh"];
@@ -58,7 +58,7 @@
   de.setAttribute("dir",RTL.indexOf(code)>-1?"rtl":"ltr");
   window.__BOOT_LANG__=code;
   if(code!=="zh")de.className=(de.className?de.className+" ":"")+"i18n-boot";
-  setTimeout(function(){if(!window.__LANG_READY__)de.className=de.className.replace(/\s*i18n-boot/g,"");},4000);
+  setTimeout(function(){if(!window.__LANG_READY__)de.className=de.className.replace(/\s*i18n-boot/g,"");},1200);
 })();
 </script>
 <style>
@@ -73,14 +73,14 @@
   --card-bg:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.018));
   --subtle:rgba(255,255,255,.04);--hover:rgba(255,255,255,.075);
   --code-bg:rgba(255,255,255,.045);
-  --glow-1:rgba(94,234,212,.13);--glow-2:rgba(139,124,246,.15);--glow-3:rgba(56,132,255,.07);
+  --glow-1:rgba(94,234,212,.13);--glow-2:rgba(139,124,246,.15);
   --shadow:0 24px 60px -28px rgba(0,0,0,.9);
   --ease:cubic-bezier(.22,.61,.36,1);
 }
 :root[data-theme="light"]{
   --bg:#f6f7fb;--surface:#ffffff;
   --line:rgba(15,23,42,.10);--line-strong:rgba(15,23,42,.18);
-  --text:#0f172a;--text-2:#4a5878;--text-3:#77839a;
+  --text:#0f172a;--text-2:#4a5878;--text-3:#647089;
   --accent:#0e9887;--accent-soft:rgba(14,152,135,.09);--accent-line:rgba(14,152,135,.28);
   --accent-2:#6b5cf0;--accent-grad:linear-gradient(120deg,#0e9887,#16b3a0);
   --accent-glow:rgba(14,152,135,.40);--on-accent:#ffffff;
@@ -88,7 +88,7 @@
   --card-bg:linear-gradient(180deg,#ffffff,rgba(255,255,255,.72));
   --subtle:rgba(15,23,42,.035);--hover:rgba(15,23,42,.065);
   --code-bg:rgba(15,23,42,.045);
-  --glow-1:rgba(14,152,135,.10);--glow-2:rgba(107,92,240,.10);--glow-3:rgba(56,132,255,.06);
+  --glow-1:rgba(14,152,135,.10);--glow-2:rgba(107,92,240,.10);
   --shadow:0 24px 50px -30px rgba(15,23,42,.35);
 }
 
@@ -139,8 +139,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-off
   color:var(--text-2);text-decoration:none;font-size:14px;
   padding:7px 12px;border-radius:10px;white-space:nowrap;
   transition:color .25s var(--ease),background .25s var(--ease);
-}
-.nav-links a:hover{color:var(--text);background:var(--hover)}
+}@media (hover:hover){.nav-links a:hover{color:var(--text);background:var(--hover)}}
 .nav-tools{display:flex;align-items:center;gap:8px;flex-shrink:0}
 
 .lang-btn{
@@ -148,8 +147,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-off
   background:var(--subtle);border:1px solid var(--line);border-radius:11px;
   color:var(--text-2);cursor:pointer;font-family:inherit;font-size:13px;font-weight:600;
   transition:color .25s var(--ease),border-color .25s var(--ease),background .25s var(--ease);
-}
-.lang-btn:hover{color:var(--accent);border-color:var(--accent-line);background:var(--accent-soft)}
+}@media (hover:hover){.lang-btn:hover{color:var(--accent);border-color:var(--accent-line);background:var(--accent-soft)}}
 .lang-btn svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 
 .theme-toggle{
@@ -157,8 +155,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-off
   background:var(--subtle);border:1px solid var(--line);border-radius:11px;
   color:var(--text-2);cursor:pointer;
   transition:color .25s var(--ease),border-color .25s var(--ease),background .25s var(--ease);
-}
-.theme-toggle:hover{color:var(--accent);border-color:var(--accent-line);background:var(--accent-soft)}
+}@media (hover:hover){.theme-toggle:hover{color:var(--accent);border-color:var(--accent-line);background:var(--accent-soft)}}
 .theme-toggle svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 :root[data-theme="dark"] .i-moon{display:none}
 :root[data-theme="light"] .i-sun{display:none}
@@ -166,13 +163,12 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-off
 /* language panel */
 #langPanel{position:fixed;z-index:150;width:min(420px,calc(100vw - 32px));max-height:70vh;overflow:hidden;background:var(--surface);border:1px solid var(--line-strong);border-radius:20px;box-shadow:var(--shadow);opacity:0;visibility:hidden;transform:translateY(12px) scale(.98);transform-origin:top right;transition:opacity .28s var(--ease),transform .28s var(--ease),visibility .28s}
 #langPanel.open{opacity:1;visibility:visible;transform:none}
+[dir="rtl"] #langPanel{transform-origin:top left;}
 .lang-head{display:flex;align-items:center;justify-content:space-between;padding:16px 18px 12px;border-bottom:1px solid var(--line)}
 .lang-head b{font-size:14px;font-weight:700;color:var(--text)}
-.lang-close{background:none;border:none;color:var(--text-3);cursor:pointer;width:28px;height:28px;display:grid;place-items:center;border-radius:8px;font-size:15px;font-family:inherit}
-.lang-close:hover{color:var(--text);background:var(--hover)}
+.lang-close{background:none;border:none;color:var(--text-3);cursor:pointer;width:28px;height:28px;display:grid;place-items:center;border-radius:8px;font-size:15px;font-family:inherit}@media (hover:hover){.lang-close:hover{color:var(--text);background:var(--hover)}}
 .lang-list{overflow-y:auto;max-height:calc(70vh - 60px);padding:8px}
-.lang-list button{width:100%;display:flex;align-items:center;gap:12px;background:none;border:none;color:var(--text-2);font-family:inherit;font-size:14px;padding:11px 12px;border-radius:12px;cursor:pointer;text-align:start;transition:background .2s,color .2s}
-.lang-list button:hover{background:var(--hover);color:var(--text)}
+.lang-list button{width:100%;display:flex;align-items:center;gap:12px;background:none;border:none;color:var(--text-2);font-family:inherit;font-size:14px;padding:11px 12px;border-radius:12px;cursor:pointer;text-align:start;transition:background .2s,color .2s}@media (hover:hover){.lang-list button:hover{background:var(--hover);color:var(--text)}}
 .lang-list button.active{background:var(--accent-soft);color:var(--accent)}
 .lang-list .lg-dot{width:10px;height:10px;border-radius:50%;background:var(--accent-grad);box-shadow:0 0 8px var(--accent-glow);flex:none}
 .lang-list .lg-native{font-weight:600;color:var(--text)}
@@ -185,8 +181,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-off
   box-shadow:0 0 10px var(--accent-glow);}
 
 #toTop{position:fixed;right:22px;bottom:calc(22px + env(safe-area-inset-bottom,0px));z-index:90;width:44px;height:44px;border-radius:14px;background:var(--surface);border:1px solid var(--line-strong);color:var(--text-2);cursor:pointer;display:grid;place-items:center;box-shadow:var(--shadow);opacity:0;visibility:hidden;transform:translateY(10px);transition:.3s var(--ease)}
-#toTop.show{opacity:1;visibility:visible;transform:none}
-#toTop:hover{color:var(--accent);border-color:var(--accent-line)}
+#toTop.show{opacity:1;visibility:visible;transform:none}@media (hover:hover){#toTop:hover{color:var(--accent);border-color:var(--accent-line)}}
 #toTop svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 
 main{position:relative;z-index:1}
@@ -198,8 +193,7 @@ article{padding:140px 0 72px}
   display:inline-flex;align-items:center;gap:6px;
   font-size:13.5px;color:var(--text-3);text-decoration:none;
   margin-bottom:28px;transition:color .25s var(--ease);
-}
-.back:hover{color:var(--accent)}
+}@media (hover:hover){.back:hover{color:var(--accent)}}
 .b-arrow{display:inline-block;transition:transform .2s var(--ease)}
 [dir="rtl"] .b-arrow{transform:scaleX(-1)}
 .art-meta{
@@ -240,8 +234,7 @@ h1{
   color:var(--accent);text-decoration:none;
   border-bottom:1px solid var(--accent-line);
   transition:border-color .25s var(--ease),background .25s var(--ease);
-}
-.prose a:hover{border-bottom-color:var(--accent);background:var(--accent-soft)}
+}@media (hover:hover){.prose a:hover{border-bottom-color:var(--accent);background:var(--accent-soft)}}
 
 .prose ul,.prose ol{padding-left:22px}
 .prose li{color:var(--text-2);margin-top:9px;padding-left:4px}
@@ -311,18 +304,16 @@ h1{
   border:1px solid var(--line);
   border-radius:16px;padding:20px 22px;
   transition:transform .28s var(--ease),border-color .28s var(--ease),box-shadow .28s var(--ease);
-}
-.post-nav a:hover{
+}@media (hover:hover){.post-nav a:hover{
   transform:translateY(-3px);
   border-color:var(--line-strong);
   box-shadow:var(--shadow);
-}
+}}
 .post-nav .dir{
   font-size:12px;color:var(--text-3);margin-bottom:6px;
   display:flex;align-items:center;gap:5px;
 }
-.post-nav .t{font-size:14.5px;font-weight:650;color:var(--text);line-height:1.5}
-.post-nav a:hover .t{color:var(--accent)}
+.post-nav .t{font-size:14.5px;font-weight:650;color:var(--text);line-height:1.5}@media (hover:hover){.post-nav a:hover .t{color:var(--accent)}}
 .post-nav .next{text-align:end}
 .post-nav .next .dir{justify-content:flex-end}
 [dir="rtl"] .post-nav .next{text-align:start}
@@ -342,8 +333,7 @@ footer{
 .foot-inner{max-width:820px;margin:0 auto;padding:0 24px;
   display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
 footer b{color:var(--text-2);font-weight:600}
-footer a{color:var(--text-2);text-decoration:none}
-footer a:hover{color:var(--accent)}
+footer a{color:var(--text-2);text-decoration:none}@media (hover:hover){footer a:hover{color:var(--accent)}}
 
 /* ---------- 目录侧栏 ---------- */
 .art-wrap{max-width:1140px}
@@ -391,8 +381,7 @@ footer a:hover{color:var(--accent)}
   border-radius:2px;background:var(--accent);
   opacity:0;transform:scaleY(.25);
   transition:opacity .24s var(--ease),transform .24s var(--ease);
-}
-.toc-list a:hover{color:var(--text-2)}
+}@media (hover:hover){.toc-list a:hover{color:var(--text-2)}}
 .toc-list a.active{color:var(--accent);font-weight:600}
 .toc-list a.active::after{opacity:1;transform:scaleY(1)}
 .toc-list a.lv3{padding-left:28px;font-size:12.5px}
@@ -521,6 +510,30 @@ html:lang(fa),html:lang(he),html:lang(ar),html:lang(sd),html:lang(ps){font-famil
 .body-note{margin:0 0 22px;padding:10px 15px;font-size:14px;line-height:1.65;color:var(--text-2);
   background:rgba(148,163,184,.08);border-inline-start:3px solid var(--line-strong);border-radius:8px}
 .body-note[hidden]{display:none}
+/* ---- language panel: 记住语言开关 + 列表自适应（修复语言显示不全） ---- */
+#langPanel{display:flex;flex-direction:column}
+.lang-head,.lang-search-wrap,.lang-remember{flex:none}
+#langPanel .lang-list{flex:1 1 auto;min-height:0;max-height:none;overscroll-behavior:contain}
+.lang-remember{display:flex;align-items:center;gap:12px;justify-content:space-between;padding:11px 18px;border-bottom:1px solid var(--line)}
+.lang-remember .lr-text{display:flex;flex-direction:column;gap:2px;min-width:0}
+.lang-remember .lr-text b{font-size:13px;font-weight:650;color:var(--text);line-height:1.25}
+.lang-remember .lr-sub{font-size:11.5px;color:var(--text-3);line-height:1.35}
+.lr-switch{flex:none;position:relative;width:44px;height:25px;padding:0;border-radius:999px;border:1px solid var(--line);background:rgba(128,128,128,.22);cursor:pointer;transition:background .22s var(--ease),border-color .22s var(--ease)}
+.lr-switch .lr-knob{position:absolute;top:2px;left:2px;width:19px;height:19px;border-radius:50%;background:var(--text-3);transition:transform .22s var(--ease),background .22s var(--ease)}
+.lr-switch[aria-checked="true"]{background:var(--accent-soft);border-color:rgba(94,234,212,.45)}
+.lr-switch[aria-checked="true"] .lr-knob{transform:translateX(19px);background:var(--accent)}
+.lr-switch:focus-visible{outline:2px solid rgba(120,170,255,.85);outline-offset:2px}
+html[dir="rtl"] .lr-switch .lr-knob{left:auto;right:2px}
+html[dir="rtl"] .lr-switch[aria-checked="true"] .lr-knob{transform:translateX(-19px)}
+#langPanel .lang-list .lg-native,#langPanel .lang-list .lg-sub{overflow-wrap:anywhere}
+/* ---- language panel: 滚动条可见 + 窄屏紧凑 ---- */
+#langPanel .lang-list{scrollbar-width:thin;scrollbar-color:rgba(148,163,184,.45) transparent;scroll-padding-block:6px}
+#langPanel .lang-list::-webkit-scrollbar{width:8px}
+#langPanel .lang-list::-webkit-scrollbar-track{background:transparent}
+#langPanel .lang-list::-webkit-scrollbar-thumb{background:rgba(148,163,184,.4);border-radius:99px;border:2px solid transparent;background-clip:content-box}@media (hover:hover){#langPanel .lang-list::-webkit-scrollbar-thumb:hover{background:rgba(148,163,184,.65);background-clip:content-box}}
+@media (max-width:400px){.lang-remember{padding:9px 16px}.lang-remember .lr-sub{display:none}}
+
+
 /* i18n 首屏防闪：目标语言不是中文时，切换完成前不显示正文 */
 html.i18n-boot body{visibility:hidden}
 html.i18n-boot{background:#05060e}
@@ -554,31 +567,34 @@ html[data-theme="light"].i18n-boot{background:#f4f5fb}
 <script>
   (function () {
     var saved = null;
-    try { saved = localStorage.getItem('theme'); } catch (e) {}
+    try { saved = localStorage.getItem('theme'); } catch(e){console.warn("[silent-catch]",e);}
     var prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
     document.documentElement.setAttribute('data-theme', saved || (prefersLight ? 'light' : 'dark'));
   })();
 </script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Person","@id":"https://wang-sunyang.github.io/#person","name":"王孙阳","alternateName":"Wang Sunyang","url":"https://wang-sunyang.github.io/","jobTitle":"独立开发者","description":"独立开发者，做原生 Android、端侧 ML 与零依赖网页项目；长夜拾星工作室（Nightglean Studio）主理人。","sameAs":["https://github.com/wang-sunyang","https://github.com/nightglean"],"knowsAbout":["Native Android","Kotlin","On-device ML","LiteRT","WebGL","Three.js","静态站点工程"]},{"@type":"BlogPosting","@id":"https://wang-sunyang.github.io/posts/handwritten-html.html#post","mainEntityOfPage":{"@type":"WebPage","@id":"https://wang-sunyang.github.io/posts/handwritten-html.html"},"url":"https://wang-sunyang.github.io/posts/handwritten-html.html","headline":"为什么我用纯手写 HTML 做个人主页","inLanguage":"zh-Hans","datePublished":"2026-11-08","author":{"@id":"https://wang-sunyang.github.io/#person"},"publisher":{"@id":"https://wang-sunyang.github.io/#person"},"image":"https://wang-sunyang.github.io/og-cover.png"}]}</script>
+<link rel="alternate" hreflang="zh-Hans" href="https://wang-sunyang.github.io/posts/handwritten-html.html">
+<link rel="alternate" hreflang="x-default" href="https://wang-sunyang.github.io/posts/handwritten-html.html">
 </head>
 
 <body>
 <div id="srStatus" role="status" aria-live="polite" aria-atomic="true" style="position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0"></div>
 <a class="skip" href="#main" data-i18n="skip">跳到主要内容</a>
 <div id="progress" aria-hidden="true"></div>
-<button id="toTop" type="button" aria-label="回到顶部"><svg viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
+<button id="toTop" type="button" aria-label="回到顶部" data-i18n-aria="a11y.toTop"><svg viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
 
-<nav class="site-nav" aria-label="主导航">
+<nav class="site-nav" aria-label="主导航" data-i18n-aria="a11y.mainNav">
   <div class="nav-inner">
     <a class="logo" href="../index.html">王孙阳</a>
     <div class="nav-links">
       <a href="../blog.html" data-i18n="nav.notes">笔记</a>
     </div>
     <div class="nav-tools">
-      <button class="lang-btn" id="langBtn" type="button" aria-label="切换语言 / Switch language" aria-haspopup="true" aria-expanded="false">
+      <button class="lang-btn" id="langBtn" type="button" aria-label="切换语言 / Switch language" data-i18n-aria="a11y.langBtn" aria-haspopup="dialog" aria-controls="langPanel" aria-expanded="false">
         <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"/></svg>
         <span id="langLabel">简体中文</span>
       </button>
-      <button class="theme-toggle" id="themeToggle" type="button" aria-label="切换深浅色" aria-pressed="false">
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="切换深浅色" data-i18n-aria="a11y.themeToggle" aria-pressed="false">
         <svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4"/></svg>
         <svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
       </button>
@@ -586,10 +602,14 @@ html[data-theme="light"].i18n-boot{background:#f4f5fb}
   </div>
 </nav>
 
-<div id="langPanel" role="dialog" aria-label="选择语言 / Choose language">
+<div id="langPanel" role="dialog" aria-modal="true" aria-label="选择语言 / Choose language" data-i18n-aria="a11y.langPanel">
   <div class="lang-head">
     <b data-i18n="ui.langTitle">选择语言 / Language</b>
-    <button class="lang-close" id="langClose" type="button" aria-label="关闭">✕</button>
+    <button class="lang-close" id="langClose" type="button" aria-label="关闭" data-i18n-aria="a11y.close">✕</button>
+  </div>
+  <div class="lang-remember">
+    <span class="lr-text"><b id="rememberLangText" data-i18n="ui.remember">记住语言</b><span class="lr-sub" data-i18n="ui.rememberSub">下次访问沿用当前语言</span></span>
+    <button class="lr-switch" id="rememberLang" type="button" role="switch" aria-checked="true" aria-labelledby="rememberLangText"><span class="lr-knob" aria-hidden="true"></span></button>
   </div>
   <div class="lang-list" id="langList"></div>
 </div>
@@ -623,7 +643,7 @@ html[data-theme="light"].i18n-boot{background:#f4f5fb}
       </nav>
       </div>
 
-      <aside class="toc" aria-label="本页目录">
+      <aside class="toc" aria-label="本页目录" data-i18n-aria="a11y.tocSidebar">
         <div class="toc-title" data-i18n="toc.title">本页目录</div>
         <nav class="toc-list" id="tocList"></nav>
       </aside>
@@ -639,7 +659,7 @@ html[data-theme="light"].i18n-boot{background:#f4f5fb}
 
 <div class="toc-backdrop" id="tocBackdrop"></div>
 
-<div class="toc-drawer" id="tocDrawer" role="dialog" aria-modal="false" aria-label="文章目录">
+<div class="toc-drawer" id="tocDrawer" role="dialog" aria-modal="false" aria-label="文章目录" data-i18n-aria="a11y.tocDrawer">
   <div class="toc-title">
     <span data-i18n="toc.title">本页目录</span>
     <button type="button" id="tocClose" data-i18n="toc.close">关闭</button>
@@ -678,9 +698,9 @@ var LANGS=[
   {code:"th",native:"ไทย",sub:"Thai"}
 ];
 var I18N={
-"zh":{"skip":"跳到主要内容","nav":{"notes":"笔记"},"back":"全部笔记","toc":{"title":"本页目录","open":"打开目录","close":"关闭"},"theme":{"toDark":"切换到深色模式","toLight":"切换到浅色模式"},"ui":{"langTitle":"选择语言 / Language","langSwitched":"已切换为{lang}"},"postnav":{"prev":"上一篇","next":"下一篇","newest":"已经是最新一篇","oldest":"已经是最早一篇"},"aria":{"articleNav":"文章导航"},"nf":{"title":"这一页走丢了","desc":"你找的地址不存在，或者内容已经搬走了。","home":"回到首页","notes":"看看笔记","foot":"个人主页"},"cat":"前端","date":"2026 年 11 月 8 日","read":"约 6 分钟","title":"为什么我用纯手写 HTML 做个人主页","desc":"用框架三分钟能搭出来的页面，我断断续续写了几个晚上。不是不会用工具，而是想把那些被框架藏起来的东西，亲手摸一遍。","nextTitle":"把重复的事交给工具：三个小习惯","body":"<p>用现成的模板站，十分钟能生成一个看着还不错的个人主页。用前端框架，熟练的人半小时也能把骨架搭完。</p><p>但这个页面，我断断续续写了好几个晚上。</p><p>有人问值不值。我的回答是：如果目标是「尽快有一个网站」，不值；如果目标是「搞明白网站到底是怎么来的」，那太值了。</p><h2>模板的问题不是丑，是没有一句是我说的</h2><p>一开始我用的是在线模板。选主题、换配色、填文字，很快就能导出。但用了几天，我越来越别扭，因为页面上的每一句话都在替我说一些我并没有说过的话。</p><p>比如技能栏里那些百分比。</p><blockquote><p>「HTML · 90%」「CSS · 85%」「JavaScript · 75%」</p></blockquote><p>问题是，谁定的这个数？我连一条完整的 DOM 事件流都讲不清楚的时候，凭什么写 75%？这类数字看起来精确，实际上什么都没表达，反而暴露了自己没想过。</p><p>模板给的是填空题，但个人主页其实是一道论述题。<strong>填空填得再整齐，论述题也是零分。</strong></p><h2>手写之后，我第一次看清浏览器在干什么</h2><p>抛开框架，很多平时被自动处理掉的东西就必须自己面对了。这个过程有点像拆开一台用惯了的机器。</p><h3>层叠到底是怎么工作的</h3><p>以前改样式基本靠改一个值、刷新、不行再改。手写之后被逼着去理解：为什么这个颜色没生效，为什么加了 <code>!important</code> 才好——然后发现真正的原因是选择器权重算错了，<code>!important</code> 只是在掩盖问题。</p><p>一旦理解了层叠，改样式就从试错变成了推理。</p><h3>响应式不是加个媒体查询</h3><p>我最初的做法是：桌面端写完，加两个 <code>@media</code>，字号调小一点，收工。结果在手机上一看，导航挤成一团，正文横向溢出，头像把标题压得喘不过气。</p><p>后来才明白，响应式的核心不是断点数量，而是<strong>布局在什么条件下会失效</strong>。窄屏下真正的问题是水平空间不够分配，那就得换一种组织方式：从并排改成上下堆叠，从固定宽度改成相对单位。</p><p>我现在的做法是先把窗口拖到最窄，从最小的屏幕往上写，而不是从大屏幕往下砍。</p><h3>可访问性不是给别人做的</h3><p>键盘焦点、语义标签、对比度——这些词以前我觉得很遥远。直到我自己试着只用键盘操作一遍：按 Tab 跳到第二个链接之后，我完全不知道焦点去哪了，因为页面上没有任何视觉提示。</p><p>那一刻我意识到，这不是「为残障用户做的适配」，这是<strong>页面本身缺了一块</strong>。补上一行 <code>:focus-visible</code> 的样式，成本几乎为零，但可用性的差别是「能用」和「不能用」。</p><h2>代价是什么</h2><p>说实话，代价很清楚，不该藏着：</p><ul><li><strong>重复劳动。</strong>加一篇文章，就得复制一份 HTML，改标题、改正文、改上一篇下一篇的链接。三篇还行，三十篇会疯。</li><li><strong>改一处要动多处。</strong>颜色变量统一了还好，但我第一版是硬编码色值，换个主色要全局搜索替换，还漏了几处。</li><li><strong>没有热更新。</strong>改完保存，手动刷新，来回切窗口。效率确实不如框架的开发服务器。</li></ul><p>所以我做了一个折中：<strong>样式用 CSS 变量收口，内容用 Markdown 写，再转成静态 HTML。</strong>这样既有手写的可控性，又不至于每篇文章都从零复制。</p><h2>那到底什么时候该用框架</h2><p>我现在的判断标准很简单，看三件事：</p><table><thead><tr><th>信号</th><th>说明</th></tr></thead><tbody><tr><td>状态变多</td><td>页面上有大量互相影响的状态（登录、筛选、分页、表单校验），手写会迅速失控</td></tr><tr><td>要协作</td><td>多个人同时改代码，需要组件约定和构建流程来对齐</td></tr><tr><td>要长期迭代</td><td>内容量会持续增长，重复劳动的成本会指数上升</td></tr></tbody></table><hr><p>最后说一句可能有点扫兴的话：手写 HTML 不会让你变成更好的工程师，它只是让你<strong>少了一层遮蔽</strong>。真正的能力还是在于判断——判断该用什么、该省什么、哪里值得较真。</p><p>这个页面还会有很多问题，我会一边用一边改。如果哪天它变得太复杂，我大概会老老实实换个工具。</p><p>工具是手段，不是身份。</p>"},
-"zh-TW":{"skip":"跳到主要內容","nav":{"notes":"筆記"},"back":"全部筆記","toc":{"title":"本頁目錄","open":"開啟目錄","close":"關閉"},"theme":{"toDark":"切換到深色模式","toLight":"切換到淺色模式"},"ui":{"langTitle":"選擇語言 / Language","langSwitched":"已切換為{lang}"},"postnav":{"prev":"上一篇","next":"下一篇","newest":"已經是最新一篇","oldest":"已經是最早一篇"},"aria":{"articleNav":"文章導覽"},"nf":{"title":"這一頁走丟了","desc":"你找的地址不存在，或者內容已經搬走了。","home":"回到首頁","notes":"看看筆記","foot":"個人主頁"},"cat":"前端","date":"2026 年 11 月 8 日","read":"約 6 分鐘","title":"為什麼我用純手寫 HTML 做個人主頁","desc":"用框架三分鐘能搭出來的頁面，我斷斷續續寫了幾個晚上。不是不會用工具，而是想把那些被框架藏起來的東西，親手摸一遍。","nextTitle":"把重複的事交給工具：三個小習慣","body":"<p>用現成的模板站，十分鐘能生成一個看著還不錯的個人主頁。用前端框架，熟練的人半小時也能把骨架搭完。</p><p>但這個頁面，我斷斷續續寫了好幾個晚上。</p><p>有人問值不值。我的回答是：如果目標是「盡快有一個網站」，不值；如果目標是「搞明白網站到底是怎麼來的」，那太值了。</p><h2>模板的問題不是醜，是沒有一句是我說的</h2><p>一開始我用的是線上模板。選主題、換配色、填文字，很快就能匯出。但用了幾天，我越來越彆扭，因為頁面上的每一句話都在替我講一些我並沒有講過的話。</p><p>比如技能欄裡那些百分比。</p><blockquote><p>「HTML · 90%」「CSS · 85%」「JavaScript · 75%」</p></blockquote><p>問題是，誰定的這個數？我連一條完整的 DOM 事件流都講不清楚的時候，憑什麼寫 75%？這類數字看起來精確，實際上什麼都沒表達，反而暴露了自己沒想過。</p><p>模板給的是填空題，但個人主頁其實是一道論述題。<strong>填空填得再整齊，論述題也是零分。</strong></p><h2>手寫之後，我第一次看清瀏覽器在幹什麼</h2><p>拋開框架，很多平時被自動處理掉的東西就必須自己面對了。這個過程有點像拆開一台用慣了的機器。</p><h3>層疊到底是怎麼工作的</h3><p>以前改樣式基本靠改一個值、重新整理、不行再改。手寫之後被逼著去理解：為什麼這個顏色沒生效，為什麼加了 <code>!important</code> 才好——然後發現真正的原因是選擇器權重算錯了，<code>!important</code> 只是在掩蓋問題。</p><p>一旦理解了層疊，改樣式就從試錯變成了推理。</p><h3>響應式不是加個媒體查詢</h3><p>我最初的做法是：桌面端寫完，加兩個 <code>@media</code>，字號調小一點，收工。結果在手機上一看，導航擠成一團，正文橫向溢出，頭像把標題壓得喘不過氣。</p><p>後來才明白，響應式的核心不是斷點數量，而是<strong>佈局在什麼條件下會失效</strong>。窄螢幕下真正的問題是水平空間不夠分配，那就得換一種組織方式：從並排改成上下堆疊，從固定寬度改成相對單位。</p><p>我現在的做法是先把視窗拖到最窄，從最小的螢幕往上寫，而不是從大螢幕往下砍。</p><h3>可存取性不是給別人做的</h3><p>鍵盤焦點、語義標籤、對比度——這些詞以前我覺得很遙遠。直到我自己試著只用鍵盤操作一遍：按 Tab 跳到第二個連結之後，我完全不知道焦點去哪了，因為頁面上沒有任何視覺提示。</p><p>那一刻我意識到，這不是「為身心障礙使用者做的適配」，這是<strong>頁面本身缺了一塊</strong>。補上一行 <code>:focus-visible</code> 的樣式，成本幾乎為零，但可用性的差別是「能用」和「不能用」。</p><h2>代價是什麼</h2><p>說實話，代價很清楚，不該藏著：</p><ul><li><strong>重複勞動。</strong>加一篇文章，就得複製一份 HTML，改標題、改正文、改上一篇下一篇的連結。三篇還行，三十篇會瘋。</li><li><strong>改一處要動多處。</strong>顏色變數統一了還好，但我第一版是硬編碼色值，換個主色要全域搜尋替換，還漏了幾處。</li><li><strong>沒有熱更新。</strong>改完儲存，手動重新整理，來回切視窗。效率確實不如框架的開發伺服器。</li></ul><p>所以我做了一個折中：<strong>樣式用 CSS 變數收口，內容用 Markdown 寫，再轉成靜態 HTML。</strong>這樣既有手寫的可控性，又不至於每篇文章都從零複製。</p><h2>那到底什麼時候該用框架</h2><p>我現在的判斷標準很簡單，看三件事：</p><table><thead><tr><th>信號</th><th>說明</th></tr></thead><tbody><tr><td>狀態變多</td><td>頁面上有大量互相影響的狀態（登入、篩選、分頁、表單驗證），手寫會迅速失控</td></tr><tr><td>要協作</td><td>多個人同時改程式碼，需要元件約定和建置流程來對齊</td></tr><tr><td>要長期迭代</td><td>內容量會持續增長，重複勞動的成本會指數上升</td></tr></tbody></table><hr><p>最後講一句可能有點掃興的話：手寫 HTML 不會讓你變成更好的工程師，它只是讓你<strong>少了一層遮蔽</strong>。真正的能力還是在於判斷——判斷該用什麼、該省什麼、哪裡值得較真。</p><p>這個頁面還會有很多問題，我會一邊用一邊改。如果哪天它變得太複雜，我大概會老老實實換個工具。</p><p>工具是手段，不是身分。</p>"},
-"en":{"skip":"Skip to content","nav":{"notes":"Notes"},"back":"All notes","toc":{"title":"On this page","open":"Open table of contents","close":"Close"},"theme":{"toDark":"Switch to dark mode","toLight":"Switch to light mode"},"ui":{"langTitle":"Choose language / Language","langSwitched":"Switched to {lang}"},"postnav":{"prev":"Previous","next":"Next","newest":"This is the latest post","oldest":"This is the oldest post"},"aria":{"articleNav":"Post navigation"},"nf":{"title":"This page got lost","desc":"The address you're looking for doesn't exist, or its content has moved.","home":"Back to home","notes":"Browse notes","foot":"Personal homepage"},"cat":"Frontend","date":"Nov 8, 2026","read":"~6 min","title":"Why I hand-wrote my homepage in plain HTML","desc":"A page a framework can scaffold in three minutes took me several scattered evenings. Not because I can't use tools, but because I wanted to feel the things frameworks hide away.","nextTitle":"Hand repetitive work to tools: three small habits","body":"<p>With a ready-made template site, you can generate a decent-looking homepage in ten minutes. With a frontend framework, a skilled person can scaffold the skeleton in half an hour.</p><p>But this page took me several scattered evenings.</p><p>People ask whether it was worth it. My answer: if the goal is “to have a website as fast as possible”, no. If the goal is “to figure out how a website actually comes into being”, then absolutely.</p><h2>The problem with templates isn't that they're ugly — it's that not one line says what I'd say</h2><p>At first I used an online template. Pick a theme, swap the colors, fill in the text, and you can export it quickly. But after a few days it felt more and more off, because every sentence on the page was saying things on my behalf that I never said.</p><p>Like those percentages in the skills bar.</p><blockquote><p>“HTML · 90%” “CSS · 85%” “JavaScript · 75%”</p></blockquote><p>The question is: who decided those numbers? When I can't even walk through a complete DOM event flow, on what grounds do I write 75%? Numbers like that look precise but actually express nothing — they only expose that I hadn't thought about it.</p><p>A template gives you fill-in-the-blanks, but a personal homepage is really an essay question. <strong>No matter how neatly you fill in the blanks, the essay still scores zero.</strong></p><h2>After hand-writing, I saw clearly for the first time what the browser is doing</h2><p>Without a framework, many things that used to be handled automatically now have to be faced yourself. The process is a bit like taking apart a machine you're used to.</p><h3>How the cascade actually works</h3><p>Before, I changed styles by tweaking a value, refreshing, and tweaking again when it didn't work. Hand-writing forced me to understand: why this color didn't apply, why adding <code>!important</code> “fixed” it — then I found the real cause was a miscalculated selector specificity, and <code>!important</code> was just masking the problem.</p><p>Once you understand the cascade, changing styles stops being trial and error and becomes reasoning.</p><h3>Responsive isn't just adding a media query</h3><p>My original approach: finish the desktop version, add a couple of <code>@media</code> rules, shrink the font a bit, done. Then on a phone the nav was squeezed together, the body overflowed horizontally, and the avatar crushed the title.</p><p>Only later did I realize the core of responsiveness isn't the number of breakpoints, but <strong>under what conditions the layout fails</strong>. On a narrow screen the real problem is not enough horizontal space to distribute, so you have to reorganize: from side-by-side to stacked, from fixed widths to relative units.</p><p>Now I drag the window to its narrowest and build up from the smallest screen, instead of chopping down from the large one.</p><h3>Accessibility isn't for other people</h3><p>Keyboard focus, semantic labels, contrast — these words once felt remote. Until I tried operating the whole thing with just the keyboard: after Tab jumped to the second link, I had no idea where the focus went, because the page gave no visual hint.</p><p>At that moment I realized this isn't “an adaptation for disabled users” — it's that <strong>the page itself was missing a piece</strong>. Adding one line of <code>:focus-visible</code> styling costs almost nothing, but the difference in usability is “works” versus “doesn't work”.</p><h2>What does it cost?</h2><p>Honestly, the cost is clear, and I shouldn't hide it:</p><ul><li><strong>Repetitive work.</strong> Adding one post means duplicating an HTML file and changing the title, the body, and the prev/next links. Three posts is fine; thirty will drive you mad.</li><li><strong>Change one thing, touch many places.</strong> Consolidating colors into variables helped, but my first version hard-coded color values — changing the accent meant a global find-and-replace, and I still missed a few.</li><li><strong>No hot reload.</strong> Save, refresh manually, switch windows back and forth. It's genuinely less efficient than a framework's dev server.</li></ul><p>So I compromised: <strong>consolidate styles with CSS variables, write content in Markdown, then convert it to static HTML.</strong> That keeps the control of hand-writing without duplicating every article from scratch.</p><h2>So when should you actually use a framework?</h2><p>My rule of thumb now is simple — three signals:</p><table><thead><tr><th>Signal</th><th>Meaning</th></tr></thead><tbody><tr><td>State multiplies</td><td>The page has lots of interdependent state (login, filters, pagination, form validation) — hand-writing quickly spirals out of control</td></tr><tr><td>You collaborate</td><td>Several people edit the code at once and need component conventions and a build process to stay aligned</td></tr><tr><td>You iterate long-term</td><td>The amount of content keeps growing, and the cost of repetitive work rises exponentially</td></tr></tbody></table><hr><p>One last, possibly deflating note: hand-writing HTML won't make you a better engineer. It only removes one layer of concealment. The real skill is still judgment — deciding what to use, what to skip, and where it's worth being meticulous.</p><p>This page will still have plenty of issues, and I'll fix them as I go. If one day it gets too complex, I'll probably just switch tools honestly.</p><p>Tools are means, not identity.</p>"}
+"zh":{"a11y":{"close":"关闭","langBtn":"切换语言 / Switch language","themeToggle":"切换深浅色","langPanel":"选择语言 / Choose language","mainNav":"主导航","nav":"导航","toTop":"回到顶部","tocSidebar":"本页目录","tocDrawer":"文章目录","kbdPanel":"键盘快捷键","openMenu":"打开菜单","mobileMenu":"移动端菜单","closeMenu":"关闭菜单","copyWechat":"复制微信号","filterBar":"按分类筛选笔记"},"skip":"跳到主要内容","nav":{"notes":"笔记"},"back":"全部笔记","toc":{"title":"本页目录","open":"打开目录","close":"关闭"},"theme":{"toDark":"切换到深色模式","toLight":"切换到浅色模式"},"ui":{"remember":"记住语言","rememberSub":"下次访问沿用当前语言","langTitle":"选择语言 / Language","langSwitched":"已切换为{lang}"},"postnav":{"prev":"上一篇","next":"下一篇","newest":"已经是最新一篇","oldest":"已经是最早一篇"},"aria":{"articleNav":"文章导航"},"nf":{"title":"这一页走丢了","desc":"你找的地址不存在，或者内容已经搬走了。","home":"回到首页","notes":"看看笔记","foot":"个人主页"},"cat":"前端","date":"2026 年 11 月 8 日","read":"约 6 分钟","title":"为什么我用纯手写 HTML 做个人主页","desc":"用框架三分钟能搭出来的页面，我断断续续写了几个晚上。不是不会用工具，而是想把那些被框架藏起来的东西，亲手摸一遍。","nextTitle":"把重复的事交给工具：三个小习惯","body":"<p>用现成的模板站，十分钟能生成一个看着还不错的个人主页。用前端框架，熟练的人半小时也能把骨架搭完。</p><p>但这个页面，我断断续续写了好几个晚上。</p><p>有人问值不值。我的回答是：如果目标是「尽快有一个网站」，不值；如果目标是「搞明白网站到底是怎么来的」，那太值了。</p><h2>模板的问题不是丑，是没有一句是我说的</h2><p>一开始我用的是在线模板。选主题、换配色、填文字，很快就能导出。但用了几天，我越来越别扭，因为页面上的每一句话都在替我说一些我并没有说过的话。</p><p>比如技能栏里那些百分比。</p><blockquote><p>「HTML · 90%」「CSS · 85%」「JavaScript · 75%」</p></blockquote><p>问题是，谁定的这个数？我连一条完整的 DOM 事件流都讲不清楚的时候，凭什么写 75%？这类数字看起来精确，实际上什么都没表达，反而暴露了自己没想过。</p><p>模板给的是填空题，但个人主页其实是一道论述题。<strong>填空填得再整齐，论述题也是零分。</strong></p><h2>手写之后，我第一次看清浏览器在干什么</h2><p>抛开框架，很多平时被自动处理掉的东西就必须自己面对了。这个过程有点像拆开一台用惯了的机器。</p><h3>层叠到底是怎么工作的</h3><p>以前改样式基本靠改一个值、刷新、不行再改。手写之后被逼着去理解：为什么这个颜色没生效，为什么加了 <code>!important</code> 才好——然后发现真正的原因是选择器权重算错了，<code>!important</code> 只是在掩盖问题。</p><p>一旦理解了层叠，改样式就从试错变成了推理。</p><h3>响应式不是加个媒体查询</h3><p>我最初的做法是：桌面端写完，加两个 <code>@media</code>，字号调小一点，收工。结果在手机上一看，导航挤成一团，正文横向溢出，头像把标题压得喘不过气。</p><p>后来才明白，响应式的核心不是断点数量，而是<strong>布局在什么条件下会失效</strong>。窄屏下真正的问题是水平空间不够分配，那就得换一种组织方式：从并排改成上下堆叠，从固定宽度改成相对单位。</p><p>我现在的做法是先把窗口拖到最窄，从最小的屏幕往上写，而不是从大屏幕往下砍。</p><h3>可访问性不是给别人做的</h3><p>键盘焦点、语义标签、对比度——这些词以前我觉得很遥远。直到我自己试着只用键盘操作一遍：按 Tab 跳到第二个链接之后，我完全不知道焦点去哪了，因为页面上没有任何视觉提示。</p><p>那一刻我意识到，这不是「为残障用户做的适配」，这是<strong>页面本身缺了一块</strong>。补上一行 <code>:focus-visible</code> 的样式，成本几乎为零，但可用性的差别是「能用」和「不能用」。</p><h2>代价是什么</h2><p>说实话，代价很清楚，不该藏着：</p><ul><li><strong>重复劳动。</strong>加一篇文章，就得复制一份 HTML，改标题、改正文、改上一篇下一篇的链接。三篇还行，三十篇会疯。</li><li><strong>改一处要动多处。</strong>颜色变量统一了还好，但我第一版是硬编码色值，换个主色要全局搜索替换，还漏了几处。</li><li><strong>没有热更新。</strong>改完保存，手动刷新，来回切窗口。效率确实不如框架的开发服务器。</li></ul><p>所以我做了一个折中：<strong>样式用 CSS 变量收口，内容用 Markdown 写，再转成静态 HTML。</strong>这样既有手写的可控性，又不至于每篇文章都从零复制。</p><h2>那到底什么时候该用框架</h2><p>我现在的判断标准很简单，看三件事：</p><table><thead><tr><th>信号</th><th>说明</th></tr></thead><tbody><tr><td>状态变多</td><td>页面上有大量互相影响的状态（登录、筛选、分页、表单校验），手写会迅速失控</td></tr><tr><td>要协作</td><td>多个人同时改代码，需要组件约定和构建流程来对齐</td></tr><tr><td>要长期迭代</td><td>内容量会持续增长，重复劳动的成本会指数上升</td></tr></tbody></table><hr><p>最后说一句可能有点扫兴的话：手写 HTML 不会让你变成更好的工程师，它只是让你<strong>少了一层遮蔽</strong>。真正的能力还是在于判断——判断该用什么、该省什么、哪里值得较真。</p><p>这个页面还会有很多问题，我会一边用一边改。如果哪天它变得太复杂，我大概会老老实实换个工具。</p><p>工具是手段，不是身份。</p>"},
+"zh-TW":{"skip":"跳到主要內容","nav":{"notes":"筆記"},"back":"全部筆記","toc":{"title":"本頁目錄","open":"開啟目錄","close":"關閉"},"theme":{"toDark":"切換到深色模式","toLight":"切換到淺色模式"},"ui":{"remember":"記住語言","rememberSub":"下次造訪沿用目前語言","langTitle":"選擇語言 / Language","langSwitched":"已切換為{lang}"},"postnav":{"prev":"上一篇","next":"下一篇","newest":"已經是最新一篇","oldest":"已經是最早一篇"},"aria":{"articleNav":"文章導覽"},"nf":{"title":"這一頁走丟了","desc":"你找的地址不存在，或者內容已經搬走了。","home":"回到首頁","notes":"看看筆記","foot":"個人主頁"},"cat":"前端","date":"2026 年 11 月 8 日","read":"約 6 分鐘","title":"為什麼我用純手寫 HTML 做個人主頁","desc":"用框架三分鐘能搭出來的頁面，我斷斷續續寫了幾個晚上。不是不會用工具，而是想把那些被框架藏起來的東西，親手摸一遍。","nextTitle":"把重複的事交給工具：三個小習慣","body":"<p>用現成的模板站，十分鐘能生成一個看著還不錯的個人主頁。用前端框架，熟練的人半小時也能把骨架搭完。</p><p>但這個頁面，我斷斷續續寫了好幾個晚上。</p><p>有人問值不值。我的回答是：如果目標是「盡快有一個網站」，不值；如果目標是「搞明白網站到底是怎麼來的」，那太值了。</p><h2>模板的問題不是醜，是沒有一句是我說的</h2><p>一開始我用的是線上模板。選主題、換配色、填文字，很快就能匯出。但用了幾天，我越來越彆扭，因為頁面上的每一句話都在替我講一些我並沒有講過的話。</p><p>比如技能欄裡那些百分比。</p><blockquote><p>「HTML · 90%」「CSS · 85%」「JavaScript · 75%」</p></blockquote><p>問題是，誰定的這個數？我連一條完整的 DOM 事件流都講不清楚的時候，憑什麼寫 75%？這類數字看起來精確，實際上什麼都沒表達，反而暴露了自己沒想過。</p><p>模板給的是填空題，但個人主頁其實是一道論述題。<strong>填空填得再整齊，論述題也是零分。</strong></p><h2>手寫之後，我第一次看清瀏覽器在幹什麼</h2><p>拋開框架，很多平時被自動處理掉的東西就必須自己面對了。這個過程有點像拆開一台用慣了的機器。</p><h3>層疊到底是怎麼工作的</h3><p>以前改樣式基本靠改一個值、重新整理、不行再改。手寫之後被逼著去理解：為什麼這個顏色沒生效，為什麼加了 <code>!important</code> 才好——然後發現真正的原因是選擇器權重算錯了，<code>!important</code> 只是在掩蓋問題。</p><p>一旦理解了層疊，改樣式就從試錯變成了推理。</p><h3>響應式不是加個媒體查詢</h3><p>我最初的做法是：桌面端寫完，加兩個 <code>@media</code>，字號調小一點，收工。結果在手機上一看，導航擠成一團，正文橫向溢出，頭像把標題壓得喘不過氣。</p><p>後來才明白，響應式的核心不是斷點數量，而是<strong>佈局在什麼條件下會失效</strong>。窄螢幕下真正的問題是水平空間不夠分配，那就得換一種組織方式：從並排改成上下堆疊，從固定寬度改成相對單位。</p><p>我現在的做法是先把視窗拖到最窄，從最小的螢幕往上寫，而不是從大螢幕往下砍。</p><h3>可存取性不是給別人做的</h3><p>鍵盤焦點、語義標籤、對比度——這些詞以前我覺得很遙遠。直到我自己試著只用鍵盤操作一遍：按 Tab 跳到第二個連結之後，我完全不知道焦點去哪了，因為頁面上沒有任何視覺提示。</p><p>那一刻我意識到，這不是「為身心障礙使用者做的適配」，這是<strong>頁面本身缺了一塊</strong>。補上一行 <code>:focus-visible</code> 的樣式，成本幾乎為零，但可用性的差別是「能用」和「不能用」。</p><h2>代價是什麼</h2><p>說實話，代價很清楚，不該藏著：</p><ul><li><strong>重複勞動。</strong>加一篇文章，就得複製一份 HTML，改標題、改正文、改上一篇下一篇的連結。三篇還行，三十篇會瘋。</li><li><strong>改一處要動多處。</strong>顏色變數統一了還好，但我第一版是硬編碼色值，換個主色要全域搜尋替換，還漏了幾處。</li><li><strong>沒有熱更新。</strong>改完儲存，手動重新整理，來回切視窗。效率確實不如框架的開發伺服器。</li></ul><p>所以我做了一個折中：<strong>樣式用 CSS 變數收口，內容用 Markdown 寫，再轉成靜態 HTML。</strong>這樣既有手寫的可控性，又不至於每篇文章都從零複製。</p><h2>那到底什麼時候該用框架</h2><p>我現在的判斷標準很簡單，看三件事：</p><table><thead><tr><th>信號</th><th>說明</th></tr></thead><tbody><tr><td>狀態變多</td><td>頁面上有大量互相影響的狀態（登入、篩選、分頁、表單驗證），手寫會迅速失控</td></tr><tr><td>要協作</td><td>多個人同時改程式碼，需要元件約定和建置流程來對齊</td></tr><tr><td>要長期迭代</td><td>內容量會持續增長，重複勞動的成本會指數上升</td></tr></tbody></table><hr><p>最後講一句可能有點掃興的話：手寫 HTML 不會讓你變成更好的工程師，它只是讓你<strong>少了一層遮蔽</strong>。真正的能力還是在於判斷——判斷該用什麼、該省什麼、哪裡值得較真。</p><p>這個頁面還會有很多問題，我會一邊用一邊改。如果哪天它變得太複雜，我大概會老老實實換個工具。</p><p>工具是手段，不是身分。</p>"},
+"en":{"a11y":{"close":"Close","langBtn":"Switch language","themeToggle":"Toggle dark / light theme","langPanel":"Choose language","mainNav":"Main navigation","nav":"Navigation","toTop":"Back to top","tocSidebar":"On this page","tocDrawer":"Table of contents","kbdPanel":"Keyboard shortcuts","openMenu":"Open menu","mobileMenu":"Mobile menu","closeMenu":"Close menu","copyWechat":"Copy WeChat ID","filterBar":"Filter notes by category"},"skip":"Skip to content","nav":{"notes":"Notes"},"back":"All notes","toc":{"title":"On this page","open":"Open table of contents","close":"Close"},"theme":{"toDark":"Switch to dark mode","toLight":"Switch to light mode"},"ui":{"remember":"Remember language","rememberSub":"Use this language on your next visit","langTitle":"Choose language / Language","langSwitched":"Switched to {lang}"},"postnav":{"prev":"Previous","next":"Next","newest":"This is the latest post","oldest":"This is the oldest post"},"aria":{"articleNav":"Post navigation"},"nf":{"title":"This page got lost","desc":"The address you're looking for doesn't exist, or its content has moved.","home":"Back to home","notes":"Browse notes","foot":"Personal homepage"},"cat":"Frontend","date":"Nov 8, 2026","read":"~6 min","title":"Why I hand-wrote my homepage in plain HTML","desc":"A page a framework can scaffold in three minutes took me several scattered evenings. Not because I can't use tools, but because I wanted to feel the things frameworks hide away.","nextTitle":"Hand repetitive work to tools: three small habits","body":"<p>With a ready-made template site, you can generate a decent-looking homepage in ten minutes. With a frontend framework, a skilled person can scaffold the skeleton in half an hour.</p><p>But this page took me several scattered evenings.</p><p>People ask whether it was worth it. My answer: if the goal is “to have a website as fast as possible”, no. If the goal is “to figure out how a website actually comes into being”, then absolutely.</p><h2>The problem with templates isn't that they're ugly — it's that not one line says what I'd say</h2><p>At first I used an online template. Pick a theme, swap the colors, fill in the text, and you can export it quickly. But after a few days it felt more and more off, because every sentence on the page was saying things on my behalf that I never said.</p><p>Like those percentages in the skills bar.</p><blockquote><p>“HTML · 90%” “CSS · 85%” “JavaScript · 75%”</p></blockquote><p>The question is: who decided those numbers? When I can't even walk through a complete DOM event flow, on what grounds do I write 75%? Numbers like that look precise but actually express nothing — they only expose that I hadn't thought about it.</p><p>A template gives you fill-in-the-blanks, but a personal homepage is really an essay question. <strong>No matter how neatly you fill in the blanks, the essay still scores zero.</strong></p><h2>After hand-writing, I saw clearly for the first time what the browser is doing</h2><p>Without a framework, many things that used to be handled automatically now have to be faced yourself. The process is a bit like taking apart a machine you're used to.</p><h3>How the cascade actually works</h3><p>Before, I changed styles by tweaking a value, refreshing, and tweaking again when it didn't work. Hand-writing forced me to understand: why this color didn't apply, why adding <code>!important</code> “fixed” it — then I found the real cause was a miscalculated selector specificity, and <code>!important</code> was just masking the problem.</p><p>Once you understand the cascade, changing styles stops being trial and error and becomes reasoning.</p><h3>Responsive isn't just adding a media query</h3><p>My original approach: finish the desktop version, add a couple of <code>@media</code> rules, shrink the font a bit, done. Then on a phone the nav was squeezed together, the body overflowed horizontally, and the avatar crushed the title.</p><p>Only later did I realize the core of responsiveness isn't the number of breakpoints, but <strong>under what conditions the layout fails</strong>. On a narrow screen the real problem is not enough horizontal space to distribute, so you have to reorganize: from side-by-side to stacked, from fixed widths to relative units.</p><p>Now I drag the window to its narrowest and build up from the smallest screen, instead of chopping down from the large one.</p><h3>Accessibility isn't for other people</h3><p>Keyboard focus, semantic labels, contrast — these words once felt remote. Until I tried operating the whole thing with just the keyboard: after Tab jumped to the second link, I had no idea where the focus went, because the page gave no visual hint.</p><p>At that moment I realized this isn't “an adaptation for disabled users” — it's that <strong>the page itself was missing a piece</strong>. Adding one line of <code>:focus-visible</code> styling costs almost nothing, but the difference in usability is “works” versus “doesn't work”.</p><h2>What does it cost?</h2><p>Honestly, the cost is clear, and I shouldn't hide it:</p><ul><li><strong>Repetitive work.</strong> Adding one post means duplicating an HTML file and changing the title, the body, and the prev/next links. Three posts is fine; thirty will drive you mad.</li><li><strong>Change one thing, touch many places.</strong> Consolidating colors into variables helped, but my first version hard-coded color values — changing the accent meant a global find-and-replace, and I still missed a few.</li><li><strong>No hot reload.</strong> Save, refresh manually, switch windows back and forth. It's genuinely less efficient than a framework's dev server.</li></ul><p>So I compromised: <strong>consolidate styles with CSS variables, write content in Markdown, then convert it to static HTML.</strong> That keeps the control of hand-writing without duplicating every article from scratch.</p><h2>So when should you actually use a framework?</h2><p>My rule of thumb now is simple — three signals:</p><table><thead><tr><th>Signal</th><th>Meaning</th></tr></thead><tbody><tr><td>State multiplies</td><td>The page has lots of interdependent state (login, filters, pagination, form validation) — hand-writing quickly spirals out of control</td></tr><tr><td>You collaborate</td><td>Several people edit the code at once and need component conventions and a build process to stay aligned</td></tr><tr><td>You iterate long-term</td><td>The amount of content keeps growing, and the cost of repetitive work rises exponentially</td></tr></tbody></table><hr><p>One last, possibly deflating note: hand-writing HTML won't make you a better engineer. It only removes one layer of concealment. The real skill is still judgment — deciding what to use, what to skip, and where it's worth being meticulous.</p><p>This page will still have plenty of issues, and I'll fix them as I go. If one day it gets too complex, I'll probably just switch tools honestly.</p><p>Tools are means, not identity.</p>"}
 };
 
 /* ============================================================
@@ -712,12 +732,29 @@ function __ownBody(c){var l=I18N[c];return !!(l&&l.body&&(!I18N.en||l.body!==I18
 LANGS.push({code:"he",native:"עברית",sub:"Hebrew"},{code:"fa",native:"فارسی",sub:"Persian"});
 var rootEl=document.documentElement;
 function getPath(obj,path){return path.split(".").reduce(function(o,k){return o?o[k]:undefined;},obj);}
-function currentLang(){
-  try{return localStorage.getItem("lang")||"zh";}catch(e){return "zh";}
+/* 记住语言开关
+   开：语言写入 localStorage，下次访问沿用（默认，兼容老行为）
+   关：只写 sessionStorage —— 本标签页刷新/跳页仍保持所选语言，关掉浏览器后回到自动检测
+   读取顺序：localStorage 优先，其次 sessionStorage，最后浏览器语言 */
+var LANG_REMEMBER_KEY="rememberLang";
+function langRememberOn(){
+  try{return localStorage.getItem(LANG_REMEMBER_KEY)!=="0";}catch(e){return true;}
+}
+function __readSavedLang(){
+  try{return localStorage.getItem("lang")||sessionStorage.getItem("lang")||null;}catch(e){return null;}
+}
+function __persistLang(code){
+  try{
+    sessionStorage.setItem("lang",code);
+    if(langRememberOn())localStorage.setItem("lang",code);
+    else localStorage.removeItem("lang");
+  }catch(e){console.warn("[silent-catch]",e);}
 }
 function __renderLang(code){
   var lang=I18N[code]||I18N["zh"];
-  try{localStorage.setItem("lang",code);}catch(e){}
+  __persistLang(code);
+  var __tt=getPath(lang,"meta.title");
+  if(__tt){document.title=__tt;var __og=document.querySelector('meta[property="og:title"]');if(__og)__og.setAttribute("content",__tt);}
   rootEl.setAttribute("lang",langAttrOf(code));
   rootEl.setAttribute("dir", langDirOf(code));
   document.querySelectorAll("[data-i18n]").forEach(function(el){
@@ -741,6 +778,11 @@ function __renderLang(code){
   }
   var lb=document.getElementById("langLabel");
   if(lb){var ll=(LANGS.filter(function(l){return l.code===code;})[0]||{}).native||code;lb.textContent=ll;}
+  document.querySelectorAll("[data-i18n-aria]").forEach(function(el){
+    var __ak=el.getAttribute("data-i18n-aria"),av=getPath(lang,__ak);
+    if(av===undefined) av=getPath(I18N.en||I18N.zh,__ak);
+    if(av!==undefined) el.setAttribute("aria-label",av);
+  });
   document.querySelectorAll(".lang-list button").forEach(function(b){
     b.classList.toggle("active",b.getAttribute("data-lang")===code);
   });
@@ -748,7 +790,7 @@ function __renderLang(code){
   if(d && lang.desc) d.setAttribute("content",lang.desc);
   var ogt=document.querySelector('meta[property="og:title"]');
   if(ogt && lang.title) ogt.setAttribute("content",lang.title);
-  if(lang.title) document.title=lang.title+" · "+(code==="zh-TW"?"王孫陽":"王孙阳");
+  if(lang.title) document.title=lang.title+" · "+(code==="zh-TW"?"王孫陽":(code==="zh"?"王孙阳":"Wang Sunyang"));
   var tb=document.getElementById("themeToggle");
   if(tb){
     var t=rootEl.getAttribute("data-theme");
@@ -779,10 +821,14 @@ function __loadLang(code,cb){
   var s=document.createElement("script");
   s.src=I18N_EXT_BASE+code+".js";s.async=true;
   function done(ok){
-    if(!ok)I18N[code]=I18N.zh;
+    if(!ok){I18N[code]=I18N.zh;
+      (window.__i18nErrs=window.__i18nErrs||[]).push("langload:"+code);
+      var __de=document.documentElement;
+      if(__de&&__de.className.indexOf("i18n-boot")>-1)__de.className=__de.className.replace(/\s*i18n-boot/g,"");
+    }
     __langBusy[code]=false;
     var q=__langQueue[code]||[];__langQueue[code]=[];
-    for(var i=0;i<q.length;i++){try{q[i]();}catch(e){}}
+    for(var i=0;i<q.length;i++){try{q[i]();}catch(e){console.warn("[silent-catch]",e);}}
   }
   s.onload=function(){done(true);};
   s.onerror=function(){done(false);};
@@ -804,7 +850,7 @@ function __announceLang(code){
 }
 function setLang(code){
   if(!__isKnownLang(code))code="zh";
-  try{localStorage.setItem("lang",code);}catch(e){}
+  __persistLang(code);
   __loadLang(code,function(){
     __renderLang(code);
     __announceLang(code);
@@ -827,7 +873,7 @@ function setLang(code){
 /* auto-detect best language on first visit (script/region aware) */
 (function(){
   var APPLY=(typeof setLang==="function")?setLang:applyLang;
-  var saved=null;try{saved=localStorage.getItem("lang");}catch(e){}
+  var saved=__readSavedLang();
   if(saved && __isKnownLang(saved)){APPLY(saved);return;}
   var list=(navigator.languages&&navigator.languages.length)?navigator.languages:[navigator.language||"zh"];
   var cand="zh";
@@ -855,16 +901,27 @@ var LANG_APPLY=(typeof applyLang==="function")?applyLang:(typeof setLang==="func
 function langDirOf(code){return (["ar","he","fa","ur","yi","dv","ps","ckb","sd","ug"].indexOf(code)>-1)?"rtl":"ltr";}
 function langAttrOf(code){return ({"zh":"zh-CN","zh-TW":"zh-Hant"})[code]||code;}
 function currentLang(){
-  var saved=null;
-  try{saved=localStorage.getItem("lang");}catch(e){}
+  var saved=__readSavedLang();
   return (saved && __isKnownLang(saved))?saved:"zh";
 }
 function positionPanel(){
   if(!langPanel||!langBtn)return;
-  if(window.innerWidth<=680){langPanel.style.top="";langPanel.style.right="";return;}
+  if(window.innerWidth<=680){
+    langPanel.style.top="";langPanel.style.right="";langPanel.style.left="";
+    return;
+  }
   var r=langBtn.getBoundingClientRect();
+  var rtl=document.documentElement.getAttribute("dir")==="rtl";
+  var pw=langPanel.offsetWidth||Math.min(420,window.innerWidth-32);
+  var gap=12;
   langPanel.style.top=(r.bottom+10)+"px";
-  langPanel.style.right=Math.max(12,window.innerWidth-r.right)+"px";
+  if(rtl){
+    langPanel.style.right="";
+    langPanel.style.left=Math.max(gap,Math.min(r.left,window.innerWidth-pw-gap))+"px";
+  }else{
+    langPanel.style.left="";
+    langPanel.style.right=Math.max(gap,window.innerWidth-r.right)+"px";
+  }
 }
 function panelIsOpen(){return !!(langPanel&&langPanel.classList.contains("open"));}
 function setPanelLock(on){
@@ -875,8 +932,8 @@ function focusLangButton(){
   if(!langListEl)return;
   var cur=langListEl.querySelector('button[data-lang="'+currentLang()+'"]')||langListEl.querySelector("button[data-lang]");
   if(!cur)return;
-  try{cur.focus({preventScroll:true});}catch(e){try{cur.focus();}catch(e2){}}
-  if(cur.scrollIntoView)try{cur.scrollIntoView({block:"nearest"});}catch(e3){}
+  try{cur.focus({preventScroll:true});}catch(e){try{cur.focus();}catch(e2){console.warn("[silent-catch]",e2);}}
+  if(cur.scrollIntoView)try{cur.scrollIntoView({block:"nearest"});}catch(e3){console.warn("[silent-catch]",e3);}
 }
 function openPanel(){
   if(!langPanel||panelIsOpen())return;
@@ -893,7 +950,7 @@ function closePanel(refocus){
   setPanelLock(false);
   var s=document.getElementById("langSearch");
   if(s&&s.value){s.value="";filterLangList("");}
-  if(refocus&&langBtn)try{langBtn.focus({preventScroll:true});}catch(e){}
+  if(refocus&&langBtn)try{langBtn.focus({preventScroll:true});}catch(e){console.warn("[silent-catch]",e);}
 }
 function filterLangList(q){
   if(!langListEl)return;
@@ -940,6 +997,33 @@ if(langPanel){
   })();
 }
 
+/* 记住语言开关绑定 */
+var langRememberBtn=document.getElementById("rememberLang");
+function syncRememberUI(){
+  if(!langRememberBtn)return;
+  langRememberBtn.setAttribute("aria-checked",langRememberOn()?"true":"false");
+}
+function __liveLangCode(){
+  var a=document.documentElement.getAttribute("lang")||"";
+  if(a==="zh-CN")return "zh";
+  if(a==="zh-Hant")return "zh-TW";
+  return __isKnownLang(a)?a:currentLang();
+}
+if(langRememberBtn){
+  langRememberBtn.addEventListener("click",function(){
+    var next=!langRememberOn();
+    var cur=__liveLangCode();
+    try{
+      localStorage.setItem(LANG_REMEMBER_KEY,next?"1":"0");
+      sessionStorage.setItem("lang",cur);
+      if(next)localStorage.setItem("lang",cur);
+      else localStorage.removeItem("lang");
+    }catch(e){console.warn("[silent-catch]",e);}
+    syncRememberUI();
+  });
+  syncRememberUI();
+}
+
 if(langBtn)langBtn.addEventListener("click",function(e){e.preventDefault();panelIsOpen()?closePanel(false):openPanel();});
 if(langCloseBtn)langCloseBtn.addEventListener("click",function(){closePanel(true);});
 document.addEventListener("click",function(e){
@@ -957,9 +1041,11 @@ document.addEventListener("keydown",function(e){
   if(e.key==="End"){e.preventDefault();btns[btns.length-1].focus();return;}
   if(e.key==="Tab"){
     var items=[];
+    if(langCloseBtn)items.push(langCloseBtn);
+    var rb=document.getElementById("rememberLang");
+    if(rb)items.push(rb);
     var s=document.getElementById("langSearch");
     if(s)items.push(s);
-    if(langCloseBtn)items.push(langCloseBtn);
     items=items.concat(btns);
     var first=items[0],last=items[items.length-1];
     if(e.shiftKey && document.activeElement===first){e.preventDefault();last.focus();}
@@ -976,6 +1062,7 @@ if(langListEl)langListEl.addEventListener("click",function(e){
 window.addEventListener("resize",function(){if(panelIsOpen())positionPanel();});
 window.addEventListener("scroll",function(){if(panelIsOpen())positionPanel();},{passive:true});
 window.addEventListener("storage",function(e){
+  if(e.key===LANG_REMEMBER_KEY){syncRememberUI();return;}
   if(e.key!=="lang"||!e.newValue||!__isKnownLang(e.newValue)||!LANG_APPLY)return;
   LANG_APPLY(e.newValue);syncLangUI();
 });
@@ -1006,7 +1093,7 @@ syncLangUI();
    theme
    ============================================================ */
 (function(){
-  var saved=null;try{saved=localStorage.getItem("theme");}catch(e){}
+  var saved=null;try{saved=localStorage.getItem("theme");}catch(e){console.warn("[silent-catch]",e);}
   var light=window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches;
   rootEl.setAttribute("data-theme",saved||(light?"light":"dark"));
   var btn=document.getElementById("themeToggle");
@@ -1021,9 +1108,20 @@ syncLangUI();
   btn.addEventListener("click",function(){
     var next=rootEl.getAttribute("data-theme")==="light"?"dark":"light";
     rootEl.setAttribute("data-theme",next);
-    try{localStorage.setItem("theme",next);}catch(e){}
+    try{localStorage.setItem("theme",next);}catch(e){console.warn("[silent-catch]",e);}
     sync(next);
   });
+  if(window.matchMedia){
+    var __mq=window.matchMedia("(prefers-color-scheme: light)");
+    var __mcb=function(e){
+      var s=null;try{s=localStorage.getItem("theme");}catch(err){console.warn("[silent-catch]",err);}
+      if(s)return;
+      var t=e.matches?"light":"dark";
+      rootEl.setAttribute("data-theme",t);sync(t);
+    };
+    if(__mq.addEventListener)__mq.addEventListener("change",__mcb);
+    else if(__mq.addListener)__mq.addListener(__mcb);
+  }
 })();
 
 /* ============================================================
