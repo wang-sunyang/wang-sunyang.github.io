@@ -1,0 +1,2 @@
+/* fa · notfound — UI 词典（懒加载，仅本页） */
+window.__I18N_PUSH__&&window.__I18N_PUSH__("fa",{"ui":{"langTitle":"انتخاب زبان / Language","langSwitched":"زبان به {lang} تغییر کرد"},"theme":{"toDark":"رفتن به حالت تیره","toLight":"رفتن به حالت روشن"},"nf":{"title":"این صفحه گم شد","desc":"این نشانی وجود ندارد، یا محتوا جابه‌جا شده است.","home":"بازگشت به خانه","notes":"دیدن یادداشت‌ها","foot":"سایت شخصی"}});

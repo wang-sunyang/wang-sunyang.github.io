@@ -1,0 +1,2 @@
+/* ms · notfound — UI 词典（懒加载，仅本页） */
+window.__I18N_PUSH__&&window.__I18N_PUSH__("ms",{"ui":{"langTitle":"Pilih bahasa / Language","langSwitched":"Bahasa ditukar kepada {lang}"},"theme":{"toDark":"Tukar ke tema gelap","toLight":"Tukar ke tema cerah"},"nf":{"title":"Halaman ini tersesat","desc":"Alamat tidak wujud, atau kandungan telah berpindah.","home":"Kembali ke laman utama","notes":"Ke nota","foot":"Laman peribadi"}});

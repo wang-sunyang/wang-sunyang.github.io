@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>王孙阳 · Wang Sunyang — 独立开发者</title>
+    <link>https://wang-sunyang.github.io/</link>
+    <description>原生 Android、零依赖构建链、AI Agent 权限闸门。少一层抽象，就少一类 bug。</description>
+    <language>zh-CN</language>
+    <lastBuildDate>Wed, 25 Nov 2026 10:00:00 +0800</lastBuildDate>
+    <atom:link href="https://wang-sunyang.github.io/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>为什么我用纯手写 HTML 做个人主页</title>
+      <link>https://wang-sunyang.github.io/posts/handwritten-html.html</link>
+      <guid isPermaLink="true">https://wang-sunyang.github.io/posts/handwritten-html.html</guid>
+      <pubDate>Sun, 08 Nov 2026 09:00:00 +0800</pubDate>
+      <description>用框架三分钟能搭出来的页面，我断断续续写了几个晚上。不是不会用工具，而是想把那些被框架藏起来的东西，亲手摸一遍。</description>
+      <content:encoded><![CDATA[<p>用框架三分钟能搭出来的页面，我断断续续写了几个晚上。不是不会用工具，而是想把那些被框架藏起来的东西，亲手摸一遍：选择器怎么命中、样式怎么层叠、一个 40KB 的页面到底装了什么。</p><p>手写的好处是每一行都知道来由，坏处也一样——每一行都得自己负责。写完这版之后，我对「框架替你做了什么」的答案，比读十篇教程要清楚。</p>]]></content:encoded>
+    </item>
+    <item>
+      <title>把重复的事交给工具：三个小习惯</title>
+      <link>https://wang-sunyang.github.io/posts/three-habits.html</link>
+      <guid isPermaLink="true">https://wang-sunyang.github.io/posts/three-habits.html</guid>
+      <pubDate>Wed, 21 Oct 2026 09:00:00 +0800</pubDate>
+      <description>效率提升往往不来自什么大动作，而是来自三个具体的判断：什么该省、什么绝不能省、以及怎么让工具替你记住规则。</description>
+      <content:encoded><![CDATA[<p>效率提升往往不来自什么大动作，而是来自三个具体的判断：什么该省、什么绝不能省、以及怎么让工具替你记住规则。</p><p>我给自己定的三条：能一次写清的规则不写第二遍；危险操作必须先亮出来再执行；能用一行脚本解决的，不引入第二个依赖。</p>]]></content:encoded>
+    </item>
+  </channel>
+</rss>

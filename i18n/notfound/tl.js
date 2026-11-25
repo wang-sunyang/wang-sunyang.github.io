@@ -1,0 +1,2 @@
+/* tl · notfound — UI 词典（懒加载，仅本页） */
+window.__I18N_PUSH__&&window.__I18N_PUSH__("tl",{"ui":{"langTitle":"Pagpili ng wika / Language","langSwitched":"Pinalitan ang wika sa {lang}"},"theme":{"toDark":"Lumipat sa madilim na tema","toLight":"Lumipat sa maliwanag na tema"},"nf":{"title":"Naligaw ang pahinang ito","desc":"Wala ang address, o lumipat ang nilalaman.","home":"Bumalik sa home","notes":"Pumunta sa mga tala","foot":"Personal na site"}});

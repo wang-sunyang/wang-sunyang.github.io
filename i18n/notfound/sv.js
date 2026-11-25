@@ -1,0 +1,2 @@
+/* sv · notfound — UI 词典（懒加载，仅本页） */
+window.__I18N_PUSH__&&window.__I18N_PUSH__("sv",{"ui":{"langTitle":"Språkval / Language","langSwitched":"Språket ändrades till {lang}"},"theme":{"toDark":"Byt till mörkt","toLight":"Byt till ljust"},"nf":{"title":"Sidan har gått vilse","desc":"Adressen finns inte, eller så har innehållet flyttat.","home":"Till startsidan","notes":"Till anteckningarna","foot":"Personlig sajt"}});

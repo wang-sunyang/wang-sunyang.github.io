@@ -1,0 +1,2 @@
+/* id · notfound — UI 词典（懒加载，仅本页） */
+window.__I18N_PUSH__&&window.__I18N_PUSH__("id",{"ui":{"langTitle":"Pilih bahasa / Language","langSwitched":"Bahasa diubah ke {lang}"},"theme":{"toDark":"Ganti ke mode gelap","toLight":"Ganti ke mode terang"},"nf":{"title":"Halaman ini tersesat","desc":"Alamat yang Anda cari tidak ada, atau isinya sudah pindah.","home":"Kembali ke beranda","notes":"Lihat catatan","foot":"Situs pribadi"}});

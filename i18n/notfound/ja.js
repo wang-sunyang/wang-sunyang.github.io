@@ -1,0 +1,2 @@
+/* ja · notfound — UI 词典（懒加载，仅本页） */
+window.__I18N_PUSH__&&window.__I18N_PUSH__("ja",{"ui":{"langTitle":"言語を選択 / Language","langSwitched":"{lang}に切り替えました"},"theme":{"toDark":"ダークモードに切り替え","toLight":"ライトモードに切り替え"},"nf":{"title":"このページは迷子になりました","desc":"お探しのアドレスは存在しないか、内容が移動しました。","home":"ホームに戻る","notes":"ノートを見る","foot":"個人サイト"}});

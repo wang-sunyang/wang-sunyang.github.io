@@ -1,0 +1,2 @@
+/* vi · notfound — UI 词典（懒加载，仅本页） */
+window.__I18N_PUSH__&&window.__I18N_PUSH__("vi",{"ui":{"langTitle":"Chọn ngôn ngữ / Language","langSwitched":"Đã chuyển sang {lang}"},"theme":{"toDark":"Chuyển sang chế độ tối","toLight":"Chuyển sang chế độ sáng"},"nf":{"title":"Trang này đã lạc mất","desc":"Địa chỉ bạn tìm không tồn tại, hoặc nội dung đã chuyển đi.","home":"Về trang chủ","notes":"Xem ghi chú","foot":"Trang cá nhân"}});

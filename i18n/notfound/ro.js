@@ -1,0 +1,2 @@
+/* ro · notfound — UI 词典（懒加载，仅本页） */
+window.__I18N_PUSH__&&window.__I18N_PUSH__("ro",{"ui":{"langTitle":"Alegerea limbii / Language","langSwitched":"Limba a fost schimbată în {lang}"},"theme":{"toDark":"Treci la tema întunecată","toLight":"Treci la tema luminoasă"},"nf":{"title":"Pagina asta s-a rătăcit","desc":"Adresa nu există sau conținutul s-a mutat.","home":"Înapoi acasă","notes":"La notițe","foot":"Site personal"}});

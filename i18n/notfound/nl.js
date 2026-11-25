@@ -1,0 +1,2 @@
+/* nl · notfound — UI 词典（懒加载，仅本页） */
+window.__I18N_PUSH__&&window.__I18N_PUSH__("nl",{"ui":{"langTitle":"Kies taal / Language","langSwitched":"Taal gewijzigd naar {lang}"},"theme":{"toDark":"Schakel naar donkere modus","toLight":"Schakel naar lichte modus"},"nf":{"title":"Deze pagina is verdwaald","desc":"Het adres dat je zoekt bestaat niet, of de inhoud is verplaatst.","home":"Terug naar home","notes":"Bekijk notities","foot":"Persoonlijke site"}});

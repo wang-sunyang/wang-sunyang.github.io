@@ -12,24 +12,64 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="王孙阳 · Wang Sunyang">
 <meta property="og:title" content="笔记 · 王孙阳">
+<meta name="twitter:title" content="笔记 · 王孙阳">
 <meta property="og:description" content="写下来，才真正学会。学习笔记与技术随笔。">
+<meta name="twitter:description" content="写下来，才真正学会。学习笔记与技术随笔。">
 <meta property="og:url" content="https://wang-sunyang.github.io/blog.html">
 <meta property="og:locale" content="zh_CN">
-<meta name="twitter:card" content="summary">
+<meta name="twitter:card" content="summary_large_image">
 
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="512x512" href="https://wang-sunyang.github.io/favicon-512.png">
+<link rel="manifest" href="https://wang-sunyang.github.io/site.webmanifest">
+<link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml">
+  <link rel="alternate" type="application/rss+xml" title="王孙阳 · Wang Sunyang — 独立开发者" href="https://wang-sunyang.github.io/feed.xml">
+<meta property="og:image" content="https://wang-sunyang.github.io/og-cover.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="王孙阳 · Wang Sunyang — 独立开发者">
+<meta name="twitter:image" content="https://wang-sunyang.github.io/og-cover.png">
+<meta name="twitter:image:alt" content="王孙阳 · Wang Sunyang — 独立开发者">
 
 <script>
 /* 首屏前决定主题，避免闪白/闪黑 */
 (function(){var s=null;try{s=localStorage.getItem('theme');}catch(e){}var l=window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)').matches;document.documentElement.setAttribute('data-theme',s||(l?'light':'dark'));})();
 </script>
+<script>
+/* 首屏语言判定：读 body 之前先定好 <html lang/dir>；
+   目标语言不是中文时暂时隐藏正文，等词典就位再显示，避免先闪一句中文。 */
+(function(){
+  var L=["zh","zh-TW","en","ja","ko","fr","de","es","pt","it","ru","uk","pl","nl","tr","ar","hi","id","vi","th","el","sv","cs","ro","bn","ur","ms","tl","he","fa"];
+  var RTL=["ar","he","fa","ur","yi","dv","ps","ckb","sd","ug"];
+  var code=null;
+  try{code=localStorage.getItem("lang");}catch(e){}
+  if(!code||L.indexOf(code)<0){
+    code=null;
+    var list=(navigator.languages&&navigator.languages.length)?navigator.languages:[navigator.language||"zh"];
+    for(var i=0;i<list.length;i++){
+      var tag=String(list[i]||"").toLowerCase();if(!tag)continue;
+      var bits=tag.split("-"),prim=bits[0],rest=bits.slice(1).join("-");
+      if(prim==="zh"){code=(rest.indexOf("hant")>-1||rest==="tw"||rest==="hk"||rest==="mo")?"zh-TW":"zh";break;}
+      if(L.indexOf(tag)>-1){code=tag;break;}
+      if(L.indexOf(prim)>-1){code=prim;break;}
+    }
+    if(!code)code="zh";
+  }
+  var de=document.documentElement;
+  de.setAttribute("lang",({"zh":"zh-CN","zh-TW":"zh-Hant"})[code]||code);
+  de.setAttribute("dir",RTL.indexOf(code)>-1?"rtl":"ltr");
+  window.__BOOT_LANG__=code;
+  if(code!=="zh")de.className=(de.className?de.className+" ":"")+"i18n-boot";
+  setTimeout(function(){if(!window.__LANG_READY__)de.className=de.className.replace(/\s*i18n-boot/g,"");},4000);
+})();
+</script>
 <style>
 /* ============================================================
    NIGHTGLEAN · 长夜拾星 — Notes · Design System
-   0 deps · hand-written · 20 languages
+   0 deps · hand-written · 30 languages
    ============================================================ */
 :root{
   --bg:#05060e;
@@ -293,10 +333,51 @@ footer a:hover{color:var(--acc1)}
   #aurora i{animation:none}
   #grain{display:none}
 }
+/* ---- language panel polish (unified) ---- */
+#langPanel .lang-search-wrap{padding:10px 12px 4px;}
+#langPanel .lang-search{width:100%;box-sizing:border-box;padding:8px 11px;border-radius:9px;border:1px solid rgba(128,128,128,.35);background:rgba(128,128,128,.08);color:inherit;font:inherit;font-size:13px;line-height:1.3;-webkit-appearance:none;appearance:none;}
+#langPanel .lang-search::-webkit-search-cancel-button{-webkit-appearance:none;}
+#langPanel .lang-search:focus{outline:2px solid rgba(120,170,255,.85);outline-offset:1px;}
+#langPanel .lang-list button[data-lang]:focus-visible{outline:2px solid rgba(120,170,255,.85);outline-offset:2px;}
+#langPanel.no-match .lang-list::after{content:"\2014";display:block;padding:22px 0;text-align:center;opacity:.55;}
+html.lang-lock,html.lang-lock body{overflow:hidden;}
+@media (prefers-reduced-motion:reduce){#langPanel,.lang-search-wrap{transition:none!important;animation:none!important;}}
+html:lang(bn){font-family:"Noto Sans Bengali","Nirmala UI","Segoe UI",system-ui,sans-serif;}
+html:lang(ur){font-family:"Noto Nastaliq Urdu","Noto Naskh Arabic","Segoe UI",Tahoma,system-ui,sans-serif;}
+html:lang(fa),html:lang(he),html:lang(ar),html:lang(sd),html:lang(ps){font-family:"Segoe UI",Tahoma,"Noto Naskh Arabic","Noto Sans Hebrew",system-ui,sans-serif;}
+/* i18n 首屏防闪：目标语言不是中文时，切换完成前不显示正文 */
+html.i18n-boot body{visibility:hidden}
+html.i18n-boot{background:#05060e}
+html[data-theme="light"].i18n-boot{background:#f4f5fb}
+/* ============================================================
+   打印样式 — 只留正文，去掉浮层、导航与暗色背景
+   ============================================================ */
+@media print{
+  @page{margin:14mm 12mm}
+  html,body{background:#fff!important;color:#111!important}
+  body{color-adjust:exact;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  #langPanel,#langBtn,#menuBtn,#mobileMenu,#menuOverlay,#langSearch,#bodyNote,
+  .aurora,.grain,.noise,.cursor-glow,.lang-search-wrap,.skip-link,.sr-only,.theme-toggle,
+  nav,.nav,.topbar,.lang-wrap,.more-wrap{display:none!important}
+  a{color:#111!important;text-decoration:underline}
+  a[href^="http"]::after{content:" (" attr(href) ")";font-size:9pt;color:#555;word-break:break-all}
+  h1,h2,h3{break-after:avoid;page-break-after:avoid}
+  img,pre,table,blockquote,figure{break-inside:avoid;page-break-inside:avoid}
+  pre{white-space:pre-wrap;word-break:break-word;border:1px solid #ddd;background:#fafafa}
+}
+
+@media print{
+  .toc,.post-nav,.read-bar,.reader-bar,.progress,.scroll-progress,#tocToggle{display:none!important}
+  .prose{max-width:none!important;font-size:11.5pt;line-height:1.65;color:#111}
+  .prose pre,.prose code{color:#111!important;background:#f4f4f4!important}
+  .prose img{max-width:100%!important;height:auto}
+  .prose a{word-break:break-word}
+}
 </style>
 </head>
 
 <body>
+<div id="srStatus" role="status" aria-live="polite" aria-atomic="true" style="position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0"></div>
 <a class="skip" href="#main" data-i18n="skip">跳到主要内容</a>
 <div id="progress" aria-hidden="true"></div>
 
@@ -421,7 +502,7 @@ footer a:hover{color:var(--acc1)}
 
 <script>
 /* ============================================================
-   i18n dictionary — 20 languages
+   i18n dictionary — 30 languages
    ============================================================ */
 var LANGS=[
   {code:"zh",native:"简体中文",sub:"Simplified Chinese"},
@@ -447,220 +528,47 @@ var LANGS=[
 ];
 
 var I18N={
-"zh":{skip:"跳到主要内容",ui:{langTitle:"选择语言 / Language"},
-nav:{about:"关于",projects:"作品",stack:"技术栈",phil:"理念",journey:"轨迹",notes:"笔记",contact:"联系"},
-page:{eyebrow:"NOTES",title:"写下来，才真正学会",subtitle:"这里放我的学习笔记和技术随笔。不是教程，更像是给未来的自己留的备忘：做过什么、卡在哪里、后来怎么想通的。"},
-filter:{all:"全部"},cat:{fe:"前端",prod:"效率"},
-p1:{title:"为什么我用纯手写 HTML 做个人主页",desc:"用框架三分钟能搭出来的页面，我断断续续写了几个晚上。不是不会用工具，而是想把那些被框架藏起来的东西，亲手摸一遍。",date:"2026 年 11 月 8 日",read:"约 6 分钟"},
-p2:{title:"把重复的事交给工具：三个小习惯",desc:"效率提升往往不来自什么大动作，而是来自三个具体的判断：什么该省、什么绝不能省、以及怎么让工具替你记住规则。",date:"2026 年 10 月 21 日",read:"约 5 分钟"},
-readMore:"阅读全文",empty:"这个分类下还没有笔记。",
-sub:{title:"不定期更新",desc:"有想明白的事就写一篇，不追热点，不硬凑数量。",cta:"订阅更新",back:"回到主页"},
-footer:{line:"少一层抽象，就少一类 bug。",top:"回到顶部 ↑"}},
-
-"zh-TW":{skip:"跳到主要內容",ui:{langTitle:"選擇語言 / Language"},
-nav:{about:"關於",projects:"作品",stack:"技術棧",phil:"理念",journey:"軌跡",notes:"筆記",contact:"聯繫"},
-page:{eyebrow:"NOTES",title:"寫下來，才真正學會",subtitle:"這裡放我的學習筆記和技術隨筆。不是教學，更像是給未來的自己留的備忘：做過什麼、卡在哪裡、後來怎麼想通的。"},
-filter:{all:"全部"},cat:{fe:"前端",prod:"效率"},
-p1:{title:"為什麼我用純手寫 HTML 做個人主頁",desc:"用框架三分鐘能搭出來的頁面，我斷斷續續寫了幾個晚上。不是不會用工具，而是想把那些被框架藏起來的東西，親手摸一遍。",date:"2026 年 11 月 8 日",read:"約 6 分鐘"},
-p2:{title:"把重複的事交給工具：三個小習慣",desc:"效率提升往往不來自什麼大動作，而是來自三個具體的判斷：什麼該省、什麼絕不能省、以及怎麼讓工具替你記住規則。",date:"2026 年 10 月 21 日",read:"約 5 分鐘"},
-readMore:"閱讀全文",empty:"這個分類下還沒有筆記。",
-sub:{title:"不定期更新",desc:"有想明白的事就寫一篇，不追熱點，不硬湊數量。",cta:"訂閱更新",back:"回到主頁"},
-footer:{line:"少一層抽象，就少一類 bug。",top:"回到頂部 ↑"}},
-
-"en":{skip:"Skip to content",ui:{langTitle:"Choose language / Language"},
-nav:{about:"About",projects:"Projects",stack:"Stack",phil:"Philosophy",journey:"Journey",notes:"Notes",contact:"Contact"},
-page:{eyebrow:"NOTES",title:"Write it down, then you really learn",subtitle:"My study notes and technical essays. Not tutorials — more like memos for my future self: what I did, where I got stuck, and how I eventually figured it out."},
-filter:{all:"All"},cat:{fe:"Frontend",prod:"Productivity"},
-p1:{title:"Why I hand-wrote my homepage in plain HTML",desc:"A page a framework can scaffold in three minutes took me several scattered evenings. Not because I can't use tools, but because I wanted to feel the things frameworks hide away.",date:"Nov 8, 2026",read:"~6 min"},
-p2:{title:"Hand repetitive work to tools: three small habits",desc:"Real efficiency rarely comes from a big move. It comes from three concrete calls: what to skip, what never to skip, and how to make tools remember your rules.",date:"Oct 21, 2026",read:"~5 min"},
-readMore:"Read more",empty:"No notes in this category yet.",
-sub:{title:"Updates, occasionally",desc:"I write one when I've actually figured something out — no hot takes, no padding the count.",cta:"Subscribe",back:"Back to home"},
-footer:{line:"One fewer layer of abstraction, one fewer bug.",top:"Back to top ↑"}},
-
-"ja":{skip:"本文へスキップ",ui:{langTitle:"言語を選択 / Language"},
-nav:{about:"私について",projects:"作品",stack:"技術スタック",phil:"信条",journey:"軌跡",notes:"ノート",contact:"連絡"},
-page:{eyebrow:"NOTES",title:"書き出してこそ、本当に身につく",subtitle:"勉強ノートと技術メモを置く場所。チュートリアルではなく、未来の自分への備忘録——何をしたか、どこで詰まったか、どう納得したか。"},
-filter:{all:"すべて"},cat:{fe:"フロントエンド",prod:"生産性"},
-p1:{title:"なぜ素の HTML で個人サイトを手書きしたか",desc:"フレームワークなら3分でできるページを、何晩もかけて書いた。ツールが使えないのではなく、フレームワークが隠してしまうものを自分の手で触れたかった。",date:"2026年11月8日",read:"約6分"},
-p2:{title:"繰り返し作業をツールに任せる：3つの小さな習慣",desc:"効率化は大きな一手からではなく、3つの具体的な判断から生まれる。何を省くか、何を絶対に省かないか、ルールをどうツールに覚えさせるか。",date:"2026年10月21日",read:"約5分"},
-readMore:"続きを読む",empty:"この分類にはまだノートがありません。",
-sub:{title:"不定期に更新",desc:"納得できたことがあれば1本書く。話題追いも数合わせもしない。",cta:"更新を購読",back:"ホームへ戻る"},
-footer:{line:"抽象を 1 つ減らせば、バグは 1 種類減る。",top:"トップへ ↑"}},
-
-"ko":{skip:"본문으로 건너뛰기",ui:{langTitle:"언어 선택 / Language"},
-nav:{about:"소개",projects:"프로젝트",stack:"스택",phil:"신념",journey:"여정",notes:"노트",contact:"연락처"},
-page:{eyebrow:"NOTES",title:"써 봐야 진짜로 배운다",subtitle:"공부 노트와 기술 메모를 두는 곳. 튜토리얼이 아니라 미래의 나에게 남기는 메모입니다 — 무엇을 했는지, 어디서 막혔는지, 어떻게 납득했는지."},
-filter:{all:"전체"},cat:{fe:"프론트엔드",prod:"생산성"},
-p1:{title:"왜 개인 홈페이지를 순수 HTML로 손수 짰는가",desc:"프레임워크라면 3분이면 되는 페이지를 며칠 밤에 걸쳐 썼다. 도구를 못 써서가 아니라, 프레임워크가 숨겨버리는 것들을 직접 만져보고 싶었기 때문이다.",date:"2026년 11월 8일",read:"약 6분"},
-p2:{title:"반복 작업은 도구에 맡기기: 세 가지 작은 습관",desc:"효율 향상은 큰 한 방이 아니라 세 가지 구체적인 판단에서 나온다. 무엇을 아낄지, 무엇을 절대 아끼지 않을지, 규칙을 도구에 어떻게 기억시킬지.",date:"2026년 10월 21일",read:"약 5분"},
-readMore:"전체 읽기",empty:"이 분류에는 아직 노트가 없습니다.",
-sub:{title:"가끔 업데이트",desc:"뭔가 제대로 깨달았을 때 한 편 씁니다. 유행도 쫓지 않고 분량도 억지로 채우지 않습니다.",cta:"업데이트 구독",back:"홈으로"},
-footer:{line:"추상화 한 겹을 줄이면 버그도 한 부류 줄어든다.",top:"맨 위로 ↑"}},
-
-"fr":{skip:"Aller au contenu",ui:{langTitle:"Choisir la langue / Language"},
-nav:{about:"À propos",projects:"Projets",stack:"Stack",phil:"Philosophie",journey:"Parcours",notes:"Notes",contact:"Contact"},
-page:{eyebrow:"NOTES",title:"Écrire, c'est enfin vraiment apprendre",subtitle:"Mes notes d'étude et billets techniques. Pas des tutoriels — plutôt des mémos pour mon futur moi : ce que j'ai fait, où je suis resté bloqué, comment j'ai fini par comprendre."},
-filter:{all:"Tout"},cat:{fe:"Frontend",prod:"Productivité"},
-p1:{title:"Pourquoi j'ai écrit mon site à la main en HTML pur",desc:"Une page qu'un framework monte en trois minutes m'a pris plusieurs soirées éparpillées. Pas parce que je ne sais pas me servir des outils, mais parce que je voulais toucher ce que les frameworks cachent.",date:"8 nov. 2026",read:"~6 min"},
-p2:{title:"Confier le répétitif aux outils : trois petites habitudes",desc:"La productivité vient rarement d'un grand geste, mais de trois choix concrets : quoi sauter, quoi ne jamais sauter, et comment faire retenir vos règles aux outils.",date:"21 oct. 2026",read:"~5 min"},
-readMore:"Lire la suite",empty:"Pas encore de note dans cette catégorie.",
-sub:{title:"Mises à jour, de temps en temps",desc:"J'écris quand j'ai vraiment compris quelque chose — ni buzz, ni remplissage.",cta:"S'abonner",back:"Retour à l'accueil"},
-footer:{line:"Une couche d'abstraction en moins, une classe de bugs en moins.",top:"Retour en haut ↑"}},
-
-"de":{skip:"Zum Inhalt springen",ui:{langTitle:"Sprache wählen / Language"},
-nav:{about:"Über",projects:"Projekte",stack:"Stack",phil:"Prinzipien",journey:"Weg",notes:"Notizen",contact:"Kontakt"},
-page:{eyebrow:"NOTIZEN",title:"Aufschreiben heißt wirklich lernen",subtitle:"Meine Lernnotizen und Technik-Essays. Keine Tutorials — eher Memos für mein künftiges Ich: was ich getan habe, wo ich festhing, wie ich es schließlich verstanden habe."},
-filter:{all:"Alle"},cat:{fe:"Frontend",prod:"Produktivität"},
-p1:{title:"Warum ich meine Homepage in purem HTML von Hand geschrieben habe",desc:"Eine Seite, die ein Framework in drei Minuten baut, hat mich mehrere Abende gekostet. Nicht weil ich keine Tools kann, sondern weil ich anfassen wollte, was Frameworks verstecken.",date:"8. Nov. 2026",read:"~6 Min."},
-p2:{title:"Wiederkehrendes an Tools abgeben: drei kleine Gewohnheiten",desc:"Effizienz kommt selten von einer großen Aktion, sondern von drei konkreten Entscheidungen: was weglassen, was niemals weglassen, und wie Tools deine Regeln merken.",date:"21. Okt. 2026",read:"~5 Min."},
-readMore:"Weiterlesen",empty:"In dieser Kategorie gibt es noch keine Notizen.",
-sub:{title:"Updates, ab und zu",desc:"Ich schreibe, wenn ich etwas wirklich verstanden habe — kein Hype, kein Auffüllen.",cta:"Abonnieren",back:"Zur Startseite"},
-footer:{line:"Eine Abstraktionsschicht weniger, eine Fehlerklasse weniger.",top:"Nach oben ↑"}},
-
-"es":{skip:"Saltar al contenido",ui:{langTitle:"Elegir idioma / Language"},
-nav:{about:"Sobre mí",projects:"Proyectos",stack:"Stack",phil:"Filosofía",journey:"Trayectoria",notes:"Notas",contact:"Contacto"},
-page:{eyebrow:"NOTAS",title:"Escribirlo es aprenderlo de verdad",subtitle:"Mis apuntes y ensayos técnicos. No tutoriales — más bien memos para mi yo futuro: qué hice, dónde me atoré, cómo terminé entendiéndolo."},
-filter:{all:"Todo"},cat:{fe:"Frontend",prod:"Productividad"},
-p1:{title:"Por qué escribí mi web a mano en HTML puro",desc:"Una página que un framework monta en tres minutos me llevó varias noches. No porque no sepa usar herramientas, sino porque quería tocar lo que los frameworks esconden.",date:"8 nov 2026",read:"~6 min"},
-p2:{title:"Delega lo repetitivo en las herramientas: tres pequeños hábitos",desc:"La eficiencia rara vez viene de un gran gesto, sino de tres decisiones concretas: qué omitir, qué nunca omitir y cómo hacer que las herramientas recuerden tus reglas.",date:"21 oct 2026",read:"~5 min"},
-readMore:"Leer más",empty:"Aún no hay notas en esta categoría.",
-sub:{title:"Actualizaciones, de vez en cuando",desc:"Escribo cuando de verdad entendí algo — sin perseguir tendencias ni rellenar.",cta:"Suscribirme",back:"Volver al inicio"},
-footer:{line:"Una capa de abstracción menos, una clase de bugs menos.",top:"Volver arriba ↑"}},
-
-"pt":{skip:"Ir ao conteúdo",ui:{langTitle:"Escolher idioma / Language"},
-nav:{about:"Sobre",projects:"Projetos",stack:"Stack",phil:"Filosofia",journey:"Trajetória",notes:"Notas",contact:"Contato"},
-page:{eyebrow:"NOTAS",title:"Escrever é aprender de verdade",subtitle:"Minhas anotações e ensaios técnicos. Não tutoriais — mais lembretes para o meu eu futuro: o que fiz, onde travei, como acabei entendendo."},
-filter:{all:"Tudo"},cat:{fe:"Frontend",prod:"Produtividade"},
-p1:{title:"Por que escrevi meu site à mão em HTML puro",desc:"Uma página que um framework monta em três minutos me levou várias noites. Não porque eu não saiba usar ferramentas, mas porque queria tocar o que os frameworks escondem.",date:"8 nov 2026",read:"~6 min"},
-p2:{title:"Entregue o repetitivo às ferramentas: três pequenos hábitos",desc:"Eficiência raramente vem de um grande gesto, mas de três decisões concretas: o que pular, o que nunca pular e como fazer as ferramentas lembrarem suas regras.",date:"21 out 2026",read:"~5 min"},
-readMore:"Ler mais",empty:"Ainda não há notas nesta categoria.",
-sub:{title:"Atualizações, de vez em quando",desc:"Escrevo quando de fato entendi algo — sem caçar tendências nem encher linguiça.",cta:"Assinar",back:"Voltar ao início"},
-footer:{line:"Uma camada de abstração a menos, uma classe de bugs a menos.",top:"Voltar ao topo ↑"}},
-
-"it":{skip:"Vai al contenuto",ui:{langTitle:"Scegli lingua / Language"},
-nav:{about:"Su di me",projects:"Progetti",stack:"Stack",phil:"Filosofia",journey:"Percorso",notes:"Note",contact:"Contatti"},
-page:{eyebrow:"NOTE",title:"Scrivere è imparare davvero",subtitle:"I miei appunti e saggi tecnici. Non tutorial — più che altro promemoria per il mio io futuro: cosa ho fatto, dove mi sono bloccato, come ho finito per capirci."},
-filter:{all:"Tutto"},cat:{fe:"Frontend",prod:"Produttività"},
-p1:{title:"Perché ho scritto a mano il mio sito in HTML puro",desc:"Una pagina che un framework monta in tre minuti mi è costata diverse serate. Non perché non sappia usare gli strumenti, ma perché volevo toccare ciò che i framework nascondono.",date:"8 nov 2026",read:"~6 min"},
-p2:{title:"Affida la ripetizione agli strumenti: tre piccole abitudini",desc:"L'efficienza raramente arriva da una grande mossa, ma da tre scelte concrete: cosa saltare, cosa non saltare mai e come far ricordare le tue regole agli strumenti.",date:"21 ott 2026",read:"~5 min"},
-readMore:"Leggi tutto",empty:"Ancora nessuna nota in questa categoria.",
-sub:{title:"Aggiornamenti, ogni tanto",desc:"Scrivo quando ho davvero capito qualcosa — niente trend, niente riempitivi.",cta:"Iscriviti",back:"Torna alla home"},
-footer:{line:"Uno strato di astrazione in meno, una classe di bug in meno.",top:"Torna su ↑"}},
-
-"ru":{skip:"К содержанию",ui:{langTitle:"Выбрать язык / Language"},
-nav:{about:"Обо мне",projects:"Проекты",stack:"Стек",phil:"Принципы",journey:"Путь",notes:"Заметки",contact:"Контакты"},
-page:{eyebrow:"ЗАМЕТКИ",title:"Записал — значит, по-настоящему понял",subtitle:"Мои учебные заметки и технические эссе. Не туториалы — скорее памятки для будущего себя: что делал, где застрял, как в итоге разобрался."},
-filter:{all:"Все"},cat:{fe:"Фронтенд",prod:"Продуктивность"},
-p1:{title:"Почему я написал свой сайт вручную на чистом HTML",desc:"Страницу, которую фреймворк собирает за три минуты, я писал несколько вечеров. Не потому что не умею пользоваться инструментами, а потому что хотел потрогать то, что фреймворки прячут.",date:"8 нояб. 2026",read:"~6 мин"},
-p2:{title:"Отдайте рутину инструментам: три маленькие привычки",desc:"Эффективность редко приходит из одного большого шага — она из трёх конкретных решений: что пропустить, что не пропускать никогда и как заставить инструменты помнить ваши правила.",date:"21 окт. 2026",read:"~5 мин"},
-readMore:"Читать дальше",empty:"В этой категории пока нет заметок.",
-sub:{title:"Обновления — время от времени",desc:"Пишу, когда действительно в чём-то разобрался — без погони за хайпом и без набора объёма.",cta:"Подписаться",back:"На главную"},
-footer:{line:"На один слой абстракции меньше — на один класс багов меньше.",top:"Наверх ↑"}},
-
-"uk":{skip:"До змісту",ui:{langTitle:"Обрати мову / Language"},
-nav:{about:"Про мене",projects:"Проєкти",stack:"Стек",phil:"Принципи",journey:"Шлях",notes:"Нотатки",contact:"Контакти"},
-page:{eyebrow:"НОТАТКИ",title:"Записав — по-справжньому зрозумів",subtitle:"Мої навчальні нотатки й технічні есе. Не туторіали — радше пам'ятки для майбутнього себе: що робив, де застряг, як зрештою розібрався."},
-filter:{all:"Усі"},cat:{fe:"Фронтенд",prod:"Продуктивність"},
-p1:{title:"Чому я написав свій сайт вручну чистим HTML",desc:"Сторінку, яку фреймворк збирає за три хвилини, я писав кілька вечорів. Не тому що не вмію користуватись інструментами, а тому що хотів торкнутися того, що фреймворки ховають.",date:"8 лист. 2026",read:"~6 хв"},
-p2:{title:"Віддайте рутину інструментам: три маленькі звички",desc:"Ефективність рідко приходить з одного великого кроку — вона з трьох конкретних рішень: що пропустити, що не пропускати ніколи і як змусити інструменти пам'ятати ваші правила.",date:"21 жовт. 2026",read:"~5 хв"},
-readMore:"Читати далі",empty:"У цій категорії поки немає нотаток.",
-sub:{title:"Оновлення — час від часу",desc:"Пишу, коли справді в чомусь розібрався — без погоні за хайпом і без набору обсягу.",cta:"Підписатися",back:"На головну"},
-footer:{line:"На один шар абстракції менше — на один клас багів менше.",top:"Догори ↑"}},
-
-"pl":{skip:"Przejdź do treści",ui:{langTitle:"Wybierz język / Language"},
-nav:{about:"O mnie",projects:"Projekty",stack:"Stack",phil:"Zasady",journey:"Droga",notes:"Notatki",contact:"Kontakt"},
-page:{eyebrow:"NOTATKI",title:"Zapisać to naprawdę zrozumieć",subtitle:"Moje notatki i techniczne eseje. Nie tutoriale — raczej notki dla przyszłego mnie: co robiłem, gdzie utknąłem, jak w końcu to pojąłem."},
-filter:{all:"Wszystko"},cat:{fe:"Frontend",prod:"Produktywność"},
-p1:{title:"Dlaczego napisałem swoją stronę ręcznie w czystym HTML",desc:"Strona, którą framework stawia w trzy minuty, zajęła mi kilka rozproszonych wieczorów. Nie dlatego, że nie umiem używać narzędzi, ale dlatego, że chciałem dotknąć tego, co frameworki chowają.",date:"8 lis 2026",read:"~6 min"},
-p2:{title:"Oddaj powtarzalne narzędziom: trzy małe nawyki",desc:"Efektywność rzadko bierze się z jednego wielkiego ruchu, lecz z trzech konkretnych wyborów: co pominąć, czego nigdy nie pomijać i jak sprawić, by narzędzia pamiętały twoje zasady.",date:"21 paź 2026",read:"~5 min"},
-readMore:"Czytaj dalej",empty:"W tej kategorii nie ma jeszcze notatek.",
-sub:{title:"Aktualizacje od czasu do czasu",desc:"Piszę, gdy naprawdę coś zrozumiałem — bez pogoni za trendami i bez nabijania liczby.",cta:"Subskrybuj",back:"Wróć na stronę główną"},
-footer:{line:"O jedną warstwę abstrakcji mniej to o jedną klasę bugów mniej.",top:"Do góry ↑"}},
-
-"nl":{skip:"Naar inhoud",ui:{langTitle:"Kies taal / Language"},
-nav:{about:"Over",projects:"Projecten",stack:"Stack",phil:"Filosofie",journey:"Pad",notes:"Notities",contact:"Contact"},
-page:{eyebrow:"NOTITIES",title:"Opschrijven is echt leren",subtitle:"Mijn studienotities en technische essays. Geen tutorials — eerder memo's voor mijn toekomstige ik: wat ik deed, waar ik vastliep, hoe ik het uiteindelijk begreep."},
-filter:{all:"Alles"},cat:{fe:"Frontend",prod:"Productiviteit"},
-p1:{title:"Waarom ik mijn site met de hand in puur HTML schreef",desc:"Een pagina die een framework in drie minuten opzet, kostte me een paar verspreide avonden. Niet omdat ik geen tools kan gebruiken, maar omdat ik wilde voelen wat frameworks verbergen.",date:"8 nov 2026",read:"~6 min"},
-p2:{title:"Geef repetitief werk aan tools: drie kleine gewoontes",desc:"Efficiëntie komt zelden van één grote stap, maar van drie concrete keuzes: wat overslaan, wat nooit overslaan en hoe tools jouw regels laten onthouden.",date:"21 okt 2026",read:"~5 min"},
-readMore:"Lees verder",empty:"Nog geen notities in deze categorie.",
-sub:{title:"Updates, af en toe",desc:"Ik schrijf wanneer ik iets echt heb begrepen — geen hypes, geen opvulling.",cta:"Abonneren",back:"Terug naar home"},
-footer:{line:"Eén abstractielaag minder, één klasse bugs minder.",top:"Naar boven ↑"}},
-
-"tr":{skip:"İçeriğe geç",ui:{langTitle:"Dil seçin / Language"},
-nav:{about:"Hakkında",projects:"Projeler",stack:"Stack",phil:"İlkeler",journey:"Yol",notes:"Notlar",contact:"İletişim"},
-page:{eyebrow:"NOTLAR",title:"Yazınca gerçekten öğrenirsin",subtitle:"Ders notlarım ve teknik denemelerim. Eğitim değil — daha çok gelecekteki kendime notlar: ne yaptım, nerede takıldım, sonunda nasıl çözdüm."},
-filter:{all:"Tümü"},cat:{fe:"Frontend",prod:"Verimlilik"},
-p1:{title:"Neden ana sayfamı saf HTML ile elle yazdım",desc:"Bir framework'ün üç dakikada kurduğu sayfayı birkaç geceye yayarak yazdım. Araç kullanmayı bilmediğimden değil, framework'lerin sakladığı şeylere kendi ellerimle dokunmak istediğimden.",date:"8 Kas 2026",read:"~6 dk"},
-p2:{title:"Tekrarlayan işi araçlara devret: üç küçük alışkanlık",desc:"Verimlilik nadiren büyük bir hamleden gelir; üç somut karardan gelir: neyi atlamalı, neyi asla atlamamalı ve kuralları araçlara nasıl hatırlatmalı.",date:"21 Eki 2026",read:"~5 dk"},
-readMore:"Devamını oku",empty:"Bu kategoride henüz not yok.",
-sub:{title:"Ara ara güncelleme",desc:"Bir şeyi gerçekten çözdüğümde yazarım — gündem kovalamak da yok, sayı şişirmek de.",cta:"Abone ol",back:"Ana sayfaya dön"},
-footer:{line:"Bir soyutlama katmanı eksikse, bir bug sınıfı eksiktir.",top:"Yukarı ↑"}},
-
-"ar":{skip:"الانتقال إلى المحتوى",ui:{langTitle:"اختر اللغة / Language"},
-nav:{about:"عنّي",projects:"المشاريع",stack:"التقنيات",phil:"المبادئ",journey:"المسار",notes:"ملاحظات",contact:"تواصل"},
-page:{eyebrow:"ملاحظات",title:"اكتبه، حينها فقط تتعلّم فعلًا",subtitle:"ملاحظات دراستي ومقالاتي التقنية. ليست دروسًا — بل أقرب إلى مذكّرات لنفسي في المستقبل: ماذا فعلت، وأين علقت، وكيف فهمت الأمر في النهاية."},
-filter:{all:"الكل"},cat:{fe:"واجهة أمامية",prod:"الإنتاجية"},
-p1:{title:"لماذا كتبت صفحتي الرئيسية يدويًا بـ HTML خالص",desc:"صفحة يبنيها إطار عمل في ثلاث دقائق استغرقت مني بضع ليالٍ متفرّقة. ليس لأنني لا أجيد استخدام الأدوات، بل لأنني أردت أن ألمس ما تخفيه الأطر.",date:"8 نوفمبر 2026",read:"~6 دقائق"},
-p2:{title:"سلّم المهام المتكررة للأدوات: ثلاث عادات صغيرة",desc:"نادرًا ما تأتي الإنتاجية من خطوة كبيرة، بل من ثلاثة قرارات ملموسة: ماذا تتجاوز، وما لا تتجاوزه أبدًا، وكيف تجعل الأدوات تتذكّر قواعدك.",date:"21 أكتوبر 2026",read:"~5 دقائق"},
-readMore:"اقرأ المزيد",empty:"لا توجد ملاحظات في هذا التصنيف بعد.",
-sub:{title:"تحديثات من حين لآخر",desc:"أكتب عندما أفهم شيئًا فعلًا — لا مطاردة للترند ولا حشو للعدد.",cta:"اشترك",back:"العودة إلى الرئيسية"},
-footer:{line:"طبقة تجريد أقل تعني فئة أخطاء أقل.",top:"إلى الأعلى ↑"}},
-
-"hi":{skip:"सामग्री पर जाएँ",ui:{langTitle:"भाषा चुनें / Language"},
-nav:{about:"परिचय",projects:"प्रोजेक्ट",stack:"स्टैक",phil:"सिद्धांत",journey:"सफ़र",notes:"नोट्स",contact:"संपर्क"},
-page:{eyebrow:"नोट्स",title:"लिखो, तभी सच में सीखोगे",subtitle:"मेरी पढ़ाई की नोट्स और तकनीकी निबंध। ट्यूटोरियल नहीं — भविष्य के मेरे लिए मेमो: मैंने क्या किया, कहाँ अटका, और आख़िर कैसे समझा।"},
-filter:{all:"सभी"},cat:{fe:"फ्रंटएंड",prod:"उत्पादकता"},
-p1:{title:"मैंने अपना होमपेज शुद्ध HTML में हाथ से क्यों लिखा",desc:"जो पेज कोई फ्रेमवर्क तीन मिनट में बना दे, उसे मैंने कई रातों में बिखर कर लिखा। इसलिए नहीं कि मुझे टूल नहीं आते, बल्कि इसलिए कि मैं वह छूना चाहता था जो फ्रेमवर्क छिपा देते हैं।",date:"8 नवंबर 2026",read:"~6 मिनट"},
-p2:{title:"दोहराव वाला काम टूल्स को दो: तीन छोटी आदतें",desc:"दक्षता शायद ही किसी बड़े कदम से आती है, बल्कि तीन ठोस फ़ैसलों से आती है: क्या छोड़ना है, क्या कभी नहीं छोड़ना, और अपने नियम टूल्स से कैसे याद करवाने हैं।",date:"21 अक्टूबर 2026",read:"~5 मिनट"},
-readMore:"पूरा पढ़ें",empty:"इस श्रेणी में अभी कोई नोट नहीं है।",
-sub:{title:"कभी-कभी अपडेट",desc:"जब कुछ सच में समझ आता है तब लिखता हूँ — न ट्रेंड का पीछा, न संख्या भरना।",cta:"सब्सक्राइब करें",back:"होम पर वापस"},
-footer:{line:"एक परत कम, एक तरह के बग कम।",top:"ऊपर ↑"}},
-
-"id":{skip:"Langsung ke konten",ui:{langTitle:"Pilih bahasa / Language"},
-nav:{about:"Tentang",projects:"Proyek",stack:"Stack",phil:"Prinsip",journey:"Perjalanan",notes:"Catatan",contact:"Kontak"},
-page:{eyebrow:"CATATAN",title:"Menuliskannya baru benar-benar belajar",subtitle:"Catatan belajar dan esai teknis saya. Bukan tutorial — lebih seperti memo untuk diri saya di masa depan: apa yang saya kerjakan, di mana saya mentok, dan bagaimana akhirnya memahaminya."},
-filter:{all:"Semua"},cat:{fe:"Frontend",prod:"Produktivitas"},
-p1:{title:"Mengapa saya menulis beranda dengan HTML murni secara manual",desc:"Halaman yang bisa dibuat framework dalam tiga menit memakan beberapa malam bagi saya. Bukan karena tidak bisa memakai alat, tapi karena ingin menyentuh hal-hal yang disembunyikan framework.",date:"8 Nov 2026",read:"~6 mnt"},
-p2:{title:"Serahkan pekerjaan berulang ke alat: tiga kebiasaan kecil",desc:"Efisiensi jarang datang dari satu langkah besar, melainkan dari tiga keputusan konkret: apa yang dilewati, apa yang tidak boleh dilewati, dan cara membuat alat mengingat aturan Anda.",date:"21 Okt 2026",read:"~5 mnt"},
-readMore:"Baca selengkapnya",empty:"Belum ada catatan di kategori ini.",
-sub:{title:"Pembaruan sesekali",desc:"Saya menulis ketika benar-benar memahami sesuatu — tanpa mengejar tren atau menggelembungkan jumlah.",cta:"Berlangganan",back:"Kembali ke beranda"},
-footer:{line:"Satu lapisan abstraksi lebih sedikit berarti satu kelas bug lebih sedikit.",top:"Ke atas ↑"}},
-
-"vi":{skip:"Đến nội dung",ui:{langTitle:"Chọn ngôn ngữ / Language"},
-nav:{about:"Giới thiệu",projects:"Dự án",stack:"Stack",phil:"Nguyên tắc",journey:"Hành trình",notes:"Ghi chú",contact:"Liên hệ"},
-page:{eyebrow:"GHI CHÚ",title:"Viết ra mới thật sự hiểu",subtitle:"Ghi chú học tập và tản văn kỹ thuật của tôi. Không phải tutorial — giống lời nhắc cho chính tôi trong tương lai: đã làm gì, kẹt ở đâu, rồi cuối cùng hiểu ra thế nào."},
-filter:{all:"Tất cả"},cat:{fe:"Frontend",prod:"Năng suất"},
-p1:{title:"Vì sao tôi viết tay trang chủ bằng HTML thuần",desc:"Một trang mà framework dựng trong ba phút đã ngốn của tôi vài buổi tối. Không phải vì tôi không biết dùng công cụ, mà vì muốn tự tay chạm vào những thứ framework che giấu.",date:"8 thg 11, 2026",read:"~6 phút"},
-p2:{title:"Giao việc lặp lại cho công cụ: ba thói quen nhỏ",desc:"Hiệu quả hiếm khi đến từ một bước lớn, mà từ ba quyết định cụ thể: bỏ qua gì, không bao giờ bỏ qua gì, và làm sao để công cụ ghi nhớ quy tắc của bạn.",date:"21 thg 10, 2026",read:"~5 phút"},
-readMore:"Đọc tiếp",empty:"Chưa có ghi chú nào trong danh mục này.",
-sub:{title:"Thỉnh thoảng cập nhật",desc:"Tôi viết khi đã thật sự hiểu điều gì đó — không chạy theo xu hướng, không cố nhồi số lượng.",cta:"Đăng ký",back:"Về trang chủ"},
-footer:{line:"Bớt một lớp trừu tượng là bớt một lớp lỗi.",top:"Lên đầu trang ↑"}},
-
-"th":{skip:"ข้ามไปยังเนื้อหา",ui:{langTitle:"เลือกภาษา / Language"},
-nav:{about:"เกี่ยวกับ",projects:"โปรเจกต์",stack:"สแตก",phil:"หลักคิด",journey:"เส้นทาง",notes:"บันทึก",contact:"ติดต่อ"},
-page:{eyebrow:"บันทึก",title:"เขียนออกมา จึงจะเรียนรู้จริง",subtitle:"บันทึกการเรียนและความเรียงเชิงเทคนิคของผม ไม่ใช่บทเรียน — เหมือนโน้ตถึงตัวเองในอนาคต: ทำอะไรมา ติดตรงไหน แล้วสุดท้ายคิดออกได้อย่างไร"},
-filter:{all:"ทั้งหมด"},cat:{fe:"ฟรอนต์เอนด์",prod:"ประสิทธิภาพ"},
-p1:{title:"ทำไมผมเขียนหน้าแรกด้วย HTML ล้วน ๆ มือเปล่า",desc:"เพจที่เฟรมเวิร์กตั้งได้ในสามนาที กลับใช้เวลาหลายคืนของผม ไม่ใช่เพราะใช้เครื่องมือไม่เป็น แต่เพราะอยากสัมผัสสิ่งที่เฟรมเวิร์กซ่อนไว้",date:"8 พ.ย. 2026",read:"~6 นาที"},
-p2:{title:"ยกงานซ้ำ ๆ ให้เครื่องมือ: สามนิสัยเล็ก ๆ",desc:"ประสิทธิภาพแทบไม่เคยมาจากก้าวใหญ่ แต่มาจากการตัดสินใจสามอย่าง: อะไรควรข้าม อะไรห้ามข้ามเด็ดขาด และทำยังไงให้เครื่องมือจำกฎของคุณ",date:"21 ต.ค. 2026",read:"~5 นาที"},
-readMore:"อ่านต่อ",empty:"ยังไม่มีบันทึกในหมวดนี้",
-sub:{title:"อัปเดตเป็นครั้งคราว",desc:"ผมเขียนเมื่อคิดอะไรออกจริง ๆ — ไม่ไล่กระแส ไม่ยัดจำนวน",cta:"ติดตาม",back:"กลับหน้าแรก"},
-footer:{line:"ลดชั้นนามธรรมลงหนึ่งชั้น ก็ลดบั๊กได้หนึ่งประเภท",top:"ขึ้นบน ↑"}}
+"zh":{"skip":"跳到主要内容","ui":{"langTitle":"选择语言 / Language","langSwitched":"已切换为{lang}"},"nav":{"about":"关于","projects":"作品","stack":"技术栈","phil":"理念","journey":"轨迹","notes":"笔记","contact":"联系"},"page":{"eyebrow":"NOTES","title":"写下来，才真正学会","subtitle":"这里放我的学习笔记和技术随笔。不是教程，更像是给未来的自己留的备忘：做过什么、卡在哪里、后来怎么想通的。"},"filter":{"all":"全部"},"cat":{"fe":"前端","prod":"效率"},"p1":{"title":"为什么我用纯手写 HTML 做个人主页","desc":"用框架三分钟能搭出来的页面，我断断续续写了几个晚上。不是不会用工具，而是想把那些被框架藏起来的东西，亲手摸一遍。","date":"2026 年 11 月 8 日","read":"约 6 分钟"},"p2":{"title":"把重复的事交给工具：三个小习惯","desc":"效率提升往往不来自什么大动作，而是来自三个具体的判断：什么该省、什么绝不能省、以及怎么让工具替你记住规则。","date":"2026 年 10 月 21 日","read":"约 5 分钟"},"readMore":"阅读全文","empty":"这个分类下还没有笔记。","sub":{"title":"不定期更新","desc":"有想明白的事就写一篇，不追热点，不硬凑数量。","cta":"订阅更新","back":"回到主页"},"footer":{"line":"少一层抽象，就少一类 bug。","top":"回到顶部 ↑"}},
+"zh-TW":{"skip":"跳到主要內容","ui":{"langTitle":"選擇語言 / Language","langSwitched":"已切換為{lang}"},"nav":{"about":"關於","projects":"作品","stack":"技術棧","phil":"理念","journey":"軌跡","notes":"筆記","contact":"聯繫"},"page":{"eyebrow":"NOTES","title":"寫下來，才真正學會","subtitle":"這裡放我的學習筆記和技術隨筆。不是教學，更像是給未來的自己留的備忘：做過什麼、卡在哪裡、後來怎麼想通的。"},"filter":{"all":"全部"},"cat":{"fe":"前端","prod":"效率"},"p1":{"title":"為什麼我用純手寫 HTML 做個人主頁","desc":"用框架三分鐘能搭出來的頁面，我斷斷續續寫了幾個晚上。不是不會用工具，而是想把那些被框架藏起來的東西，親手摸一遍。","date":"2026 年 11 月 8 日","read":"約 6 分鐘"},"p2":{"title":"把重複的事交給工具：三個小習慣","desc":"效率提升往往不來自什麼大動作，而是來自三個具體的判斷：什麼該省、什麼絕不能省、以及怎麼讓工具替你記住規則。","date":"2026 年 10 月 21 日","read":"約 5 分鐘"},"readMore":"閱讀全文","empty":"這個分類下還沒有筆記。","sub":{"title":"不定期更新","desc":"有想明白的事就寫一篇，不追熱點，不硬湊數量。","cta":"訂閱更新","back":"回到主頁"},"footer":{"line":"少一層抽象，就少一類 bug。","top":"回到頂部 ↑"}},
+"en":{"skip":"Skip to content","ui":{"langTitle":"Choose language / Language","langSwitched":"Switched to {lang}"},"nav":{"about":"About","projects":"Projects","stack":"Stack","phil":"Philosophy","journey":"Journey","notes":"Notes","contact":"Contact"},"page":{"eyebrow":"NOTES","title":"Write it down, then you really learn","subtitle":"My study notes and technical essays. Not tutorials — more like memos for my future self: what I did, where I got stuck, and how I eventually figured it out."},"filter":{"all":"All"},"cat":{"fe":"Frontend","prod":"Productivity"},"p1":{"title":"Why I hand-wrote my homepage in plain HTML","desc":"A page a framework can scaffold in three minutes took me several scattered evenings. Not because I can't use tools, but because I wanted to feel the things frameworks hide away.","date":"Nov 8, 2026","read":"~6 min"},"p2":{"title":"Hand repetitive work to tools: three small habits","desc":"Real efficiency rarely comes from a big move. It comes from three concrete calls: what to skip, what never to skip, and how to make tools remember your rules.","date":"Oct 21, 2026","read":"~5 min"},"readMore":"Read more","empty":"No notes in this category yet.","sub":{"title":"Updates, occasionally","desc":"I write one when I've actually figured something out — no hot takes, no padding the count.","cta":"Subscribe","back":"Back to home"},"footer":{"line":"One fewer layer of abstraction, one fewer bug.","top":"Back to top ↑"}}
 };
 
 /* ============================================================
    i18n runtime
    ============================================================ */
+
+/* ---- additional languages ---- */
+
+LANGS.push({code:"el",native:"Ελληνικά",sub:"Greek"},{code:"sv",native:"Svenska",sub:"Swedish"},{code:"cs",native:"Čeština",sub:"Czech"},{code:"ro",native:"Română",sub:"Romanian"});
+LANGS.push({code:"bn",native:"বাংলা",sub:"Bengali"},{code:"ur",native:"اردو",sub:"Urdu"},{code:"ms",native:"Bahasa Melayu",sub:"Malay"},{code:"tl",native:"Filipino",sub:"Filipino"});
+/* fill any missing entry from English, so a new language never shows blanks */
+(function(){
+  var base=I18N.en;
+  if(!base)return;
+  function fill(dst,src){
+    for(var k in src){
+      if(!Object.prototype.hasOwnProperty.call(src,k))continue;
+      var v=src[k];
+      if(dst[k]===undefined||dst[k]===null||dst[k]==="")dst[k]=v;
+      else if(v&&typeof v==="object"&&typeof dst[k]==="object")fill(dst[k],v);
+    }
+  }
+  for(var code in I18N){
+    if(code!=="en"&&I18N[code]&&typeof I18N[code]==="object")fill(I18N[code],base);
+  }
+  window.__i18nFill=fill;
+})();
+LANGS.push({code:"he",native:"עברית",sub:"Hebrew"},{code:"fa",native:"فارسی",sub:"Persian"});
 var rootEl=document.documentElement;
 function getPath(obj,path){return path.split(".").reduce(function(o,k){return o?o[k]:undefined;},obj);}
 function currentLang(){
   try{return localStorage.getItem("lang")||"zh";}catch(e){return "zh";}
 }
-function setLang(code){
+function __renderLang(code){
   var lang=I18N[code]||I18N["zh"];
   try{localStorage.setItem("lang",code);}catch(e){}
-  rootEl.setAttribute("lang",code==="zh-TW"?"zh-TW":code);
-  rootEl.setAttribute("dir", code==="ar"?"rtl":"ltr");
+  rootEl.setAttribute("lang",langAttrOf(code));
+  rootEl.setAttribute("dir", langDirOf(code));
   document.querySelectorAll("[data-i18n]").forEach(function(el){
     var v=getPath(lang,el.getAttribute("data-i18n"));
     if(v!==undefined) el.textContent=v;
@@ -676,7 +584,62 @@ function setLang(code){
 }
 
 /* build language list */
-(function(){
+var I18N_EXT_BASE="i18n/blog/";
+/* ============================================================
+   i18n 词典按需加载
+   首屏只内联 zh / zh-TW / en（三份就够首屏用），其余 27 种语言
+   每种一个外链文件，切换或命中浏览器语言时才注入 <script>。
+   用 <script> 而不是 fetch：file:// 双击打开同样能加载，不需要服务器。
+   ============================================================ */
+var __INLINE_LANGS={"zh":1,"zh-TW":1,"en":1};
+var __EXT_LANGS=[];
+(function(){for(var i=0;i<LANGS.length;i++){var c=LANGS[i].code;if(!__INLINE_LANGS[c])__EXT_LANGS.push(c);}})();
+function __isKnownLang(code){return !!(code&&(I18N[code]||__EXT_LANGS.indexOf(code)>-1));}
+var __langBusy={},__langQueue={};
+function __loadLang(code,cb){
+  if(I18N[code]){cb();return;}
+  if(!__isKnownLang(code)){cb();return;}
+  if(__langBusy[code]){__langQueue[code].push(cb);return;}
+  __langBusy[code]=true;__langQueue[code]=[cb];
+  var s=document.createElement("script");
+  s.src=I18N_EXT_BASE+code+".js";s.async=true;
+  function done(ok){
+    if(!ok)I18N[code]=I18N.zh;
+    __langBusy[code]=false;
+    var q=__langQueue[code]||[];__langQueue[code]=[];
+    for(var i=0;i<q.length;i++){try{q[i]();}catch(e){}}
+  }
+  s.onload=function(){done(true);};
+  s.onerror=function(){done(false);};
+  document.head.appendChild(s);
+}
+window.__I18N_PUSH__=function(code,data){
+  if(!code||!data)return;
+  I18N[code]=data;
+  if(window.__i18nFill)window.__i18nFill(I18N[code],I18N.en);
+};
+function __announceLang(code){
+  var box=document.getElementById("srStatus");
+  if(!box)return;
+  var d=I18N[code]||I18N.zh||{};
+  var native=(LANGS.filter(function(l){return l.code===code;})[0]||{}).native||code;
+  var t=(d.ui&&d.ui.langSwitched)||"";
+  box.textContent="";
+  setTimeout(function(){box.textContent=t?t.replace(/\{lang\}/g,native):native;},40);
+}
+function setLang(code){
+  if(!__isKnownLang(code))code="zh";
+  try{localStorage.setItem("lang",code);}catch(e){}
+  __loadLang(code,function(){
+    __renderLang(code);
+    __announceLang(code);
+    if(typeof syncLangUI==="function")syncLangUI();
+    document.documentElement.classList.remove("i18n-boot");
+    window.__LANG_READY__=true;
+  });
+}
+
+/* build language list */(function(){
   var list=document.getElementById("langList");
   var html="";
   LANGS.forEach(function(l){
@@ -686,64 +649,183 @@ function setLang(code){
 })();
 
 /* auto-detect best language on first visit */
+/* auto-detect best language on first visit (script/region aware) */
 (function(){
+  var APPLY=(typeof setLang==="function")?setLang:applyLang;
   var saved=null;try{saved=localStorage.getItem("lang");}catch(e){}
-  if(saved && I18N[saved]){setLang(saved);return;}
-  var nav=(navigator.language||"zh").toLowerCase();
+  if(saved && __isKnownLang(saved)){APPLY(saved);return;}
+  var list=(navigator.languages&&navigator.languages.length)?navigator.languages:[navigator.language||"zh"];
   var cand="zh";
-  if(nav.indexOf("zh-tw")>-1||nav.indexOf("zh-hk")>-1||nav.indexOf("zh-mo")>-1){cand="zh-TW";}
-  else if(nav.indexOf("zh")>-1){cand="zh";}
-  else if(nav.indexOf("en")>-1){cand="en";}
-  else if(nav.indexOf("ja")>-1){cand="ja";}
-  else if(nav.indexOf("ko")>-1){cand="ko";}
-  else if(nav.indexOf("fr")>-1){cand="fr";}
-  else if(nav.indexOf("de")>-1){cand="de";}
-  else if(nav.indexOf("es")>-1){cand="es";}
-  else if(nav.indexOf("pt")>-1){cand="pt";}
-  else if(nav.indexOf("it")>-1){cand="it";}
-  else if(nav.indexOf("ru")>-1){cand="ru";}
-  else if(nav.indexOf("uk")>-1){cand="uk";}
-  else if(nav.indexOf("pl")>-1){cand="pl";}
-  else if(nav.indexOf("nl")>-1){cand="nl";}
-  else if(nav.indexOf("tr")>-1){cand="tr";}
-  else if(nav.indexOf("ar")>-1){cand="ar";}
-  else if(nav.indexOf("hi")>-1){cand="hi";}
-  else if(nav.indexOf("id")>-1){cand="id";}
-  else if(nav.indexOf("vi")>-1){cand="vi";}
-  else if(nav.indexOf("th")>-1){cand="th";}
-  setLang(cand);
+  for(var i=0;i<list.length;i++){
+    var tag=String(list[i]||"").toLowerCase();
+    if(!tag)continue;
+    var bits=tag.split("-"),prim=bits[0],rest=bits.slice(1).join("-");
+    if(prim==="zh"){cand=(rest.indexOf("hant")>-1||rest==="tw"||rest==="hk"||rest==="mo")?"zh-TW":"zh";break;}
+    if(I18N[tag]){cand=tag;break;}
+    if(I18N[prim]){cand=prim;break;}
+  }
+  APPLY(cand);
 })();
 
 /* language panel open/close */
+/* ============================================================
+   language panel — unified controller (identical on every page)
+   ============================================================ */
 var langPanel=document.getElementById("langPanel");
 var langBtn=document.getElementById("langBtn");
+var langListEl=document.getElementById("langList");
+var langCloseBtn=document.getElementById("langClose");
+var LANG_APPLY=(typeof applyLang==="function")?applyLang:(typeof setLang==="function"?setLang:null);
+
+function langDirOf(code){return (["ar","he","fa","ur","yi","dv","ps","ckb","sd","ug"].indexOf(code)>-1)?"rtl":"ltr";}
+function langAttrOf(code){return ({"zh":"zh-CN","zh-TW":"zh-Hant"})[code]||code;}
+function currentLang(){
+  var saved=null;
+  try{saved=localStorage.getItem("lang");}catch(e){}
+  return (saved && __isKnownLang(saved))?saved:"zh";
+}
 function positionPanel(){
+  if(!langPanel||!langBtn)return;
   if(window.innerWidth<=680){langPanel.style.top="";langPanel.style.right="";return;}
   var r=langBtn.getBoundingClientRect();
   langPanel.style.top=(r.bottom+10)+"px";
   langPanel.style.right=Math.max(12,window.innerWidth-r.right)+"px";
 }
-langBtn.addEventListener("click",function(){
-  var open=langPanel.classList.toggle("open");
-  langBtn.setAttribute("aria-expanded",open?"true":"false");
-  if(open)positionPanel();
-});
-document.getElementById("langClose").addEventListener("click",function(){
+function panelIsOpen(){return !!(langPanel&&langPanel.classList.contains("open"));}
+function setPanelLock(on){
+  if(!document.documentElement)return;
+  document.documentElement.classList.toggle("lang-lock", !!on && window.innerWidth<=680);
+}
+function focusLangButton(){
+  if(!langListEl)return;
+  var cur=langListEl.querySelector('button[data-lang="'+currentLang()+'"]')||langListEl.querySelector("button[data-lang]");
+  if(!cur)return;
+  try{cur.focus({preventScroll:true});}catch(e){try{cur.focus();}catch(e2){}}
+  if(cur.scrollIntoView)try{cur.scrollIntoView({block:"nearest"});}catch(e3){}
+}
+function openPanel(){
+  if(!langPanel||panelIsOpen())return;
+  langPanel.classList.add("open");
+  langPanel.setAttribute("aria-hidden","false");
+  if(langBtn)langBtn.setAttribute("aria-expanded","true");
+  positionPanel();setPanelLock(true);focusLangButton();
+}
+function closePanel(refocus){
+  if(!langPanel||!panelIsOpen())return;
   langPanel.classList.remove("open");
-  langBtn.setAttribute("aria-expanded","false");
-});
+  langPanel.setAttribute("aria-hidden","true");
+  if(langBtn)langBtn.setAttribute("aria-expanded","false");
+  setPanelLock(false);
+  var s=document.getElementById("langSearch");
+  if(s&&s.value){s.value="";filterLangList("");}
+  if(refocus&&langBtn)try{langBtn.focus({preventScroll:true});}catch(e){}
+}
+function filterLangList(q){
+  if(!langListEl)return;
+  q=String(q||"").trim().toLowerCase();
+  var btns=langListEl.querySelectorAll("button[data-lang]"),n=0;
+  for(var i=0;i<btns.length;i++){
+    var b=btns[i];
+    var hay=((b.textContent||"")+" "+(b.getAttribute("data-lang")||"")).toLowerCase();
+    var ok=!q||hay.indexOf(q)>-1;
+    b.hidden=!ok;if(ok)n++;
+  }
+  langPanel.classList.toggle("no-match",n===0);
+}
+function visibleLangButtons(){
+  if(!langListEl)return [];
+  var all=langListEl.querySelectorAll("button[data-lang]"),out=[];
+  for(var i=0;i<all.length;i++)if(!all[i].hidden)out.push(all[i]);
+  return out;
+}
+
+if(langPanel){
+  langPanel.setAttribute("role","dialog");
+  langPanel.setAttribute("aria-modal","true");
+  langPanel.setAttribute("aria-hidden","true");
+  if(!langPanel.hasAttribute("aria-label"))langPanel.setAttribute("aria-label","Language");
+  /* search field — only meaningful once the list gets long */
+  (function(){
+    if(!langListEl||document.getElementById("langSearch"))return;
+    var wrap=document.createElement("div");
+    wrap.className="lang-search-wrap";
+    var input=document.createElement("input");
+    input.id="langSearch";input.className="lang-search";input.type="search";
+    input.setAttribute("autocomplete","off");input.setAttribute("spellcheck","false");
+    input.setAttribute("aria-label","Language");
+    input.setAttribute("placeholder","\u2315  Language / \u8bed\u8a00");
+    input.addEventListener("input",function(){filterLangList(input.value);});
+    input.addEventListener("keydown",function(e){
+      if(e.key!=="Enter")return;
+      var first=visibleLangButtons()[0];
+      if(first){e.preventDefault();first.click();}
+    });
+    wrap.appendChild(input);
+    langListEl.parentNode.insertBefore(wrap,langListEl);
+  })();
+}
+
+if(langBtn)langBtn.addEventListener("click",function(e){e.preventDefault();panelIsOpen()?closePanel(false):openPanel();});
+if(langCloseBtn)langCloseBtn.addEventListener("click",function(){closePanel(true);});
 document.addEventListener("click",function(e){
-  if(langPanel.classList.contains("open") && !langPanel.contains(e.target) && e.target!==langBtn && !langBtn.contains(e.target)){
-    langPanel.classList.remove("open");langBtn.setAttribute("aria-expanded","false");
+  if(panelIsOpen() && !langPanel.contains(e.target) && e.target!==langBtn && !(langBtn&&langBtn.contains(e.target)))closePanel(false);
+});
+document.addEventListener("keydown",function(e){
+  if(!panelIsOpen())return;
+  if(e.key==="Escape"){e.preventDefault();closePanel(true);return;}
+  var btns=visibleLangButtons();
+  if(!btns.length)return;
+  var idx=btns.indexOf(document.activeElement);
+  if(e.key==="ArrowDown"){e.preventDefault();btns[idx<0?0:(idx+1)%btns.length].focus();return;}
+  if(e.key==="ArrowUp"){e.preventDefault();btns[idx<=0?btns.length-1:idx-1].focus();return;}
+  if(e.key==="Home"){e.preventDefault();btns[0].focus();return;}
+  if(e.key==="End"){e.preventDefault();btns[btns.length-1].focus();return;}
+  if(e.key==="Tab"){
+    var items=[];
+    var s=document.getElementById("langSearch");
+    if(s)items.push(s);
+    if(langCloseBtn)items.push(langCloseBtn);
+    items=items.concat(btns);
+    var first=items[0],last=items[items.length-1];
+    if(e.shiftKey && document.activeElement===first){e.preventDefault();last.focus();}
+    else if(!e.shiftKey && document.activeElement===last){e.preventDefault();first.focus();}
   }
 });
-window.addEventListener("resize",function(){if(langPanel.classList.contains("open"))positionPanel();});
-document.getElementById("langList").addEventListener("click",function(e){
+if(langListEl)langListEl.addEventListener("click",function(e){
   var b=e.target.closest("button[data-lang]");
   if(!b)return;
-  setLang(b.getAttribute("data-lang"));
-  langPanel.classList.remove("open");langBtn.setAttribute("aria-expanded","false");
+  var code=b.getAttribute("data-lang");
+  if(LANG_APPLY)LANG_APPLY(code);syncLangUI();
+  closePanel(true);
 });
+window.addEventListener("resize",function(){if(panelIsOpen())positionPanel();});
+window.addEventListener("scroll",function(){if(panelIsOpen())positionPanel();},{passive:true});
+window.addEventListener("storage",function(e){
+  if(e.key!=="lang"||!e.newValue||!__isKnownLang(e.newValue)||!LANG_APPLY)return;
+  LANG_APPLY(e.newValue);syncLangUI();
+});
+function syncLangUI(){
+  var code=currentLang(),dict=I18N[code]||{};
+  if(langListEl){
+    var btns=langListEl.querySelectorAll("button[data-lang]");
+    for(var i=0;i<btns.length;i++){
+      if(btns[i].getAttribute("data-lang")===code)btns[i].setAttribute("aria-current","true");
+      else btns[i].removeAttribute("aria-current");
+    }
+  }
+  if(typeof LANGS!=="undefined"){
+    var n=LANGS.length;
+    var p=document.querySelector('[data-i18n="projects.p5d"]');
+    if(p&&p.textContent.indexOf("{n}")>-1)p.textContent=p.textContent.replace(/\{n\}/g,String(n));
+    var st=document.querySelector('[data-i18n="about.s2k"]');
+    var cb=st&&st.parentNode?st.parentNode.querySelector("[data-count]"):null;
+    if(cb){cb.setAttribute("data-count",String(n));cb.textContent=String(n);}
+  }
+  var label=(dict.kbd&&dict.kbd.lang)||"Language";
+  if(langBtn)langBtn.setAttribute("title",label);
+  if(langPanel)langPanel.setAttribute("aria-label",label);
+}
+syncLangUI();
 
 /* ============================================================
    theme

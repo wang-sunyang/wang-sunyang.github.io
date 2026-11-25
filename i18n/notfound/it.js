@@ -1,0 +1,2 @@
+/* it · notfound — UI 词典（懒加载，仅本页） */
+window.__I18N_PUSH__&&window.__I18N_PUSH__("it",{"ui":{"langTitle":"Scegli lingua / Language","langSwitched":"Lingua cambiata in {lang}"},"theme":{"toDark":"Passa alla modalità scura","toLight":"Passa alla modalità chiara"},"nf":{"title":"Questa pagina si è persa","desc":"L'indirizzo che cerchi non esiste, o il suo contenuto si è spostato.","home":"Torna alla home","notes":"Vedi le note","foot":"Sito personale"}});

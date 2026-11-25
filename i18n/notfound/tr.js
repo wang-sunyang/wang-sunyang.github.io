@@ -1,0 +1,2 @@
+/* tr · notfound — UI 词典（懒加载，仅本页） */
+window.__I18N_PUSH__&&window.__I18N_PUSH__("tr",{"ui":{"langTitle":"Dil seçin / Language","langSwitched":"Dil {lang} olarak değiştirildi"},"theme":{"toDark":"Koyu moda geç","toLight":"Aydınlık moda geç"},"nf":{"title":"Bu sayfa kayboldu","desc":"Aradığınız adres yok ya da içeriği taşınmış.","home":"Ana sayfaya dön","notes":"Notlara bak","foot":"Kişisel site"}});

@@ -23,15 +23,53 @@
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="512x512" href="https://wang-sunyang.github.io/favicon-512.png">
+<link rel="manifest" href="https://wang-sunyang.github.io/site.webmanifest">
+<link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml">
+  <link rel="alternate" type="application/rss+xml" title="王孙阳 · Wang Sunyang — 独立开发者" href="https://wang-sunyang.github.io/feed.xml">
+<meta property="og:image" content="https://wang-sunyang.github.io/og-cover.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="王孙阳 · Wang Sunyang — 独立开发者">
+<meta name="twitter:image" content="https://wang-sunyang.github.io/og-cover.png">
+<meta name="twitter:image:alt" content="王孙阳 · Wang Sunyang — 独立开发者">
 
 <script>
 /* 首屏前决定主题，避免闪白/闪黑 */
 (function(){var s=null;try{s=localStorage.getItem('theme');}catch(e){}var l=window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)').matches;document.documentElement.setAttribute('data-theme',s||(l?'light':'dark'));})();
 </script>
+<script>
+/* 首屏语言判定：读 body 之前先定好 <html lang/dir>；
+   目标语言不是中文时暂时隐藏正文，等词典就位再显示，避免先闪一句中文。 */
+(function(){
+  var L=["zh","zh-TW","en","ja","ko","fr","de","es","pt","it","ru","uk","pl","nl","tr","ar","hi","id","vi","th","el","sv","cs","ro","bn","ur","ms","tl","he","fa"];
+  var RTL=["ar","he","fa","ur","yi","dv","ps","ckb","sd","ug"];
+  var code=null;
+  try{code=localStorage.getItem("lang");}catch(e){}
+  if(!code||L.indexOf(code)<0){
+    code=null;
+    var list=(navigator.languages&&navigator.languages.length)?navigator.languages:[navigator.language||"zh"];
+    for(var i=0;i<list.length;i++){
+      var tag=String(list[i]||"").toLowerCase();if(!tag)continue;
+      var bits=tag.split("-"),prim=bits[0],rest=bits.slice(1).join("-");
+      if(prim==="zh"){code=(rest.indexOf("hant")>-1||rest==="tw"||rest==="hk"||rest==="mo")?"zh-TW":"zh";break;}
+      if(L.indexOf(tag)>-1){code=tag;break;}
+      if(L.indexOf(prim)>-1){code=prim;break;}
+    }
+    if(!code)code="zh";
+  }
+  var de=document.documentElement;
+  de.setAttribute("lang",({"zh":"zh-CN","zh-TW":"zh-Hant"})[code]||code);
+  de.setAttribute("dir",RTL.indexOf(code)>-1?"rtl":"ltr");
+  window.__BOOT_LANG__=code;
+  if(code!=="zh")de.className=(de.className?de.className+" ":"")+"i18n-boot";
+  setTimeout(function(){if(!window.__LANG_READY__)de.className=de.className.replace(/\s*i18n-boot/g,"");},4000);
+})();
+</script>
 <style>
 /* ============================================================
    NIGHTGLEAN · 长夜拾星 — Design System
-   0 deps · hand-written · 20 languages
+   0 deps · hand-written · 30 languages
    ============================================================ */
 :root{
   --bg:#05060e;
@@ -443,10 +481,51 @@ footer a:hover{color:var(--acc1)}
   #aurora i,.marquee-track,.ring{animation:none}
   #grain{display:none}
 }
+/* ---- language panel polish (unified) ---- */
+#langPanel .lang-search-wrap{padding:10px 12px 4px;}
+#langPanel .lang-search{width:100%;box-sizing:border-box;padding:8px 11px;border-radius:9px;border:1px solid rgba(128,128,128,.35);background:rgba(128,128,128,.08);color:inherit;font:inherit;font-size:13px;line-height:1.3;-webkit-appearance:none;appearance:none;}
+#langPanel .lang-search::-webkit-search-cancel-button{-webkit-appearance:none;}
+#langPanel .lang-search:focus{outline:2px solid rgba(120,170,255,.85);outline-offset:1px;}
+#langPanel .lang-list button[data-lang]:focus-visible{outline:2px solid rgba(120,170,255,.85);outline-offset:2px;}
+#langPanel.no-match .lang-list::after{content:"\2014";display:block;padding:22px 0;text-align:center;opacity:.55;}
+html.lang-lock,html.lang-lock body{overflow:hidden;}
+@media (prefers-reduced-motion:reduce){#langPanel,.lang-search-wrap{transition:none!important;animation:none!important;}}
+html:lang(bn){font-family:"Noto Sans Bengali","Nirmala UI","Segoe UI",system-ui,sans-serif;}
+html:lang(ur){font-family:"Noto Nastaliq Urdu","Noto Naskh Arabic","Segoe UI",Tahoma,system-ui,sans-serif;}
+html:lang(fa),html:lang(he),html:lang(ar),html:lang(sd),html:lang(ps){font-family:"Segoe UI",Tahoma,"Noto Naskh Arabic","Noto Sans Hebrew",system-ui,sans-serif;}
+/* i18n 首屏防闪：目标语言不是中文时，切换完成前不显示正文 */
+html.i18n-boot body{visibility:hidden}
+html.i18n-boot{background:#05060e}
+html[data-theme="light"].i18n-boot{background:#f4f5fb}
+/* ============================================================
+   打印样式 — 只留正文，去掉浮层、导航与暗色背景
+   ============================================================ */
+@media print{
+  @page{margin:14mm 12mm}
+  html,body{background:#fff!important;color:#111!important}
+  body{color-adjust:exact;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  #langPanel,#langBtn,#menuBtn,#mobileMenu,#menuOverlay,#langSearch,#bodyNote,
+  .aurora,.grain,.noise,.cursor-glow,.lang-search-wrap,.skip-link,.sr-only,.theme-toggle,
+  nav,.nav,.topbar,.lang-wrap,.more-wrap{display:none!important}
+  a{color:#111!important;text-decoration:underline}
+  a[href^="http"]::after{content:" (" attr(href) ")";font-size:9pt;color:#555;word-break:break-all}
+  h1,h2,h3{break-after:avoid;page-break-after:avoid}
+  img,pre,table,blockquote,figure{break-inside:avoid;page-break-inside:avoid}
+  pre{white-space:pre-wrap;word-break:break-word;border:1px solid #ddd;background:#fafafa}
+}
+
+@media print{
+  .toc,.post-nav,.read-bar,.reader-bar,.progress,.scroll-progress,#tocToggle{display:none!important}
+  .prose{max-width:none!important;font-size:11.5pt;line-height:1.65;color:#111}
+  .prose pre,.prose code{color:#111!important;background:#f4f4f4!important}
+  .prose img{max-width:100%!important;height:auto}
+  .prose a{word-break:break-word}
+}
 </style>
 </head>
 
 <body>
+<div id="srStatus" role="status" aria-live="polite" aria-atomic="true" style="position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0"></div>
 <a class="skip" href="#main" data-i18n="skip">跳到主要内容</a>
 <div id="progress" aria-hidden="true"></div>
 
@@ -557,7 +636,7 @@ footer a:hover{color:var(--acc1)}
         </div>
         <div class="stats reveal">
           <div class="stat" data-tilt><b data-count="5">05</b><span data-i18n="about.s1k">开源项目</span></div>
-          <div class="stat" data-tilt><b data-count="20">20</b><span data-i18n="about.s2k">界面语言</span></div>
+          <div class="stat" data-tilt><b data-count="30">30</b><span data-i18n="about.s2k">界面语言</span></div>
           <div class="stat" data-tilt><b data-count="0">0</b><span data-i18n="about.s3k">第三方依赖</span></div>
           <div class="stat" data-tilt><b data-count="100" data-suffix="%">100%</b><span data-i18n="about.s4k">原生实现</span></div>
         </div>
@@ -610,7 +689,7 @@ footer a:hover{color:var(--acc1)}
           <span class="glare" aria-hidden="true"></span>
           <div class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="M3 9h18"/><path d="M6.6 6.5h.01M9.4 6.5h.01"/></svg></div>
           <h3><span data-i18n="projects.p5name">本站 · 零依赖个人站</span> <span class="go" aria-hidden="true">→</span></h3>
-          <p data-i18n="projects.p5d">你正在看的这个页面：纯手写、零依赖、20 种语言实时切换，没有框架也没有构建步骤。</p>
+          <p data-i18n="projects.p5d">你正在看的这个页面：纯手写、零依赖、30 种语言实时切换，没有框架也没有构建步骤。</p>
           <div class="meta"><span>HTML/CSS/JS</span><span>i18n</span><span>zero-dep</span><span data-i18n="projects.view">查看仓库</span></div>
         </a>
         <a class="card more-card reveal" href="https://github.com/wang-sunyang?tab=repositories" target="_blank" rel="noopener noreferrer">
@@ -750,7 +829,7 @@ footer a:hover{color:var(--acc1)}
 
 <script>
 /* ============================================================
-   i18n dictionary — 20 languages
+   i18n dictionary — 30 languages
    ============================================================ */
 var LANGS=[
   {code:"zh",native:"简体中文",sub:"Simplified Chinese"},
@@ -776,241 +855,48 @@ var LANGS=[
 ];
 
 var I18N={
-"zh":{skip:"跳到主要内容",ui:{langTitle:"选择语言 / Language"},
-nav:{about:"关于",projects:"作品",stack:"技术栈",phil:"理念",journey:"轨迹",notes:"笔记",contact:"联系"},
-hero:{status:"独立开发者 · 长夜拾星工作室",lead:"少一层抽象，就少一类 bug。一个人做完产品、开发、测试、发布——用原生代码与最少的依赖，把想法做成能跑的东西。",cta1:"看看作品",cta2:"联系我",scroll:"向下滚动",roles:["独立开发者","原生 Android 工程师","无 Gradle 构建链实践者","AI Agent 安全研究者","一人成军的创作者"]},
-about:{tag:"ABOUT",title:"关于我",subtitle:"中职在读，同时是一人成军的独立开发者。",p1:"我是王孙阳，长夜拾星工作室（Nightglean Studio）的创始人。产品、编码、测试、发版，全流程自己一个人跑。",p2:"技术取向是「原生优先」：能用平台 API 就不引框架，能用系统工具链就不上构建系统。我笃信——依赖越少，出问题的面越小。",p3:"这个网站是我的零依赖数字名片：纯手写 HTML / CSS / JS，没有框架、没有构建、没有第三方请求，改完 git push 就发布。",s1k:"开源项目",s2k:"界面语言",s3k:"第三方依赖",s4k:"原生实现"},
-projects:{tag:"PROJECTS",title:"开源作品",subtitle:"原生优先、最少依赖，每一个都在跑、都能复现。",view:"查看仓库",moreTitle:"还有更多在路上。",moreDesc:"长夜拾星，慢慢打磨每一个作品。",moreLink:"去 GitHub 逛逛 →",p1name:"拾光 · OneStar",p1d:"不用 Gradle / AGP 的原生 Android 构建实验：aapt2 + javac + d8 + apksigner + zig cc，一条 build.sh 走完全程。",p2name:"AppFunction Guard",p2d:"Android 16 让 AI Agent 能直接调用你 App 里的函数；它补上平台没给的门卫——逐函数授权、限流、PII 脱敏与审计。",p3name:"蜕冗 · moltdisk",p3d:"磁盘里最占地方的，往往是能由源码重建的构建产物。找出它们、算清体积、给出证据，然后停手——它不删任何东西。",p4name:"Marvis · Persona Spec",p4d:"一份可被程序检查的人格规范：30 格台词位、20 条禁句、可运行的 lint 与基准测试，附 Fault Bloom 视觉系统。",p5name:"本站 · 零依赖个人站",p5d:"你正在看的这个页面：纯手写、零依赖、20 种语言实时切换，没有框架也没有构建步骤。"},
-stack:{tag:"STACK",title:"技术栈",subtitle:"能自己动手的，就不交给黑盒。",lang:"语言",tool:"平台与工具链"},
-phil:{tag:"PHILOSOPHY",title:"我的信条",subtitle:"几条让我少踩坑、把东西做出来的原则。",i1t:"少一层抽象，就少一类 bug",i1d:"能用平台 API 就绝不引框架；每少一层，出问题的面就小一圈。",i2t:"可复现的构建 > 聪明的构建",i2d:"无缓存、无守护进程，构建时间可预期——比「快但玄学」更值钱。",i3t:"先做出来，再优化",i3d:"做出来比想清楚更重要；先跑通，再打磨。",i4t:"只审计，不删除",i4d:"工具应给出证据、把决定权留给人，而不是替人动手。"},
-journey:{tag:"JOURNEY",title:"成长轨迹",subtitle:"一步步走到现在，每一步都算数。",j1w:"现在",j1t:"五个项目独立维护",j1d:"一条无 Gradle 的构建链、一套 AI Agent 权限闸门、一个只审计不删除的 CLI。",j2w:"长夜拾星",j2t:"成立 Nightglean Studio",j2d:"把「少一层抽象」做成工作室的信条：原生优先、最少依赖。",j3w:"入门原生 Android",j3t:"绕开框架直连工具链",j3d:"从 JNI、aapt2 到 zig cc，直接和平台工具链打交道。",j4w:"起点",j4t:"好奇一个 App 如何诞生",j4d:"从「一个 App 到底是怎么从代码变成安装包的」开始自己动手。"},
-contact:{title:"一起聊聊？",subtitle:"合作、提问或单纯打个招呼，我都欢迎；开 Issue 通常比邮件更快。",email:"邮箱",wechat:"微信",studio:"工作室",copied:"已复制，去微信搜我"},
-kbd:{title:"键盘快捷键",hint:"按 ? 或 Esc 关闭",github:"打开 GitHub",notes:"打开笔记",theme:"切换深浅主题",lang:"切换语言"},footer:{line:"少一层抽象，就少一类 bug。",top:"回到顶部 ↑"}},
-
-"zh-TW":{skip:"跳到主要內容",ui:{langTitle:"選擇語言 / Language"},
-nav:{about:"關於",projects:"作品",stack:"技術棧",phil:"理念",journey:"軌跡",notes:"筆記",contact:"聯繫"},
-hero:{status:"獨立開發者 · 長夜拾星工作室",lead:"少一層抽象，就少一類 bug。一個人做完產品、開發、測試、發佈——用原生程式碼與最少的依賴，把想法做成能跑的東西。",cta1:"看看作品",cta2:"聯絡我",scroll:"向下捲動",roles:["獨立開發者","原生 Android 工程師","無 Gradle 建置鏈實踐者","AI Agent 安全研究者","一人成軍的創作者"]},
-about:{tag:"ABOUT",title:"關於我",subtitle:"中職在讀，同時是一人成軍的獨立開發者。",p1:"我是王孫陽，長夜拾星工作室（Nightglean Studio）的創辦人。產品、編碼、測試、發版，全流程自己一個人跑。",p2:"技術取向是「原生優先」：能用平台 API 就不引框架，能用系統工具鏈就不上建置系統。我深信——依賴越少，出問題的面越小。",p3:"這個網站是我的零依賴數位名片：純手寫 HTML / CSS / JS，沒有框架、沒有建置、沒有第三方請求，改完 git push 就發佈。",s1k:"開源專案",s2k:"介面語言",s3k:"第三方依賴",s4k:"原生實作"},
-projects:{tag:"PROJECTS",title:"開源作品",subtitle:"原生優先、最少依賴，每一個都在跑、都能重現。",view:"查看倉庫",moreTitle:"還有更多在路上。",moreDesc:"長夜拾星，慢慢打磨每一個作品。",moreLink:"去 GitHub 逛逛 →",p1name:"拾光 · OneStar",p1d:"不用 Gradle / AGP 的原生 Android 建置實驗：aapt2 + javac + d8 + apksigner + zig cc，一條 build.sh 走完全程。",p2name:"AppFunction Guard",p2d:"Android 16 讓 AI Agent 能直接呼叫你 App 裡的函式；它補上平台沒給的守衛——逐函式授權、限流、PII 去識別化與稽核。",p3name:"蛻冗 · moltdisk",p3d:"磁碟裡最佔地方的，往往是能由原始碼重建的建置產物。找出它們、算清體積、給出證據，然後停手——它不刪任何東西。",p4name:"Marvis · Persona Spec",p4d:"一份可被程式檢查的人格規範：30 格臺詞位、20 條禁句、可執行的 lint 與基準測試，附 Fault Bloom 視覺系統。",p5name:"本站 · 零依賴個人站",p5d:"你正在看的這個頁面：純手寫、零依賴、20 種語言即時切換，沒有框架也沒有建置步驟。"},
-stack:{tag:"STACK",title:"技術棧",subtitle:"能自己動手的，就不交給黑盒。",lang:"語言",tool:"平台與工具鏈"},
-phil:{tag:"PHILOSOPHY",title:"我的信條",subtitle:"幾條讓我少踩坑、把東西做出來的原則。",i1t:"少一層抽象，就少一類 bug",i1d:"能用平台 API 就絕不引框架；每少一層，出問題的面就小一圈。",i2t:"可重現的建置 > 聰明的建置",i2d:"無快取、無守護行程，建置時間可預期——比「快但玄學」更值錢。",i3t:"先做出來，再最佳化",i3d:"做出來比想清楚更重要；先跑通，再打磨。",i4t:"只稽核，不刪除",i4d:"工具應給出證據、把決定權留給人，而不是替人動手。"},
-journey:{tag:"JOURNEY",title:"成長軌跡",subtitle:"一步步走到現在，每一步都算數。",j1w:"現在",j1t:"五個專案獨立維護",j1d:"一條無 Gradle 的建置鏈、一套 AI Agent 權限閘門、一個只稽核不刪除的 CLI。",j2w:"長夜拾星",j2t:"成立 Nightglean Studio",j2d:"把「少一層抽象」做成工作室的信條：原生優先、最少依賴。",j3w:"入門原生 Android",j3t:"繞開框架直連工具鏈",j3d:"從 JNI、aapt2 到 zig cc，直接和平台工具鏈打交道。",j4w:"起點",j4t:"好奇一個 App 如何誕生",j4d:"從「一個 App 到底是怎麼從程式碼變成安裝包的」開始自己動手。"},
-contact:{title:"一起聊聊？",subtitle:"合作、提問或單純打個招呼，我都歡迎；開 Issue 通常比郵件更快。",email:"信箱",wechat:"微信",studio:"工作室",copied:"已複製，去微信搜我"},
-kbd:{title:"鍵盤快捷鍵",hint:"按 ? 或 Esc 關閉",github:"開啟 GitHub",notes:"開啟筆記",theme:"切換深淺主題",lang:"切換語言"},footer:{line:"少一層抽象，就少一類 bug。",top:"回到頂部 ↑"}},
-
-"en":{skip:"Skip to content",ui:{langTitle:"Choose language / Language"},
-nav:{about:"About",projects:"Projects",stack:"Stack",phil:"Philosophy",journey:"Journey",notes:"Notes",contact:"Contact"},
-hero:{status:"Independent Developer · Nightglean Studio",lead:"One fewer layer of abstraction is one fewer class of bug. I ship product, code, tests and releases solo — native code, minimal dependencies, ideas turned into things that run.",cta1:"See my work",cta2:"Get in touch",scroll:"Scroll down",roles:["Independent Developer","Native Android Engineer","No-Gradle Build-Chain Builder","AI-Agent Security Researcher","One-Person Studio"]},
-about:{tag:"ABOUT",title:"About me",subtitle:"A student, and a one-person indie studio.",p1:"I'm Wang Sunyang, founder of Nightglean Studio. I run the whole loop myself — product, code, test, release.",p2:"My bias is native-first: use platform APIs instead of pulling in a framework, use the system toolchain instead of a build system. Fewer dependencies, a smaller surface for things to break.",p3:"This site is my zero-dependency calling card — hand-written HTML / CSS / JS, no framework, no build, no third-party requests. Edit, git push, published.",s1k:"Open-source projects",s2k:"UI languages",s3k:"Third-party deps",s4k:"Native-first"},
-projects:{tag:"PROJECTS",title:"Open-source work",subtitle:"Native-first, minimal dependencies — each one runs and reproduces.",view:"View repo",moreTitle:"More on the way.",moreDesc:"Nightglean — polishing every project, one at a time.",moreLink:"Browse on GitHub →",p1name:"OneStar",p1d:"A native Android build without Gradle / AGP: aapt2 + javac + d8 + apksigner + zig cc, the whole pipeline in one build.sh.",p2name:"AppFunction Guard",p2d:"Android 16 lets AI agents call functions inside your app. This adds the guard the platform left out — per-function authorization, rate limits, PII redaction and an audit trail.",p3name:"moltdisk",p3d:"The heaviest things on a disk are often build artifacts rebuildable from source. Find them, size them, show the evidence — then stop. It never deletes.",p4name:"Marvis · Persona Spec",p4d:"A persona contract that code can check: 30 dialogue slots, 20 forbidden lines, a runnable linter and benchmarks, plus the Fault Bloom visual system.",p5name:"This site",p5d:"The page you're reading: hand-written, zero dependencies, 20 languages switching live, no framework and no build step."},
-stack:{tag:"STACK",title:"Tech stack",subtitle:"What I can do myself, I don't hand to a black box.",lang:"Languages",tool:"Platform & toolchain"},
-phil:{tag:"PHILOSOPHY",title:"What I believe",subtitle:"A few principles that keep me out of trouble and ship things.",i1t:"One fewer abstraction, one fewer bug",i1d:"Use a platform API before a framework; every layer you skip shrinks the surface for failure.",i2t:"Reproducible builds > clever builds",i2d:"No cache, no daemon, predictable build times — worth more than fast-but-mystical.",i3t:"Ship it, then refine",i3d:"Making it real matters more than thinking it through; get it running first, then polish.",i4t:"Audit, never delete",i4d:"A tool should present evidence and leave the decision to a human, not act for them."},
-journey:{tag:"JOURNEY",title:"The journey",subtitle:"Step by step to here — every step counted.",j1w:"Now",j1t:"Five projects, one maintainer",j1d:"A no-Gradle build chain, an AI-agent guard SDK, an audit-only disk CLI.",j2w:"Nightglean",j2t:"Founded Nightglean Studio",j2d:"Turned \"one fewer layer\" into a studio creed: native-first, minimal dependencies.",j3w:"Native Android",j3t:"Skipping the framework",j3d:"From JNI and aapt2 to zig cc, working with the platform toolchain directly.",j4w:"The start",j4t:"How is an app born?",j4d:"It began with curiosity: how does code actually become an installable app?"},
-contact:{title:"Let's talk?",subtitle:"Collabs, questions or just a hello — all welcome; an issue is usually faster than email.",email:"Email",wechat:"WeChat",studio:"Studio",copied:"Copied — find me on WeChat"},
-kbd:{title:"Keyboard shortcuts",hint:"Press ? or Esc to close",github:"Open GitHub",notes:"Open notes",theme:"Toggle theme",lang:"Switch language"},footer:{line:"One fewer layer of abstraction, one fewer bug.",top:"Back to top ↑"}},
-
-"ja":{skip:"本文へスキップ",ui:{langTitle:"言語を選択 / Language"},
-nav:{about:"私について",projects:"作品",stack:"技術スタック",phil:"信条",journey:"軌跡",notes:"ノート",contact:"連絡"},
-hero:{status:"独立開発者 · Nightglean Studio",lead:"抽象を 1 つ減らせば、バグは 1 種類減る。製品・開発・テスト・リリースをすべて一人で——ネイティブコードと最小限の依存で、アイデアを動くものに。",cta1:"作品を見る",cta2:"連絡する",scroll:"スクロール",roles:["独立開発者","ネイティブ Android エンジニア","Gradle レスビルドの実践者","AI エージェントのセキュリティ研究者","一人スタジオ"]},
-about:{tag:"ABOUT",title:"私について",subtitle:"学生であり、一人完結のインディー開発者。",p1:"王孫陽、Nightglean Studio の創業者です。製品・コーディング・テスト・リリースの全工程を自分ひとりで回しています。",p2:"「ネイティブ優先」が信条です。プラットフォーム API で済むならフレームワークは入れない、システムのツールチェーンで済むならビルドシステムは入れない。依存が少ないほど、壊れる面も小さくなる。",p3:"このサイトは依存ゼロの名刺です。素の HTML / CSS / JS で、フレームワークもビルドもサードパーティ通信もなし。編集して git push するだけ。",s1k:"オープンソース",s2k:"UI 言語",s3k:"サードパーティ依存",s4k:"ネイティブ実装"},
-projects:{tag:"PROJECTS",title:"オープンソース作品",subtitle:"ネイティブ優先・最小依存。どれも動き、再現できる。",view:"リポジトリへ",moreTitle:"さらに続々と進行中。",moreDesc:"Nightglean——ひとつずつ、じっくり磨いていく。",moreLink:"GitHub を見る →",p1name:"OneStar",p1d:"Gradle / AGP を使わないネイティブ Android ビルドの実験：aapt2 + javac + d8 + apksigner + zig cc、build.sh 一本で完結。",p2name:"AppFunction Guard",p2d:"Android 16 は AI エージェントにアプリ内関数の直接呼び出しを許す。これが欠けている門番を補う——関数単位の認可・レート制限・PII の秘匿化・監査。",p3name:"moltdisk",p3d:"ディスクで一番場所を取るのは、ソースから再構築できるビルド成果物であることが多い。見つけ出し、サイズを計算し、根拠を示して、そこで止まる——決して削除しない。",p4name:"Marvis · Persona Spec",p4d:"プログラムで検査できる人格仕様：30 の台詞スロット、20 の禁句、実行可能な linter とベンチマーク、Fault Bloom ビジュアルシステム付き。",p5name:"このサイト",p5d:"いま読んでいるこのページ。素の手書き、依存ゼロ、20 言語のリアルタイム切替、フレームワークもビルドもなし。"},
-stack:{tag:"STACK",title:"技術スタック",subtitle:"自分でできることをブラックボックスに渡さない。",lang:"言語",tool:"プラットフォームとツールチェーン"},
-phil:{tag:"PHILOSOPHY",title:"私の信条",subtitle:"失敗を減らし、ものを形にするためのいくつかの原則。",i1t:"抽象を 1 つ減らせば、バグは 1 つ減る",i1d:"フレームワークより先にプラットフォーム API。省いた層の分だけ、壊れる面は小さくなる。",i2t:"再現できるビルド > 賢いビルド",i2d:"キャッシュなし、デーモンなし、予測可能なビルド時間——「速いけれど不確か」より価値がある。",i3t:"まず形に、それから磨く",i3d:"考え抜くより形にすることが大事。まず動かし、それから磨く。",i4t:"監査する、削除しない",i4d:"ツールは根拠を示し、判断は人に委ねるべきで、人の代わりに手を下さない。"},
-journey:{tag:"JOURNEY",title:"軌跡",subtitle:"一歩ずつ今へ——どの一歩も意味があった。",j1w:"現在",j1t:"5 つのプロジェクトを一人で維持",j1d:"Gradle レスビルド、AI エージェント向け権限 SDK、監査専用ディスク CLI。",j2w:"Nightglean",j2t:"Nightglean Studio を設立",j2d:"「1 つ少ない抽象」をスタジオの信条に：ネイティブ優先・最小依存。",j3w:"ネイティブ Android",j3t:"フレームワークを回避",j3d:"JNI や aapt2 から zig cc まで、プラットフォームのツールチェーンと直接向き合う。",j4w:"原点",j4t:"アプリはどう生まれるのか",j4d:"「コードがどうやってインストール可能なアプリになるのか」という好奇心から始まった。"},
-contact:{title:"話しませんか？",subtitle:"協業・質問・ただの挨拶、どれも歓迎。Issue の方がメールより早いことが多い。",email:"メール",wechat:"WeChat",studio:"スタジオ",copied:"コピーしました、WeChat で検索を"},
-kbd:{title:"キーボードショートカット",hint:"? か Esc で閉じる",github:"GitHub を開く",notes:"ノートを開く",theme:"テーマ切替",lang:"言語切替"},footer:{line:"抽象を 1 つ減らせば、バグは 1 種類減る。",top:"トップへ ↑"}},
-
-"ko":{skip:"본문으로 건너뛰기",ui:{langTitle:"언어 선택 / Language"},
-nav:{about:"소개",projects:"프로젝트",stack:"스택",phil:"신념",journey:"여정",notes:"노트",contact:"연락처"},
-hero:{status:"독립 개발자 · Nightglean Studio",lead:"추상화 한 겹을 줄이면 버그도 한 부류 줄어든다. 기획·개발·테스트·배포를 혼자서——네이티브 코드와 최소한의 의존성으로 아이디어를 실제로 돌아가는 것으로.",cta1:"작업물 보기",cta2:"연락하기",scroll:"스크롤",roles:["독립 개발자","네이티브 Android 엔지니어","무-Gradle 빌드 실천가","AI 에이전트 보안 연구자","1인 스튜디오"]},
-about:{tag:"ABOUT",title:"소개",subtitle:"학생이자, 1인 완결형 독립 개발자.",p1:"저는 Nightglean Studio의 창립자 왕쑨양입니다. 기획·코딩·테스트·배포 전 과정을 혼자서 돌립니다.",p2:"'네이티브 우선'이 원칙입니다. 플랫폼 API로 해결되면 프레임워크를 안 쓰고, 시스템 툴체인으로 되면 빌드 시스템을 안 씁니다. 의존성이 적을수록 문제가 생길 면도 작아집니다.",p3:"이 사이트는 의존성 제로인 제 명함입니다. 순수 HTML / CSS / JS로, 프레임워크도 빌드도 서드파티 요청도 없이 git push만 하면 배포됩니다.",s1k:"오픈소스 프로젝트",s2k:"UI 언어",s3k:"서드파티 의존성",s4k:"네이티브 구현"},
-projects:{tag:"PROJECTS",title:"오픈소스 작업",subtitle:"네이티브 우선·최소 의존. 모두 실행되고 재현됩니다.",view:"저장소 보기",moreTitle:"더 많은 작업이 진행 중입니다.",moreDesc:"Nightglean——하나씩, 천천히 다듬어갑니다.",moreLink:"GitHub 둘러보기 →",p1name:"OneStar",p1d:"Gradle / AGP 없이 네이티브 Android 빌드 실험: aapt2 + javac + d8 + apksigner + zig cc, build.sh 하나로 전체 파이프라인 완결.",p2name:"AppFunction Guard",p2d:"Android 16은 AI 에이전트가 앱 안의 함수를 직접 호출하게 합니다. 플랫폼이 빠뜨린 경비를 보완——함수 단위 인가, 속도 제한, PII 비식별화, 감사 기록.",p3name:"moltdisk",p3d:"디스크에서 가장 많은 공간을 차지하는 건 소스로 재구축 가능한 빌드 산출물인 경우가 많습니다. 찾아내고, 크기를 계산하고, 근거를 제시한 뒤 멈춥니다——절대 삭제하지 않습니다.",p4name:"Marvis · Persona Spec",p4d:"코드로 검사할 수 있는 페르소나 규약: 30개 대사 슬롯, 20개 금지 문장, 실행 가능한 linter와 벤치마크, Fault Bloom 비주얼 시스템 포함.",p5name:"이 사이트",p5d:"지금 읽고 있는 이 페이지. 순수 수작업, 의존성 제로, 20개 언어 실시간 전환, 프레임워크도 빌드도 없음."},
-stack:{tag:"STACK",title:"기술 스택",subtitle:"직접 할 수 있는 일은 블랙박스에 맡기지 않습니다.",lang:"언어",tool:"플랫폼 및 툴체인"},
-phil:{tag:"PHILOSOPHY",title:"저의 신념",subtitle:"실수를 줄이고 결과물을 만들어내는 몇 가지 원칙.",i1t:"추상화 한 겹을 줄이면 버그도 한 부류 줄어든다",i1d:"프레임워크보다 플랫폼 API를 먼저. 건너뛴 층만큼 실패할 면도 줄어듭니다.",i2t:"재현 가능한 빌드 > 영리한 빌드",i2d:"캐시도 데몬도 없이 예측 가능한 빌드 시간——'빠르지만 미신 같은' 것보다 가치 있습니다.",i3t:"먼저 만들고, 그다음 다듬기",i3d:"완벽히 구상하는 것보다 실제로 만드는 게 중요합니다. 먼저 돌리고, 그다음 다듬습니다.",i4t:"감사하되, 삭제하지 않는다",i4d:"도구는 근거를 제시하고 결정은 사람에게 남겨야 합니다. 대신 손을 대지 않습니다."},
-journey:{tag:"JOURNEY",title:"여정",subtitle:"한 걸음씩 여기까지——모든 걸음이 의미 있었다.",j1w:"지금",j1t:"프로젝트 5개, 유지보수는 혼자",j1d:"무-Gradle 빌드 체인, AI 에이전트 권한 SDK, 감사 전용 디스크 CLI.",j2w:"Nightglean",j2t:"Nightglean Studio 설립",j2d:"'한 겹 적은 추상화'를 스튜디오의 신조로: 네이티브 우선·최소 의존.",j3w:"네이티브 Android",j3t:"프레임워크 우회하기",j3d:"JNI와 aapt2에서 zig cc까지, 플랫폼 툴체인과 직접 마주합니다.",j4w:"시작",j4t:"앱은 어떻게 태어나는가",j4d:"'코드가 어떻게 설치 가능한 앱이 되는가'라는 호기심에서 출발했습니다."},
-contact:{title:"이야기해볼까요?",subtitle:"협업·질문·가벼운 인사 모두 환영합니다. 이슈가 메일보다 빠를 때가 많습니다.",email:"이메일",wechat:"위챗",studio:"스튜디오",copied:"복사됨, 위챗에서 검색하세요"},
-kbd:{title:"키보드 단축키",hint:"? 또는 Esc로 닫기",github:"GitHub 열기",notes:"노트 열기",theme:"테마 전환",lang:"언어 전환"},footer:{line:"추상화 한 겹을 줄이면 버그도 한 부류 줄어든다.",top:"맨 위로 ↑"}},
-
-"fr":{skip:"Aller au contenu",ui:{langTitle:"Choisir la langue / Language"},
-nav:{about:"À propos",projects:"Projets",stack:"Stack",phil:"Philosophie",journey:"Parcours",notes:"Notes",contact:"Contact"},
-hero:{status:"Développeur indépendant · Nightglean Studio",lead:"Une couche d'abstraction en moins, c'est une classe de bugs en moins. Produit, code, tests, releases — je fais tout seul, en code natif et avec un minimum de dépendances.",cta1:"Voir mes projets",cta2:"Me contacter",scroll:"Défiler",roles:["Développeur indépendant","Ingénieur Android natif","Bâtisseur de build sans Gradle","Chercheur en sécurité IA","Studio d'une personne"]},
-about:{tag:"À PROPOS",title:"À propos",subtitle:"Étudiant, et studio indépendant d'une personne.",p1:"Je suis Wang Sunyang, fondateur de Nightglean Studio. Je gère toute la boucle moi-même — produit, code, tests, release.",p2:"Mon parti pris : le natif d'abord. Utiliser les API de la plateforme plutôt qu'un framework, la chaîne d'outils du système plutôt qu'un système de build. Moins de dépendances, moins de surface pour casser.",p3:"Ce site est ma carte de visite zéro dépendance — HTML / CSS / JS écrits à la main, sans framework, sans build, sans requête tierce. On édite, git push, c'est publié.",s1k:"Projets open source",s2k:"Langues de l'UI",s3k:"Dépendances tierces",s4k:"Natif d'abord"},
-projects:{tag:"PROJETS",title:"Travaux open source",subtitle:"Natif d'abord, dépendances minimales — chacun tourne et se reproduit.",view:"Voir le dépôt",moreTitle:"D'autres arrivent bientôt.",moreDesc:"Nightglean — polir chaque projet, un à la fois.",moreLink:"Parcourir GitHub →",p1name:"OneStar",p1d:"Un build Android natif sans Gradle / AGP : aapt2 + javac + d8 + apksigner + zig cc, tout le pipeline dans un build.sh.",p2name:"AppFunction Guard",p2d:"Android 16 laisse les agents IA appeler des fonctions dans votre app. Ceci ajoute le garde manquant — autorisation par fonction, limites de débit, masquage PII et journal d'audit.",p3name:"moltdisk",p3d:"Ce qui pèse le plus sur un disque, ce sont souvent des artefacts rebuildables depuis les sources. Les trouver, les mesurer, montrer la preuve — puis s'arrêter. Il ne supprime jamais.",p4name:"Marvis · Persona Spec",p4d:"Un contrat de persona vérifiable par du code : 30 emplacements de répliques, 20 lignes interdites, un linter exécutable et des benchmarks, plus le système visuel Fault Bloom.",p5name:"Ce site",p5d:"La page que vous lisez : écrite à la main, zéro dépendance, 20 langues en direct, sans framework ni étape de build."},
-stack:{tag:"STACK",title:"Stack technique",subtitle:"Ce que je peux faire moi-même, je ne le confie pas à une boîte noire.",lang:"Langages",tool:"Plateforme & chaîne d'outils"},
-phil:{tag:"PHILOSOPHIE",title:"Ce que je crois",subtitle:"Quelques principes qui m'évitent des ennuis et font aboutir les choses.",i1t:"Une abstraction en moins, un bug en moins",i1d:"Une API de plateforme avant un framework ; chaque couche sautée réduit la surface de panne.",i2t:"Builds reproductibles > builds malins",i2d:"Pas de cache, pas de démon, des temps de build prévisibles — plus précieux que rapide-mais-mystique.",i3t:"Livrer d'abord, affiner ensuite",i3d:"Rendre réel compte plus que tout penser ; faire tourner d'abord, polir ensuite.",i4t:"Auditer, jamais supprimer",i4d:"Un outil doit présenter des preuves et laisser la décision à un humain, pas agir à sa place."},
-journey:{tag:"PARCOURS",title:"Le parcours",subtitle:"Pas à pas jusqu'ici — chaque pas a compté.",j1w:"Maintenant",j1t:"Cinq projets, un mainteneur",j1d:"Une chaîne de build sans Gradle, un SDK de garde pour agents IA, un CLI disque audit-only.",j2w:"Nightglean",j2t:"Fondation de Nightglean Studio",j2d:"Faire d'« une couche en moins » un credo : natif d'abord, dépendances minimales.",j3w:"Android natif",j3t:"Contourner le framework",j3d:"De JNI et aapt2 à zig cc, travailler directement avec la chaîne d'outils de la plateforme.",j4w:"Le départ",j4t:"Comment naît une app ?",j4d:"Tout est parti d'une curiosité : comment le code devient-il une app installable ?"},
-contact:{title:"On en parle ?",subtitle:"Collabs, questions ou simple bonjour — bienvenus ; une issue est souvent plus rapide qu'un mail.",email:"E-mail",wechat:"WeChat",studio:"Studio",copied:"Copié — retrouvez-moi sur WeChat"},
-kbd:{title:"Raccourcis clavier",hint:"? ou Échap pour fermer",github:"Ouvrir GitHub",notes:"Ouvrir les notes",theme:"Changer de thème",lang:"Changer de langue"},footer:{line:"Une couche d'abstraction en moins, une classe de bugs en moins.",top:"Retour en haut ↑"}},
-
-"de":{skip:"Zum Inhalt springen",ui:{langTitle:"Sprache wählen / Language"},
-nav:{about:"Über",projects:"Projekte",stack:"Stack",phil:"Prinzipien",journey:"Weg",notes:"Notizen",contact:"Kontakt"},
-hero:{status:"Unabhängiger Entwickler · Nightglean Studio",lead:"Eine Abstraktionsschicht weniger heißt eine Fehlerklasse weniger. Produkt, Code, Tests, Releases — alles allein, mit nativem Code und minimalen Abhängigkeiten.",cta1:"Meine Arbeit ansehen",cta2:"Kontakt aufnehmen",scroll:"Scrollen",roles:["Unabhängiger Entwickler","Nativer Android-Engineer","Builder ohne Gradle","AI-Agent-Sicherheitsforscher","Ein-Personen-Studio"]},
-about:{tag:"ÜBER",title:"Über mich",subtitle:"Student und Ein-Personen-Indie-Studio.",p1:"Ich bin Wang Sunyang, Gründer von Nightglean Studio. Den ganzen Kreislauf mache ich selbst — Produkt, Code, Test, Release.",p2:"Meine Devise: native first. Plattform-APIs statt Framework, System-Toolchain statt Build-System. Weniger Abhängigkeiten, weniger Angriffsfläche für Fehler.",p3:"Diese Seite ist meine abhängigkeitsfreie Visitenkarte — handgeschriebenes HTML / CSS / JS, kein Framework, kein Build, keine Drittanbieter-Requests. Editieren, git push, veröffentlicht.",s1k:"Open-Source-Projekte",s2k:"UI-Sprachen",s3k:"Dritt-Abhängigkeiten",s4k:"Native first"},
-projects:{tag:"PROJEKTE",title:"Open-Source-Arbeit",subtitle:"Native first, minimale Abhängigkeiten — jedes läuft und reproduziert.",view:"Repo ansehen",moreTitle:"Weitere sind unterwegs.",moreDesc:"Nightglean — jedes Projekt einzeln poliert.",moreLink:"Auf GitHub stöbern →",p1name:"OneStar",p1d:"Ein nativer Android-Build ohne Gradle / AGP: aapt2 + javac + d8 + apksigner + zig cc, die ganze Pipeline in einem build.sh.",p2name:"AppFunction Guard",p2d:"Android 16 lässt KI-Agenten Funktionen in deiner App aufrufen. Dies ergänzt den fehlenden Wächter — Autorisierung pro Funktion, Ratenlimits, PII-Maskierung und Audit-Trail.",p3name:"moltdisk",p3d:"Das Schwerste auf einer Platte sind oft Build-Artefakte, die sich aus dem Quellcode neu bauen lassen. Finden, messen, Beleg zeigen — dann aufhören. Es löscht nie.",p4name:"Marvis · Persona Spec",p4d:"Ein per Code prüfbarer Persona-Vertrag: 30 Dialogslots, 20 verbotene Zeilen, ein lauffähiger Linter und Benchmarks, plus das Fault-Bloom-Visualsystem.",p5name:"Diese Seite",p5d:"Die Seite, die du liest: handgeschrieben, null Abhängigkeiten, 20 Sprachen live, kein Framework und kein Build-Schritt."},
-stack:{tag:"STACK",title:"Tech-Stack",subtitle:"Was ich selbst kann, gebe ich keiner Blackbox.",lang:"Sprachen",tool:"Plattform & Toolchain"},
-phil:{tag:"PRINZIPIEN",title:"Woran ich glaube",subtitle:"Ein paar Prinzipien, die mir Ärger ersparen und Dinge fertig werden lassen.",i1t:"Eine Abstraktion weniger, ein Bug weniger",i1d:"Erst Plattform-API, dann Framework; jede übersprungene Schicht verkleinert die Fehlerfläche.",i2t:"Reproduzierbare Builds > clevere Builds",i2d:"Kein Cache, kein Daemon, vorhersagbare Buildzeiten — mehr wert als schnell-aber-mystisch.",i3t:"Erst ausliefern, dann verfeinern",i3d:"Realisieren zählt mehr als Durchdenken; erst zum Laufen bringen, dann polieren.",i4t:"Prüfen, nie löschen",i4d:"Ein Tool soll Belege liefern und die Entscheidung dem Menschen lassen, nicht selbst handeln."},
-journey:{tag:"WEG",title:"Der Weg",subtitle:"Schritt für Schritt hierher — jeder Schritt zählte.",j1w:"Jetzt",j1t:"Fünf Projekte, ein Maintainer",j1d:"Eine Gradle-lose Build-Kette, ein Guard-SDK für KI-Agenten, ein audit-only Disk-CLI.",j2w:"Nightglean",j2t:"Nightglean Studio gegründet",j2d:"Aus „eine Schicht weniger“ ein Credo gemacht: native first, minimale Abhängigkeiten.",j3w:"Natives Android",j3t:"Am Framework vorbei",j3d:"Von JNI und aapt2 bis zig cc, direkt mit der Plattform-Toolchain arbeiten.",j4w:"Der Anfang",j4t:"Wie entsteht eine App?",j4d:"Es begann mit Neugier: Wie wird Code eigentlich zu einer installierbaren App?"},
-contact:{title:"Reden wir?",subtitle:"Kooperationen, Fragen oder einfach ein Hallo — willkommen; ein Issue ist meist schneller als Mail.",email:"E-Mail",wechat:"WeChat",studio:"Studio",copied:"Kopiert — finde mich auf WeChat"},
-kbd:{title:"Tastenkürzel",hint:"? oder Esc zum Schließen",github:"GitHub öffnen",notes:"Notizen öffnen",theme:"Theme wechseln",lang:"Sprache wechseln"},footer:{line:"Eine Abstraktionsschicht weniger, eine Fehlerklasse weniger.",top:"Nach oben ↑"}},
-
-"es":{skip:"Saltar al contenido",ui:{langTitle:"Elegir idioma / Language"},
-nav:{about:"Sobre mí",projects:"Proyectos",stack:"Stack",phil:"Filosofía",journey:"Trayectoria",notes:"Notas",contact:"Contacto"},
-hero:{status:"Desarrollador independiente · Nightglean Studio",lead:"Una capa de abstracción menos es una clase de bugs menos. Producto, código, tests y releases — todo en solitario, con código nativo y dependencias mínimas.",cta1:"Ver mi trabajo",cta2:"Contactar",scroll:"Desplázate",roles:["Desarrollador independiente","Ingeniero Android nativo","Constructor sin Gradle","Investigador de seguridad IA","Estudio unipersonal"]},
-about:{tag:"SOBRE MÍ",title:"Sobre mí",subtitle:"Estudiante y estudio independiente de una sola persona.",p1:"Soy Wang Sunyang, fundador de Nightglean Studio. Llevo todo el ciclo yo mismo — producto, código, test, release.",p2:"Mi sesgo es lo nativo primero: APIs de plataforma antes que un framework, la toolchain del sistema antes que un build system. Menos dependencias, menos superficie para que algo se rompa.",p3:"Este sitio es mi tarjeta de visita sin dependencias — HTML / CSS / JS a mano, sin framework, sin build, sin peticiones de terceros. Editas, git push, publicado.",s1k:"Proyectos open source",s2k:"Idiomas de la UI",s3k:"Dependencias de terceros",s4k:"Nativo primero"},
-projects:{tag:"PROYECTOS",title:"Trabajo open source",subtitle:"Nativo primero, dependencias mínimas — cada uno corre y se reproduce.",view:"Ver repo",moreTitle:"Hay más en camino.",moreDesc:"Nightglean — puliendo cada proyecto, uno a uno.",moreLink:"Explorar GitHub →",p1name:"OneStar",p1d:"Un build Android nativo sin Gradle / AGP: aapt2 + javac + d8 + apksigner + zig cc, toda la pipeline en un build.sh.",p2name:"AppFunction Guard",p2d:"Android 16 deja que agentes de IA llamen funciones dentro de tu app. Esto añade el guardián que faltaba — autorización por función, límites de tasa, redacción de PII y auditoría.",p3name:"moltdisk",p3d:"Lo más pesado en un disco suelen ser artefactos de build reconstruibles desde el código. Encontrarlos, medirlos, mostrar la evidencia — y parar. Nunca borra.",p4name:"Marvis · Persona Spec",p4d:"Un contrato de persona verificable por código: 30 ranuras de diálogo, 20 líneas prohibidas, un linter ejecutable y benchmarks, más el sistema visual Fault Bloom.",p5name:"Este sitio",p5d:"La página que lees: a mano, cero dependencias, 20 idiomas en vivo, sin framework ni paso de build."},
-stack:{tag:"STACK",title:"Stack tecnológico",subtitle:"Lo que puedo hacer yo, no se lo dejo a una caja negra.",lang:"Lenguajes",tool:"Plataforma y toolchain"},
-phil:{tag:"FILOSOFÍA",title:"En lo que creo",subtitle:"Unos principios que me ahorran problemas y hacen que las cosas salgan.",i1t:"Una abstracción menos, un bug menos",i1d:"API de plataforma antes que framework; cada capa que saltas reduce la superficie de fallo.",i2t:"Builds reproducibles > builds ingeniosos",i2d:"Sin caché, sin demonio, tiempos de build predecibles — valen más que rápido-pero-místico.",i3t:"Primero entrégalo, luego refina",i3d:"Hacerlo real importa más que pensarlo todo; primero hazlo correr, luego pule.",i4t:"Auditar, nunca borrar",i4d:"Una herramienta debe presentar evidencia y dejar la decisión a una persona, no actuar por ella."},
-journey:{tag:"TRAYECTORIA",title:"La trayectoria",subtitle:"Paso a paso hasta aquí — cada paso contó.",j1w:"Ahora",j1t:"Cinco proyectos, un mantenedor",j1d:"Una cadena de build sin Gradle, un SDK de guardia para agentes IA, un CLI de disco solo-auditoría.",j2w:"Nightglean",j2t:"Fundé Nightglean Studio",j2d:"Convertí «una capa menos» en un credo: nativo primero, dependencias mínimas.",j3w:"Android nativo",j3t:"Saltándome el framework",j3d:"De JNI y aapt2 a zig cc, trabajando directo con la toolchain de la plataforma.",j4w:"El inicio",j4t:"¿Cómo nace una app?",j4d:"Empezó con curiosidad: ¿cómo se convierte el código en una app instalable?"},
-contact:{title:"¿Hablamos?",subtitle:"Colaboraciones, preguntas o solo un saludo — bienvenido; un issue suele ser más rápido que un correo.",email:"Correo",wechat:"WeChat",studio:"Estudio",copied:"Copiado — búscame en WeChat"},
-kbd:{title:"Atajos de teclado",hint:"? o Esc para cerrar",github:"Abrir GitHub",notes:"Abrir notas",theme:"Cambiar tema",lang:"Cambiar idioma"},footer:{line:"Una capa de abstracción menos, una clase de bugs menos.",top:"Volver arriba ↑"}},
-
-"pt":{skip:"Ir ao conteúdo",ui:{langTitle:"Escolher idioma / Language"},
-nav:{about:"Sobre",projects:"Projetos",stack:"Stack",phil:"Filosofia",journey:"Trajetória",notes:"Notas",contact:"Contato"},
-hero:{status:"Desenvolvedor independente · Nightglean Studio",lead:"Uma camada de abstração a menos é uma classe de bugs a menos. Produto, código, testes e releases — tudo sozinho, com código nativo e dependências mínimas.",cta1:"Ver meu trabalho",cta2:"Entrar em contato",scroll:"Rolar",roles:["Desenvolvedor independente","Engenheiro Android nativo","Construtor sem Gradle","Pesquisador de segurança em IA","Estúdio de uma pessoa"]},
-about:{tag:"SOBRE",title:"Sobre mim",subtitle:"Estudante e estúdio independente de uma pessoa só.",p1:"Sou Wang Sunyang, fundador do Nightglean Studio. Eu mesmo cuido de todo o ciclo — produto, código, teste, release.",p2:"Minha preferência é nativo primeiro: APIs da plataforma antes de um framework, a toolchain do sistema antes de um build system. Menos dependências, menos superfície para quebrar.",p3:"Este site é meu cartão de visita sem dependências — HTML / CSS / JS escritos à mão, sem framework, sem build, sem requisições de terceiros. Edita, git push, publicado.",s1k:"Projetos open source",s2k:"Idiomas da UI",s3k:"Dependências de terceiros",s4k:"Nativo primeiro"},
-projects:{tag:"PROJETOS",title:"Trabalho open source",subtitle:"Nativo primeiro, dependências mínimas — cada um roda e se reproduz.",view:"Ver repositório",moreTitle:"Mais está a caminho.",moreDesc:"Nightglean — polindo cada projeto, um por vez.",moreLink:"Explorar no GitHub →",p1name:"OneStar",p1d:"Um build Android nativo sem Gradle / AGP: aapt2 + javac + d8 + apksigner + zig cc, todo o pipeline em um build.sh.",p2name:"AppFunction Guard",p2d:"O Android 16 deixa agentes de IA chamarem funções no seu app. Isto adiciona o guarda que faltava — autorização por função, limites de taxa, redação de PII e trilha de auditoria.",p3name:"moltdisk",p3d:"O mais pesado em um disco costuma ser artefatos de build reconstruíveis a partir do código. Encontrá-los, medi-los, mostrar a evidência — e parar. Nunca apaga.",p4name:"Marvis · Persona Spec",p4d:"Um contrato de persona verificável por código: 30 slots de falas, 20 linhas proibidas, um linter executável e benchmarks, mais o sistema visual Fault Bloom.",p5name:"Este site",p5d:"A página que você está lendo: feita à mão, zero dependências, 20 idiomas ao vivo, sem framework nem etapa de build."},
-stack:{tag:"STACK",title:"Stack de tecnologia",subtitle:"O que eu consigo fazer, não entrego a uma caixa-preta.",lang:"Linguagens",tool:"Plataforma e toolchain"},
-phil:{tag:"FILOSOFIA",title:"No que acredito",subtitle:"Alguns princípios que me poupam problemas e fazem as coisas saírem.",i1t:"Uma abstração a menos, um bug a menos",i1d:"API da plataforma antes de framework; cada camada pulada reduz a superfície de falha.",i2t:"Builds reproduzíveis > builds espertos",i2d:"Sem cache, sem daemon, tempos de build previsíveis — valem mais que rápido-mas-místico.",i3t:"Entregue primeiro, refine depois",i3d:"Tornar real importa mais que pensar tudo; primeiro faça rodar, depois polir.",i4t:"Auditar, nunca apagar",i4d:"Uma ferramenta deve apresentar evidências e deixar a decisão com uma pessoa, não agir por ela."},
-journey:{tag:"TRAJETÓRIA",title:"A trajetória",subtitle:"Passo a passo até aqui — cada passo contou.",j1w:"Agora",j1t:"Cinco projetos, um mantenedor",j1d:"Uma cadeia de build sem Gradle, um SDK de guarda para agentes de IA, um CLI de disco só-auditoria.",j2w:"Nightglean",j2t:"Fundei o Nightglean Studio",j2d:"Transformei «uma camada a menos» em credo: nativo primeiro, dependências mínimas.",j3w:"Android nativo",j3t:"Pulando o framework",j3d:"De JNI e aapt2 a zig cc, trabalhando direto com a toolchain da plataforma.",j4w:"O início",j4t:"Como nasce um app?",j4d:"Começou com curiosidade: como o código vira um app instalável?"},
-contact:{title:"Vamos conversar?",subtitle:"Parcerias, perguntas ou só um oi — bem-vindo; uma issue costuma ser mais rápida que e-mail.",email:"E-mail",wechat:"WeChat",studio:"Estúdio",copied:"Copiado — me ache no WeChat"},
-kbd:{title:"Atalhos de teclado",hint:"? ou Esc para fechar",github:"Abrir GitHub",notes:"Abrir notas",theme:"Alternar tema",lang:"Mudar idioma"},footer:{line:"Uma camada de abstração a menos, uma classe de bugs a menos.",top:"Voltar ao topo ↑"}},
-
-"it":{skip:"Vai al contenuto",ui:{langTitle:"Scegli lingua / Language"},
-nav:{about:"Su di me",projects:"Progetti",stack:"Stack",phil:"Filosofia",journey:"Percorso",notes:"Note",contact:"Contatti"},
-hero:{status:"Sviluppatore indipendente · Nightglean Studio",lead:"Uno strato di astrazione in meno è una classe di bug in meno. Prodotto, codice, test, release — tutto da solo, con codice nativo e dipendenze minime.",cta1:"Guarda i miei lavori",cta2:"Contattami",scroll:"Scorri",roles:["Sviluppatore indipendente","Ingegnere Android nativo","Costruttore senza Gradle","Ricercatore di sicurezza IA","Studio di una persona"]},
-about:{tag:"SU DI ME",title:"Su di me",subtitle:"Studente e studio indipendente di una sola persona.",p1:"Sono Wang Sunyang, fondatore di Nightglean Studio. Giro tutto il ciclo da solo — prodotto, codice, test, release.",p2:"La mia priorità è il nativo: API di piattaforma prima di un framework, la toolchain di sistema prima di un build system. Meno dipendenze, meno superficie per i guasti.",p3:"Questo sito è il mio biglietto da visita a zero dipendenze — HTML / CSS / JS scritti a mano, niente framework, niente build, niente richieste di terze parti. Modifichi, git push, pubblicato.",s1k:"Progetti open source",s2k:"Lingue dell'interfaccia",s3k:"Dipendenze di terze parti",s4k:"Nativo prima di tutto"},
-projects:{tag:"PROGETTI",title:"Lavori open source",subtitle:"Nativo prima di tutto, dipendenze minime — ognuno gira e si riproduce.",view:"Vedi repo",moreTitle:"Altri sono in arrivo.",moreDesc:"Nightglean — a lucidare ogni progetto, uno alla volta.",moreLink:"Sfoglia su GitHub →",p1name:"OneStar",p1d:"Una build Android nativa senza Gradle / AGP: aapt2 + javac + d8 + apksigner + zig cc, tutta la pipeline in un build.sh.",p2name:"AppFunction Guard",p2d:"Android 16 lascia che gli agenti IA chiamino funzioni nella tua app. Questo aggiunge il guardiano mancante — autorizzazione per funzione, rate limiting, redazione PII e audit trail.",p3name:"moltdisk",p3d:"La cosa più pesante su un disco sono spesso artefatti di build ricostruibili dal sorgente. Trovarli, misurarli, mostrare le prove — e fermarsi. Non cancella mai.",p4name:"Marvis · Persona Spec",p4d:"Un contratto di persona verificabile dal codice: 30 slot di battute, 20 righe proibite, un linter eseguibile e benchmark, più il sistema visivo Fault Bloom.",p5name:"Questo sito",p5d:"La pagina che stai leggendo: scritta a mano, zero dipendenze, 20 lingue dal vivo, senza framework né step di build."},
-stack:{tag:"STACK",title:"Stack tecnologico",subtitle:"Ciò che posso fare da me, non lo affido a una scatola nera.",lang:"Linguaggi",tool:"Piattaforma e toolchain"},
-phil:{tag:"FILOSOFIA",title:"In cosa credo",subtitle:"Alcuni principi che mi risparmiano guai e fanno uscire le cose.",i1t:"Un'astrazione in meno, un bug in meno",i1d:"API di piattaforma prima di un framework; ogni strato saltato riduce la superficie di guasto.",i2t:"Build riproducibili > build ingegnose",i2d:"Niente cache, niente demone, tempi di build prevedibili — valgono più di veloce-ma-misterioso.",i3t:"Prima consegna, poi rifinisci",i3d:"Renderlo reale conta più che pensarci tutto; prima fallo girare, poi lucida.",i4t:"Controlla, non cancellare mai",i4d:"Uno strumento deve presentare prove e lasciare la decisione a una persona, non agire al suo posto."},
-journey:{tag:"PERCORSO",title:"Il percorso",subtitle:"Passo dopo passo fin qui — ogni passo è contato.",j1w:"Ora",j1t:"Cinque progetti, un manutentore",j1d:"Una catena di build senza Gradle, un SDK di guardia per agenti IA, una CLI disco solo-audit.",j2w:"Nightglean",j2t:"Fondato Nightglean Studio",j2d:"Trasformato «uno strato in meno» in un credo: nativo prima di tutto, dipendenze minime.",j3w:"Android nativo",j3t:"Aggirando il framework",j3d:"Da JNI e aapt2 a zig cc, lavorando direttamente con la toolchain della piattaforma.",j4w:"L'inizio",j4t:"Come nasce un'app?",j4d:"È iniziato con la curiosità: come fa il codice a diventare un'app installabile?"},
-contact:{title:"Parliamone?",subtitle:"Collaborazioni, domande o solo un saluto — benvenuto; un'issue è spesso più veloce di una mail.",email:"Email",wechat:"WeChat",studio:"Studio",copied:"Copiato — trovami su WeChat"},
-kbd:{title:"Scorciatoie da tastiera",hint:"? o Esc per chiudere",github:"Apri GitHub",notes:"Apri note",theme:"Cambia tema",lang:"Cambia lingua"},footer:{line:"Uno strato di astrazione in meno, una classe di bug in meno.",top:"Torna su ↑"}},
-
-"ru":{skip:"К содержанию",ui:{langTitle:"Выбрать язык / Language"},
-nav:{about:"Обо мне",projects:"Проекты",stack:"Стек",phil:"Принципы",journey:"Путь",notes:"Заметки",contact:"Контакты"},
-hero:{status:"Независимый разработчик · Nightglean Studio",lead:"На один слой абстракции меньше — на один класс багов меньше. Продукт, код, тесты, релизы — всё в одиночку, на нативном коде и с минимумом зависимостей.",cta1:"Мои работы",cta2:"Связаться",scroll:"Листайте вниз",roles:["Независимый разработчик","Нативный Android-инженер","Строитель сборок без Gradle","Исследователь безопасности ИИ","Студия из одного человека"]},
-about:{tag:"ОБО МНЕ",title:"Обо мне",subtitle:"Студент и независимая студия из одного человека.",p1:"Я Ван Суньян, основатель Nightglean Studio. Весь цикл веду сам — продукт, код, тесты, релиз.",p2:"Мой принцип — натив в первую очередь: API платформы вместо фреймворка, системный тулчейн вместо системы сборки. Меньше зависимостей — меньше поверхность для поломок.",p3:"Этот сайт — моя визитка без зависимостей: чистые HTML / CSS / JS, без фреймворков, без сборки, без сторонних запросов. Правка, git push — опубликовано.",s1k:"Открытые проекты",s2k:"Языки интерфейса",s3k:"Сторонние зависимости",s4k:"Натив в первую очередь"},
-projects:{tag:"ПРОЕКТЫ",title:"Открытые работы",subtitle:"Натив в первую очередь, минимум зависимостей — каждый запускается и воспроизводится.",view:"Открыть репозиторий",moreTitle:"Впереди ещё больше.",moreDesc:"Nightglean — шлифую каждый проект по очереди.",moreLink:"Смотреть на GitHub →",p1name:"OneStar",p1d:"Нативная сборка Android без Gradle / AGP: aapt2 + javac + d8 + apksigner + zig cc, весь пайплайн в одном build.sh.",p2name:"AppFunction Guard",p2d:"Android 16 позволяет ИИ-агентам вызывать функции в вашем приложении. Это добавляет недостающий «караул» — авторизацию по функциям, лимиты, маскировку PII и аудит.",p3name:"moltdisk",p3d:"Самое тяжёлое на диске — часто артефакты сборки, которые можно пересобрать из исходников. Найти их, измерить, показать доказательства — и остановиться. Ничего не удаляет.",p4name:"Marvis · Persona Spec",p4d:"Контракт персоны, проверяемый кодом: 30 слотов реплик, 20 запрещённых фраз, исполняемый линтер и бенчмарки, плюс визуальная система Fault Bloom.",p5name:"Этот сайт",p5d:"Страница, которую вы читаете: написана вручную, ноль зависимостей, 20 языков на лету, без фреймворков и сборки."},
-stack:{tag:"СТЕК",title:"Технологический стек",subtitle:"Что могу сделать сам — не отдаю чёрному ящику.",lang:"Языки",tool:"Платформа и тулчейн"},
-phil:{tag:"ПРИНЦИПЫ",title:"Во что я верю",subtitle:"Несколько принципов, которые экономят нервы и доводят дело до конца.",i1t:"Слоем меньше — багом меньше",i1d:"Сначала API платформы, потом фреймворк; каждый пропущенный слой уменьшает поверхность сбоя.",i2t:"Воспроизводимые сборки > хитрые сборки",i2d:"Без кеша, без демона, предсказуемое время сборки — ценнее, чем «быстро, но непонятно как».",i3t:"Сначала выпустить, потом отшлифовать",i3d:"Сделать реальным важнее, чем всё продумать; сначала запусти, потом отполируй.",i4t:"Проверять, но не удалять",i4d:"Инструмент должен показывать доказательства и оставлять решение человеку, а не действовать за него."},
-journey:{tag:"ПУТЬ",title:"Путь",subtitle:"Шаг за шагом сюда — каждый шаг имел значение.",j1w:"Сейчас",j1t:"Пять проектов, один мейнтейнер",j1d:"Цепочка сборки без Gradle, SDK-«караул» для ИИ-агентов, CLI для диска только с аудитом.",j2w:"Nightglean",j2t:"Основал Nightglean Studio",j2d:"Сделал «слоем меньше» кредо студии: натив в первую очередь, минимум зависимостей.",j3w:"Нативный Android",j3t:"В обход фреймворка",j3d:"От JNI и aapt2 до zig cc — работа напрямую с тулчейном платформы.",j4w:"Начало",j4t:"Как рождается приложение?",j4d:"Всё началось с любопытства: как код превращается в устанавливаемое приложение?"},
-contact:{title:"Поговорим?",subtitle:"Сотрудничество, вопросы или просто привет — добро пожаловать; issue обычно быстрее письма.",email:"Почта",wechat:"WeChat",studio:"Студия",copied:"Скопировано — найдите меня в WeChat"},
-kbd:{title:"Горячие клавиши",hint:"? или Esc — закрыть",github:"Открыть GitHub",notes:"Открыть заметки",theme:"Сменить тему",lang:"Сменить язык"},footer:{line:"На один слой абстракции меньше — на один класс багов меньше.",top:"Наверх ↑"}},
-
-"uk":{skip:"До змісту",ui:{langTitle:"Обрати мову / Language"},
-nav:{about:"Про мене",projects:"Проєкти",stack:"Стек",phil:"Принципи",journey:"Шлях",notes:"Нотатки",contact:"Контакти"},
-hero:{status:"Незалежний розробник · Nightglean Studio",lead:"На один шар абстракції менше — на один клас багів менше. Продукт, код, тести, релізи — все самотужки, нативним кодом і з мінімумом залежностей.",cta1:"Мої роботи",cta2:"Зв'язатися",scroll:"Гортайте вниз",roles:["Незалежний розробник","Нативний Android-інженер","Будівничий збірок без Gradle","Дослідник безпеки ШІ","Студія однієї людини"]},
-about:{tag:"ПРО МЕНЕ",title:"Про мене",subtitle:"Студент і незалежна студія однієї людини.",p1:"Я Ван Суньян, засновник Nightglean Studio. Веду весь цикл сам — продукт, код, тести, реліз.",p2:"Мій принцип — натив передусім: API платформи замість фреймворка, системний тулчейн замість системи збірки. Менше залежностей — менша поверхня для поломок.",p3:"Цей сайт — моя візитівка без залежностей: чистий HTML / CSS / JS, без фреймворків, без збірки, без сторонніх запитів. Правка, git push — опубліковано.",s1k:"Відкриті проєкти",s2k:"Мови інтерфейсу",s3k:"Сторонні залежності",s4k:"Натив передусім"},
-projects:{tag:"ПРОЄКТИ",title:"Відкриті роботи",subtitle:"Натив передусім, мінімум залежностей — кожен запускається й відтворюється.",view:"Відкрити репозиторій",moreTitle:"Попереду ще більше.",moreDesc:"Nightglean — шліфую кожен проєкт по черзі.",moreLink:"Дивитись на GitHub →",p1name:"OneStar",p1d:"Нативна збірка Android без Gradle / AGP: aapt2 + javac + d8 + apksigner + zig cc, весь пайплайн в одному build.sh.",p2name:"AppFunction Guard",p2d:"Android 16 дозволяє ШІ-агентам викликати функції у вашому застосунку. Це додає брак «вартового» — авторизацію за функціями, ліміти, маскування PII та аудит.",p3name:"moltdisk",p3d:"Найважче на диску — часто артефакти збірки, які можна перезібрати з джерел. Знайти їх, виміряти, показати докази — і зупинитися. Нічого не видаляє.",p4name:"Marvis · Persona Spec",p4d:"Контракт персони, який перевіряється кодом: 30 слотів реплік, 20 заборонених фраз, виконуваний лінтер і бенчмарки, плюс візуальна система Fault Bloom.",p5name:"Цей сайт",p5d:"Сторінка, яку ви читаєте: написана вручну, нуль залежностей, 20 мов на льоту, без фреймворків і збірки."},
-stack:{tag:"СТЕК",title:"Технологічний стек",subtitle:"Що можу зробити сам — не віддаю чорній скриньці.",lang:"Мови",tool:"Платформа і тулчейн"},
-phil:{tag:"ПРИНЦИПИ",title:"У що я вірю",subtitle:"Кілька принципів, що економлять нерви й доводять справу до кінця.",i1t:"Шаром менше — багом менше",i1d:"Спочатку API платформи, потім фреймворк; кожен пропущений шар зменшує поверхню збою.",i2t:"Відтворювані збірки > хитрі збірки",i2d:"Без кешу, без демона, передбачуваний час збірки — цінніше за «швидко, але незрозуміло як».",i3t:"Спершу випустити, потім відшліфувати",i3d:"Зробити реальним важливіше, ніж усе продумати; спершу запусти, потім відполіруй.",i4t:"Перевіряти, але не видаляти",i4d:"Інструмент має показувати докази й лишати рішення людині, а не діяти замість неї."},
-journey:{tag:"ШЛЯХ",title:"Шлях",subtitle:"Крок за кроком сюди — кожен крок мав значення.",j1w:"Зараз",j1t:"П'ять проєктів, один мейнтейнер",j1d:"Ланцюг збірки без Gradle, SDK-«вартовий» для ШІ-агентів, CLI для диска лише з аудитом.",j2w:"Nightglean",j2t:"Заснував Nightglean Studio",j2d:"Зробив «шаром менше» кредо студії: натив передусім, мінімум залежностей.",j3w:"Нативний Android",j3t:"В обхід фреймворка",j3d:"Від JNI і aapt2 до zig cc — робота напряму з тулчейном платформи.",j4w:"Початок",j4t:"Як народжується застосунок?",j4d:"Усе почалося з цікавості: як код перетворюється на встановлюваний застосунок?"},
-contact:{title:"Поговорімо?",subtitle:"Співпраця, запитання чи просто привіт — ласкаво просимо; issue зазвичай швидше за лист.",email:"Пошта",wechat:"WeChat",studio:"Студія",copied:"Скопійовано — знайдіть мене в WeChat"},
-kbd:{title:"Гарячі клавіші",hint:"? або Esc — закрити",github:"Відкрити GitHub",notes:"Відкрити нотатки",theme:"Змінити тему",lang:"Змінити мову"},footer:{line:"На один шар абстракції менше — на один клас багів менше.",top:"Догори ↑"}},
-
-"pl":{skip:"Przejdź do treści",ui:{langTitle:"Wybierz język / Language"},
-nav:{about:"O mnie",projects:"Projekty",stack:"Stack",phil:"Zasady",journey:"Droga",notes:"Notatki",contact:"Kontakt"},
-hero:{status:"Niezależny deweloper · Nightglean Studio",lead:"O jedną warstwę abstrakcji mniej to o jedną klasę bugów mniej. Produkt, kod, testy, release — wszystko sam, w natywnym kodzie i z minimalnymi zależnościami.",cta1:"Zobacz moje prace",cta2:"Skontaktuj się",scroll:"Przewiń",roles:["Niezależny deweloper","Inżynier natywnego Androida","Budowniczy bez Gradle","Badacz bezpieczeństwa AI","Studio jednoosobowe"]},
-about:{tag:"O MNIE",title:"O mnie",subtitle:"Student i jednoosobowe niezależne studio.",p1:"Jestem Wang Sunyang, założyciel Nightglean Studio. Cały cykl robię sam — produkt, kod, testy, release.",p2:"Moja zasada: najpierw natywnie. API platformy zamiast frameworka, systemowy toolchain zamiast systemu budowania. Mniej zależności, mniejsza powierzchnia awarii.",p3:"Ta strona to moja wizytówka bez zależności — ręcznie pisany HTML / CSS / JS, bez frameworków, bez builda, bez żądań do stron trzecich. Edytujesz, git push, opublikowane.",s1k:"Projekty open source",s2k:"Języki interfejsu",s3k:"Zależności zewnętrzne",s4k:"Natywnie najpierw"},
-projects:{tag:"PROJEKTY",title:"Prace open source",subtitle:"Natywnie najpierw, minimalne zależności — każdy działa i się odtwarza.",view:"Zobacz repo",moreTitle:"Więcej jest w drodze.",moreDesc:"Nightglean — poleruję każdy projekt po kolei.",moreLink:"Przeglądaj GitHub →",p1name:"OneStar",p1d:"Natywny build Androida bez Gradle / AGP: aapt2 + javac + d8 + apksigner + zig cc, cały pipeline w jednym build.sh.",p2name:"AppFunction Guard",p2d:"Android 16 pozwala agentom AI wywoływać funkcje w Twojej aplikacji. To dodaje brakującego strażnika — autoryzację per funkcja, limity, maskowanie PII i audyt.",p3name:"moltdisk",p3d:"Najcięższe na dysku to często artefakty builda odtwarzalne ze źródeł. Znaleźć je, zmierzyć, pokazać dowód — i zatrzymać się. Nigdy nie usuwa.",p4name:"Marvis · Persona Spec",p4d:"Kontrakt persony sprawdzalny kodem: 30 slotów kwestii, 20 zakazanych zdań, wykonywalny linter i benchmarki, plus system wizualny Fault Bloom.",p5name:"Ta strona",p5d:"Strona, którą czytasz: pisana ręcznie, zero zależności, 20 języków na żywo, bez frameworka i builda."},
-stack:{tag:"STACK",title:"Stack technologiczny",subtitle:"Czego mogę dokonać sam, nie oddaję czarnej skrzynce.",lang:"Języki",tool:"Platforma i toolchain"},
-phil:{tag:"ZASADY",title:"W co wierzę",subtitle:"Kilka zasad, które oszczędzają nerwów i doprowadzają rzeczy do końca.",i1t:"O abstrakcję mniej, o bug mniej",i1d:"Najpierw API platformy, potem framework; każda pominięta warstwa zmniejsza powierzchnię awarii.",i2t:"Odtwarzalne buildy > sprytne buildy",i2d:"Bez cache, bez demona, przewidywalny czas builda — cenniejsze niż szybko-ale-magicznie.",i3t:"Najpierw wydaj, potem szlifuj",i3d:"Liczy się zrobienie, nie przemyślenie; najpierw uruchom, potem dopracuj.",i4t:"Audytuj, nigdy nie usuwaj",i4d:"Narzędzie ma pokazywać dowody i zostawiać decyzję człowiekowi, nie działać za niego."},
-journey:{tag:"DROGA",title:"Droga",subtitle:"Krok po kroku aż tutaj — każdy krok się liczył.",j1w:"Teraz",j1t:"Pięć projektów, jeden opiekun",j1d:"Łańcuch builda bez Gradle, SDK-strażnik dla agentów AI, dyskowe CLI tylko do audytu.",j2w:"Nightglean",j2t:"Założyłem Nightglean Studio",j2d:"Zrobiłem z „o warstwę mniej” credo studia: natywnie najpierw, minimalne zależności.",j3w:"Natywny Android",j3t:"Omijając framework",j3d:"Od JNI i aapt2 po zig cc — praca wprost z toolchainem platformy.",j4w:"Początek",j4t:"Jak rodzi się aplikacja?",j4d:"Zaczęło się od ciekawości: jak kod staje się instalowalną aplikacją?"},
-contact:{title:"Porozmawiajmy?",subtitle:"Współpraca, pytania czy samo „cześć” — zapraszam; issue jest zwykle szybsze niż mail.",email:"E-mail",wechat:"WeChat",studio:"Studio",copied:"Skopiowano — znajdź mnie na WeChat"},
-kbd:{title:"Skróty klawiszowe",hint:"? lub Esc, aby zamknąć",github:"Otwórz GitHub",notes:"Otwórz notatki",theme:"Przełącz motyw",lang:"Zmień język"},footer:{line:"O jedną warstwę abstrakcji mniej to o jedną klasę bugów mniej.",top:"Do góry ↑"}},
-
-"nl":{skip:"Naar inhoud",ui:{langTitle:"Kies taal / Language"},
-nav:{about:"Over",projects:"Projecten",stack:"Stack",phil:"Filosofie",journey:"Pad",notes:"Notities",contact:"Contact"},
-hero:{status:"Onafhankelijk ontwikkelaar · Nightglean Studio",lead:"Eén abstractielaag minder is één klasse bugs minder. Product, code, tests, releases — alles solo, in native code en met minimale afhankelijkheden.",cta1:"Bekijk mijn werk",cta2:"Neem contact op",scroll:"Scroll",roles:["Onafhankelijk ontwikkelaar","Native Android-engineer","Bouwer zonder Gradle","AI-beveiligingsonderzoeker","Eenpersoonsstudio"]},
-about:{tag:"OVER",title:"Over mij",subtitle:"Student en eenpersoons indie-studio.",p1:"Ik ben Wang Sunyang, oprichter van Nightglean Studio. Ik draai de hele cyclus zelf — product, code, test, release.",p2:"Mijn voorkeur: native first. Platform-API's vóór een framework, de systeem-toolchain vóór een buildsysteem. Minder afhankelijkheden, minder oppervlak om te breken.",p3:"Deze site is mijn afhankelijkheidsvrije visitekaartje — handgeschreven HTML / CSS / JS, geen framework, geen build, geen verzoeken naar derden. Bewerken, git push, gepubliceerd.",s1k:"Open-sourceprojecten",s2k:"UI-talen",s3k:"Externe afhankelijkheden",s4k:"Native first"},
-projects:{tag:"PROJECTEN",title:"Open-sourcewerk",subtitle:"Native first, minimale afhankelijkheden — elk draait en reproduceert.",view:"Bekijk repo",moreTitle:"Meer is onderweg.",moreDesc:"Nightglean — elk project één voor één gepolijst.",moreLink:"Blader op GitHub →",p1name:"OneStar",p1d:"Een native Android-build zonder Gradle / AGP: aapt2 + javac + d8 + apksigner + zig cc, de hele pipeline in één build.sh.",p2name:"AppFunction Guard",p2d:"Android 16 laat AI-agents functies aanroepen in je app. Dit voegt de ontbrekende bewaker toe — autorisatie per functie, rate limits, PII-redactie en een audit trail.",p3name:"moltdisk",p3d:"Het zwaarste op een schijf zijn vaak build-artefacten die uit de bron herbouwbaar zijn. Vind ze, meet ze, toon het bewijs — en stop. Het verwijdert nooit.",p4name:"Marvis · Persona Spec",p4d:"Een per code controleerbaar persona-contract: 30 dialoogslots, 20 verboden regels, een draaibare linter en benchmarks, plus het Fault Bloom-visualsysteem.",p5name:"Deze site",p5d:"De pagina die je leest: handgeschreven, nul afhankelijkheden, 20 talen live, geen framework en geen buildstap."},
-stack:{tag:"STACK",title:"Tech-stack",subtitle:"Wat ik zelf kan, geef ik niet aan een zwarte doos.",lang:"Talen",tool:"Platform en toolchain"},
-phil:{tag:"FILOSOFIE",title:"Waar ik in geloof",subtitle:"Een paar principes die me uit de problemen houden en dingen afmaken.",i1t:"Eén abstractie minder, één bug minder",i1d:"Platform-API vóór framework; elke overgeslagen laag verkleint het foutoppervlak.",i2t:"Reproduceerbare builds > slimme builds",i2d:"Geen cache, geen daemon, voorspelbare buildtijden — meer waard dan snel-maar-mystiek.",i3t:"Eerst leveren, dan verfijnen",i3d:"Realiseren telt meer dan doordenken; eerst laten draaien, dan polijsten.",i4t:"Auditen, nooit verwijderen",i4d:"Een tool moet bewijs tonen en de beslissing aan een mens laten, niet zelf handelen."},
-journey:{tag:"PAD",title:"Het pad",subtitle:"Stap voor stap hierheen — elke stap telde.",j1w:"Nu",j1t:"Vijf projecten, één maintainer",j1d:"Een Gradle-loze buildketen, een guard-SDK voor AI-agents, een audit-only schijf-CLI.",j2w:"Nightglean",j2t:"Nightglean Studio opgericht",j2d:"Maakte van „één laag minder” een credo: native first, minimale afhankelijkheden.",j3w:"Native Android",j3t:"Om het framework heen",j3d:"Van JNI en aapt2 tot zig cc, direct werken met de platform-toolchain.",j4w:"Het begin",j4t:"Hoe ontstaat een app?",j4d:"Het begon met nieuwsgierigheid: hoe wordt code eigenlijk een installeerbare app?"},
-contact:{title:"Zullen we praten?",subtitle:"Samenwerkingen, vragen of gewoon een hallo — welkom; een issue is meestal sneller dan mail.",email:"E-mail",wechat:"WeChat",studio:"Studio",copied:"Gekopieerd — vind me op WeChat"},
-kbd:{title:"Sneltoetsen",hint:"? of Esc om te sluiten",github:"GitHub openen",notes:"Notities openen",theme:"Thema wisselen",lang:"Taal wisselen"},footer:{line:"Eén abstractielaag minder, één klasse bugs minder.",top:"Naar boven ↑"}},
-
-"tr":{skip:"İçeriğe geç",ui:{langTitle:"Dil seçin / Language"},
-nav:{about:"Hakkında",projects:"Projeler",stack:"Stack",phil:"İlkeler",journey:"Yol",notes:"Notlar",contact:"İletişim"},
-hero:{status:"Bağımsız geliştirici · Nightglean Studio",lead:"Bir soyutlama katmanı eksikse, bir bug sınıfı eksiktir. Ürün, kod, test, sürüm — hepsi tek başıma, native kod ve minimum bağımlılıkla.",cta1:"İşlerime bak",cta2:"İletişime geç",scroll:"Kaydır",roles:["Bağımsız geliştirici","Native Android mühendisi","Gradle'sız build kurucusu","Yapay zekâ güvenlik araştırmacısı","Tek kişilik stüdyo"]},
-about:{tag:"HAKKINDA",title:"Hakkımda",subtitle:"Öğrenci ve tek kişilik bağımsız stüdyo.",p1:"Ben Wang Sunyang, Nightglean Studio'nun kurucusu. Tüm döngüyü kendim yürütüyorum — ürün, kod, test, sürüm.",p2:"Önceliğim native: framework yerine platform API'leri, build sistemi yerine sistem toolchain'i. Daha az bağımlılık, daha küçük bozulma yüzeyi.",p3:"Bu site, bağımlılıksız kartvizitim — elle yazılmış HTML / CSS / JS, framework yok, build yok, üçüncü taraf isteği yok. Düzenle, git push, yayında.",s1k:"Açık kaynak proje",s2k:"Arayüz dili",s3k:"Üçüncü taraf bağımlılık",s4k:"Önce native"},
-projects:{tag:"PROJELER",title:"Açık kaynak işler",subtitle:"Önce native, minimum bağımlılık — her biri çalışır ve yeniden üretilir.",view:"Depoya git",moreTitle:"Daha fazlası yolda.",moreDesc:"Nightglean — her projeyi tek tek parlatıyor.",moreLink:"GitHub'da gezin →",p1name:"OneStar",p1d:"Gradle / AGP'siz native Android build'i: aapt2 + javac + d8 + apksigner + zig cc, tüm pipeline tek build.sh içinde.",p2name:"AppFunction Guard",p2d:"Android 16, yapay zekâ ajanlarının uygulamanızdaki fonksiyonları çağırmasına izin verir. Bu, eksik kapı bekçisini ekler — fonksiyon başına yetki, hız limitleri, PII maskeleme ve denetim izi.",p3name:"moltdisk",p3d:"Diskteki en ağır şeyler çoğu zaman kaynaktan yeniden derlenebilir build çıktılarıdır. Bul, ölç, kanıtı göster — sonra dur. Asla silmez.",p4name:"Marvis · Persona Spec",p4d:"Kodla denetlenebilen bir persona sözleşmesi: 30 replik yuvası, 20 yasak cümle, çalıştırılabilir bir linter ve benchmark'lar, ayrıca Fault Bloom görsel sistemi.",p5name:"Bu site",p5d:"Okuduğunuz bu sayfa: elle yazılmış, sıfır bağımlılık, 20 dil canlı, framework ve build adımı yok."},
-stack:{tag:"STACK",title:"Teknoloji yığını",subtitle:"Kendim yapabildiğimi kara kutuya vermem.",lang:"Diller",tool:"Platform ve toolchain"},
-phil:{tag:"İLKELER",title:"İnandıklarım",subtitle:"Beni dertten kurtaran ve işleri bitiren birkaç ilke.",i1t:"Bir soyutlama eksik, bir bug eksik",i1d:"Framework'ten önce platform API'si; atlanan her katman hata yüzeyini küçültür.",i2t:"Yeniden üretilebilir build > akıllı build",i2d:"Cache yok, daemon yok, öngörülebilir build süresi — hızlı-ama-gizemli'den daha değerli.",i3t:"Önce yayınla, sonra cilala",i3d:"Gerçek kılmak, her şeyi düşünmekten önemli; önce çalıştır, sonra parlat.",i4t:"Denetle, asla silme",i4d:"Araç kanıt sunmalı ve kararı insana bırakmalı; onun yerine hareket etmemeli."},
-journey:{tag:"YOL",title:"Yol",subtitle:"Adım adım buraya — her adım değerdi.",j1w:"Şimdi",j1t:"Beş proje, tek bakıcı",j1d:"Gradle'sız build zinciri, yapay zekâ ajanları için guard SDK, yalnızca denetleyen disk CLI.",j2w:"Nightglean",j2t:"Nightglean Studio'yu kurdum",j2d:"„Bir katman eksik“i stüdyo ilkesi yaptım: önce native, minimum bağımlılık.",j3w:"Native Android",j3t:"Framework'ü atlayarak",j3d:"JNI ve aapt2'den zig cc'ye, platform toolchain'iyle doğrudan çalışmak.",j4w:"Başlangıç",j4t:"Bir uygulama nasıl doğar?",j4d:"Merakla başladı: kod nasıl kurulabilir bir uygulamaya dönüşür?"},
-contact:{title:"Konuşalım mı?",subtitle:"İş birlikleri, sorular ya da sadece selam — hepsi hoş geldi; issue genellikle e-postadan hızlıdır.",email:"E-posta",wechat:"WeChat",studio:"Stüdyo",copied:"Kopyalandı — beni WeChat'te bul"},
-kbd:{title:"Klavye kısayolları",hint:"Kapatmak için ? veya Esc",github:"GitHub'ı aç",notes:"Notları aç",theme:"Temayı değiştir",lang:"Dili değiştir"},footer:{line:"Bir soyutlama katmanı eksikse, bir bug sınıfı eksiktir.",top:"Yukarı ↑"}},
-
-"ar":{skip:"الانتقال إلى المحتوى",ui:{langTitle:"اختر اللغة / Language"},
-nav:{about:"عنّي",projects:"المشاريع",stack:"التقنيات",phil:"المبادئ",journey:"المسار",notes:"ملاحظات",contact:"تواصل"},
-hero:{status:"مطوّر مستقل · Nightglean Studio",lead:"طبقة تجريد أقل تعني فئة أخطاء أقل. المنتج والكود والاختبارات والإصدارات — كل ذلك وحدي، بكود أصلي وبأقل قدر من الاعتماديات.",cta1:"شاهد أعمالي",cta2:"تواصل معي",scroll:"مرِّر للأسفل",roles:["مطوّر مستقل","مهندس Android أصلي","باني سلاسل بناء بلا Gradle","باحث أمان في الذكاء الاصطناعي","استوديو من شخص واحد"]},
-about:{tag:"عنّي",title:"من أنا",subtitle:"طالب، واستوديو مستقل من شخص واحد.",p1:"أنا وانغ سونيانغ، مؤسس Nightglean Studio. أدير الحلقة كاملة بنفسي — المنتج والكود والاختبار والإصدار.",p2:"ميلي إلى الأصل أولًا: واجهات المنصة قبل أي إطار، وسلسلة أدوات النظام قبل نظام البناء. اعتماديات أقل تعني سطحًا أصغر للأعطال.",p3:"هذا الموقع هو بطاقة تعريفي بلا اعتماديات — HTML / CSS / JS مكتوبة يدويًا، بلا إطار ولا بناء ولا طلبات طرف ثالث. عدّل، git push، فيُنشر.",s1k:"مشاريع مفتوحة المصدر",s2k:"لغات الواجهة",s3k:"اعتماديات طرف ثالث",s4k:"الأصل أولًا"},
-projects:{tag:"مشاريع",title:"أعمال مفتوحة المصدر",subtitle:"الأصل أولًا وبأقل الاعتماديات — كل مشروع يعمل وقابل للتكرار.",view:"عرض المستودع",moreTitle:"المزيد في الطريق.",moreDesc:"Nightglean — نصقل كل مشروع واحدًا تلو الآخر.",moreLink:"تصفّح GitHub ←",p1name:"OneStar",p1d:"بناء Android أصلي بلا Gradle / AGP: aapt2 + javac + d8 + apksigner + zig cc، كل خط الإنتاج في build.sh واحد.",p2name:"AppFunction Guard",p2d:"يتيح Android 16 لوكلاء الذكاء الاصطناعي استدعاء دوال داخل تطبيقك. يضيف هذا المشروع الحارس الناقص — تفويضًا لكل دالة، وحدود معدل، وتنقيح PII ومسار تدقيق.",p3name:"moltdisk",p3d:"أثقل ما على القرص غالبًا مخرجات بناء قابلة لإعادة البناء من المصدر. اعثر عليها وقِسها وأظهر الدليل — ثم توقف. إنه لا يحذف أبدًا.",p4name:"Marvis · Persona Spec",p4d:"عقد شخصية قابل للفحص بالكود: 30 خانة حوار، و20 جملة ممنوعة، وlinter قابل للتشغيل واختبارات أداء، إضافة إلى نظام Fault Bloom البصري.",p5name:"هذا الموقع",p5d:"الصفحة التي تقرؤها الآن: مكتوبة يدويًا، بلا اعتماديات، 20 لغة فورية، بلا إطار ولا خطوة بناء."},
-stack:{tag:"التقنيات",title:"التقنيات",subtitle:"ما أستطيع فعله بنفسي لا أسلمه لصندوق أسود.",lang:"اللغات",tool:"المنصة وسلسلة الأدوات"},
-phil:{tag:"المبادئ",title:"ما أؤمن به",subtitle:"مبادئ قليلة تُبعدني عن المتاعب وتُنجز الأشياء.",i1t:"طبقة تجريد أقل، خطأ أقل",i1d:"واجهة المنصة قبل الإطار؛ كل طبقة تتجاوزها تصغّر سطح العطل.",i2t:"البناء القابل للتكرار > البناء الذكي",i2d:"بلا ذاكرة مخبأة ولا خادم خلفي، وأوقات بناء متوقعة — أثمن من سريع-لكن-غامض.",i3t:"أطلق أولًا، ثم صقّل",i3d:"تحقيق الواقع أهم من التفكير في كل شيء؛ اجعله يعمل أولًا ثم اصقله.",i4t:"دقّق، ولا تحذف أبدًا",i4d:"يجب أن تقدم الأداة الدليل وتترك القرار للإنسان، لا أن تتصرف عنه."},
-journey:{tag:"المسار",title:"المسار",subtitle:"خطوة بخطوة إلى هنا — كل خطوة كانت لها قيمة.",j1w:"الآن",j1t:"خمسة مشاريع ومشرف واحد",j1d:"سلسلة بناء بلا Gradle، وSDK حراسة لوكلاء الذكاء الاصطناعي، وCLI للقرص للتدقيق فقط.",j2w:"Nightglean",j2t:"أسست Nightglean Studio",j2d:"جعلت «طبقة أقل» شعار الاستوديو: الأصل أولًا وبأقل الاعتماديات.",j3w:"Android الأصلي",j3t:"تجاوز الإطار",j3d:"من JNI وaapt2 إلى zig cc، العمل مباشرة مع سلسلة أدوات المنصة.",j4w:"البداية",j4t:"كيف يولد التطبيق؟",j4d:"بدأ الأمر بالفضول: كيف يتحول الكود إلى تطبيق قابل للتثبيت؟"},
-contact:{title:"هل نتحدث؟",subtitle:"تعاون أو أسئلة أو مجرد تحية — أهلًا بك؛ فتح issue غالبًا أسرع من البريد.",email:"البريد",wechat:"WeChat",studio:"الاستوديو",copied:"نُسخ — ابحث عني في WeChat"},
-kbd:{title:"اختصارات لوحة المفاتيح",hint:"اضغط ? أو Esc للإغلاق",github:"فتح GitHub",notes:"فتح الملاحظات",theme:"تبديل المظهر",lang:"تغيير اللغة"},footer:{line:"طبقة تجريد أقل تعني فئة أخطاء أقل.",top:"إلى الأعلى ↑"}},
-
-"hi":{skip:"सामग्री पर जाएँ",ui:{langTitle:"भाषा चुनें / Language"},
-nav:{about:"परिचय",projects:"प्रोजेक्ट",stack:"स्टैक",phil:"सिद्धांत",journey:"सफ़र",notes:"नोट्स",contact:"संपर्क"},
-hero:{status:"स्वतंत्र डेवलपर · Nightglean Studio",lead:"एक परत कम, एक तरह के बग कम। प्रोडक्ट, कोड, टेस्ट, रिलीज़ — सब अकेले, नेटिव कोड और न्यूनतम निर्भरताओं के साथ।",cta1:"मेरा काम देखें",cta2:"संपर्क करें",scroll:"नीचे स्क्रॉल करें",roles:["स्वतंत्र डेवलपर","नेटिव Android इंजीनियर","बिना Gradle बिल्ड-चेन बनाने वाला","AI एजेंट सुरक्षा शोधकर्ता","एक-व्यक्ति स्टूडियो"]},
-about:{tag:"परिचय",title:"मेरे बारे में",subtitle:"छात्र, और एक-व्यक्ति स्वतंत्र स्टूडियो।",p1:"मैं वांग सुनयांग हूँ, Nightglean Studio का संस्थापक। पूरा चक्र मैं खुद चलाता हूँ — प्रोडक्ट, कोड, टेस्ट, रिलीज़।",p2:"मेरा झुकाव नेटिव-फर्स्ट है: फ्रेमवर्क के बजाय प्लेटफ़ॉर्म API, बिल्ड सिस्टम के बजाय सिस्टम टूलचेन। कम निर्भरताएँ, टूटने की कम सतह।",p3:"यह साइट मेरा शून्य-निर्भरता परिचय-पत्र है — हाथ से लिखा HTML / CSS / JS, न फ्रेमवर्क, न बिल्ड, न तृतीय-पक्ष अनुरोध। संपादन, git push, प्रकाशित।",s1k:"ओपन-सोर्स प्रोजेक्ट",s2k:"UI भाषाएँ",s3k:"तृतीय-पक्ष निर्भरताएँ",s4k:"नेटिव-फर्स्ट"},
-projects:{tag:"प्रोजेक्ट",title:"ओपन-सोर्स काम",subtitle:"नेटिव-फर्स्ट, न्यूनतम निर्भरताएँ — हर एक चलता और पुनरुत्पादित होता है।",view:"रेपो देखें",moreTitle:"और भी रास्ते में है।",moreDesc:"Nightglean — हर प्रोजेक्ट को एक-एक करके निखारते हैं।",moreLink:"GitHub पर देखें →",p1name:"OneStar",p1d:"बिना Gradle / AGP का नेटिव Android बिल्ड: aapt2 + javac + d8 + apksigner + zig cc, पूरी पाइपलाइन एक build.sh में।",p2name:"AppFunction Guard",p2d:"Android 16 AI एजेंटों को आपके ऐप के फ़ंक्शन कॉल करने देता है। यह गायब प्रहरी जोड़ता है — प्रति-फ़ंक्शन प्राधिकरण, दर सीमा, PII रिडैक्शन और ऑडिट ट्रेल।",p3name:"moltdisk",p3d:"डिस्क पर सबसे भारी चीज़ें अक्सर स्रोत से फिर से बनने योग्य बिल्ड आर्टिफ़ैक्ट होते हैं। खोजें, मापें, सबूत दिखाएँ — फिर रुकें। यह कभी नहीं हटाता।",p4name:"Marvis · Persona Spec",p4d:"कोड से जाँचा जा सकने वाला पर्सोना अनुबंध: 30 संवाद स्लॉट, 20 वर्जित पंक्तियाँ, चलने योग्य linter और बेंचमार्क, साथ में Fault Bloom विज़ुअल सिस्टम।",p5name:"यह साइट",p5d:"जो पेज आप पढ़ रहे हैं: हाथ से लिखा, शून्य निर्भरता, 20 भाषाएँ लाइव, न फ्रेमवर्क न बिल्ड स्टेप।"},
-stack:{tag:"स्टैक",title:"टेक स्टैक",subtitle:"जो मैं खुद कर सकता हूँ, उसे ब्लैक बॉक्स को नहीं सौंपता।",lang:"भाषाएँ",tool:"प्लेटफ़ॉर्म और टूलचेन"},
-phil:{tag:"सिद्धांत",title:"मैं क्या मानता हूँ",subtitle:"कुछ सिद्धांत जो मुझे मुसीबत से बचाते हैं और काम पूरा कराते हैं।",i1t:"एक परत कम, एक बग कम",i1d:"फ्रेमवर्क से पहले प्लेटफ़ॉर्म API; हर छोड़ी गई परत विफलता की सतह घटाती है।",i2t:"पुनरुत्पादनीय बिल्ड > चालाक बिल्ड",i2d:"न कैश, न डेमन, अनुमानित बिल्ड समय — तेज़-लेकिन-रहस्यमय से अधिक मूल्यवान।",i3t:"पहले जारी करो, फिर निखारो",i3d:"असली बनाना सब सोचने से ज़्यादा मायने रखता है; पहले चलाओ, फिर पॉलिश करो।",i4t:"ऑडिट करो, कभी हटाओ मत",i4d:"टूल को सबूत देना चाहिए और निर्णय इंसान पर छोड़ना चाहिए, उसकी जगह काम नहीं करना।"},
-journey:{tag:"सफ़र",title:"सफ़र",subtitle:"कदम-दर-कदम यहाँ तक — हर कदम मायने रखता था।",j1w:"अभी",j1t:"पाँच प्रोजेक्ट, एक मेंटेनर",j1d:"बिना Gradle की बिल्ड चेन, AI एजेंटों के लिए गार्ड SDK, केवल-ऑडिट डिस्क CLI।",j2w:"Nightglean",j2t:"Nightglean Studio की स्थापना",j2d:"'एक परत कम' को स्टूडियो का मूलमंत्र बनाया: नेटिव-फर्स्ट, न्यूनतम निर्भरताएँ।",j3w:"नेटिव Android",j3t:"फ्रेमवर्क को छोड़कर",j3d:"JNI और aapt2 से zig cc तक, सीधे प्लेटफ़ॉर्म टूलचेन के साथ काम।",j4w:"शुरुआत",j4t:"ऐप कैसे जन्म लेता है?",j4d:"जिज्ञासा से शुरू हुआ: कोड आख़िर इंस्टॉल होने वाला ऐप कैसे बनता है?"},
-contact:{title:"बात करें?",subtitle:"सहयोग, सवाल या सिर्फ़ नमस्ते — सबका स्वागत है; issue अक्सर ईमेल से तेज़ होता है।",email:"ईमेल",wechat:"WeChat",studio:"स्टूडियो",copied:"कॉपी हो गया — मुझे WeChat पर खोजें"},
-kbd:{title:"कीबोर्ड शॉर्टकट",hint:"बंद करने के लिए ? या Esc",github:"GitHub खोलें",notes:"नोट्स खोलें",theme:"थीम बदलें",lang:"भाषा बदलें"},footer:{line:"एक परत कम, एक तरह के बग कम।",top:"ऊपर ↑"}},
-
-"id":{skip:"Langsung ke konten",ui:{langTitle:"Pilih bahasa / Language"},
-nav:{about:"Tentang",projects:"Proyek",stack:"Stack",phil:"Prinsip",journey:"Perjalanan",notes:"Catatan",contact:"Kontak"},
-hero:{status:"Pengembang independen · Nightglean Studio",lead:"Satu lapisan abstraksi lebih sedikit berarti satu kelas bug lebih sedikit. Produk, kode, tes, rilis — semua sendiri, dengan kode native dan dependensi minimal.",cta1:"Lihat karya saya",cta2:"Hubungi saya",scroll:"Gulir ke bawah",roles:["Pengembang independen","Insinyur Android native","Pembangun build tanpa Gradle","Peneliti keamanan AI","Studio satu orang"]},
-about:{tag:"TENTANG",title:"Tentang saya",subtitle:"Pelajar, dan studio independen satu orang.",p1:"Saya Wang Sunyang, pendiri Nightglean Studio. Seluruh siklus saya jalankan sendiri — produk, kode, tes, rilis.",p2:"Kecenderungan saya native-first: API platform alih-alih framework, toolchain sistem alih-alih build system. Lebih sedikit dependensi, lebih kecil permukaan untuk rusak.",p3:"Situs ini kartu nama tanpa dependensi saya — HTML / CSS / JS ditulis tangan, tanpa framework, tanpa build, tanpa permintaan pihak ketiga. Edit, git push, terbit.",s1k:"Proyek open source",s2k:"Bahasa antarmuka",s3k:"Dependensi pihak ketiga",s4k:"Native-first"},
-projects:{tag:"PROYEK",title:"Karya open source",subtitle:"Native-first, dependensi minimal — masing-masing berjalan dan dapat direproduksi.",view:"Lihat repo",moreTitle:"Lebih banyak lagi sedang dikerjakan.",moreDesc:"Nightglean — memoles setiap proyek, satu per satu.",moreLink:"Jelajahi GitHub →",p1name:"OneStar",p1d:"Build Android native tanpa Gradle / AGP: aapt2 + javac + d8 + apksigner + zig cc, seluruh pipeline dalam satu build.sh.",p2name:"AppFunction Guard",p2d:"Android 16 mengizinkan agen AI memanggil fungsi di dalam aplikasi Anda. Ini menambahkan penjaga yang hilang — otorisasi per fungsi, pembatasan laju, redaksi PII, dan jejak audit.",p3name:"moltdisk",p3d:"Hal terberat di disk sering kali artefak build yang bisa dibangun ulang dari sumber. Temukan, ukur, tunjukkan buktinya — lalu berhenti. Tidak pernah menghapus.",p4name:"Marvis · Persona Spec",p4d:"Kontrak persona yang bisa diperiksa kode: 30 slot dialog, 20 kalimat terlarang, linter yang dapat dijalankan dan benchmark, plus sistem visual Fault Bloom.",p5name:"Situs ini",p5d:"Halaman yang sedang Anda baca: ditulis tangan, nol dependensi, 20 bahasa langsung, tanpa framework dan tanpa langkah build."},
-stack:{tag:"STACK",title:"Stack teknologi",subtitle:"Yang bisa saya kerjakan sendiri, tidak saya serahkan ke kotak hitam.",lang:"Bahasa",tool:"Platform dan toolchain"},
-phil:{tag:"PRINSIP",title:"Yang saya yakini",subtitle:"Beberapa prinsip yang menjauhkan saya dari masalah dan menyelesaikan pekerjaan.",i1t:"Satu abstraksi lebih sedikit, satu bug lebih sedikit",i1d:"API platform sebelum framework; setiap lapisan yang dilewati memperkecil permukaan kegagalan.",i2t:"Build yang dapat direproduksi > build yang cerdik",i2d:"Tanpa cache, tanpa daemon, waktu build dapat diprediksi — lebih berharga daripada cepat-tapi-misterius.",i3t:"Terbitkan dulu, lalu poles",i3d:"Mewujudkan lebih penting daripada memikirkan semuanya; jalankan dulu, lalu poles.",i4t:"Audit, jangan pernah hapus",i4d:"Sebuah alat harus menunjukkan bukti dan menyerahkan keputusan pada manusia, bukan bertindak untuknya."},
-journey:{tag:"PERJALANAN",title:"Perjalanan",subtitle:"Selangkah demi selangkah sampai di sini — setiap langkah berarti.",j1w:"Sekarang",j1t:"Lima proyek, satu maintainer",j1d:"Rantai build tanpa Gradle, SDK penjaga untuk agen AI, CLI disk khusus audit.",j2w:"Nightglean",j2t:"Mendirikan Nightglean Studio",j2d:"Menjadikan «satu lapisan lebih sedikit» sebagai kredo studio: native-first, dependensi minimal.",j3w:"Android native",j3t:"Melewati framework",j3d:"Dari JNI dan aapt2 hingga zig cc, bekerja langsung dengan toolchain platform.",j4w:"Awal",j4t:"Bagaimana sebuah aplikasi lahir?",j4d:"Berawal dari rasa ingin tahu: bagaimana kode menjadi aplikasi yang bisa dipasang?"},
-contact:{title:"Mari bicara?",subtitle:"Kolaborasi, pertanyaan, atau sekadar sapaan — semuanya diterima; issue biasanya lebih cepat daripada email.",email:"Email",wechat:"WeChat",studio:"Studio",copied:"Disalin — temukan saya di WeChat"},
-kbd:{title:"Pintasan keyboard",hint:"Tekan ? atau Esc untuk menutup",github:"Buka GitHub",notes:"Buka catatan",theme:"Ganti tema",lang:"Ganti bahasa"},footer:{line:"Satu lapisan abstraksi lebih sedikit berarti satu kelas bug lebih sedikit.",top:"Ke atas ↑"}},
-
-"vi":{skip:"Đến nội dung",ui:{langTitle:"Chọn ngôn ngữ / Language"},
-nav:{about:"Giới thiệu",projects:"Dự án",stack:"Stack",phil:"Nguyên tắc",journey:"Hành trình",notes:"Ghi chú",contact:"Liên hệ"},
-hero:{status:"Nhà phát triển độc lập · Nightglean Studio",lead:"Bớt một lớp trừu tượng là bớt một lớp lỗi. Sản phẩm, code, test, release — tất cả một mình, bằng code native và ít phụ thuộc nhất.",cta1:"Xem việc của tôi",cta2:"Liên hệ",scroll:"Cuộn xuống",roles:["Nhà phát triển độc lập","Kỹ sư Android native","Người xây build không Gradle","Nhà nghiên cứu bảo mật AI","Studio một người"]},
-about:{tag:"GIỚI THIỆU",title:"Về tôi",subtitle:"Học viên, và studio độc lập một người.",p1:"Tôi là Wang Sunyang, người sáng lập Nightglean Studio. Tôi tự vận hành toàn bộ vòng lặp — sản phẩm, code, test, release.",p2:"Thiên hướng của tôi là native-first: API nền tảng thay vì framework, toolchain hệ thống thay vì build system. Ít phụ thuộc hơn, bề mặt hỏng hóc nhỏ hơn.",p3:"Trang này là danh thiếp không phụ thuộc của tôi — HTML / CSS / JS viết tay, không framework, không build, không yêu cầu bên thứ ba. Sửa, git push, là xuất bản.",s1k:"Dự án mã nguồn mở",s2k:"Ngôn ngữ giao diện",s3k:"Phụ thuộc bên thứ ba",s4k:"Native-first"},
-projects:{tag:"DỰ ÁN",title:"Việc mã nguồn mở",subtitle:"Native-first, ít phụ thuộc nhất — mỗi dự án đều chạy và tái tạo được.",view:"Xem repo",moreTitle:"Còn nhiều dự án đang tới.",moreDesc:"Nightglean — trau chuốt từng dự án, từng cái một.",moreLink:"Xem trên GitHub →",p1name:"OneStar",p1d:"Build Android native không cần Gradle / AGP: aapt2 + javac + d8 + apksigner + zig cc, toàn bộ pipeline trong một build.sh.",p2name:"AppFunction Guard",p2d:"Android 16 cho phép agent AI gọi hàm bên trong ứng dụng của bạn. Dự án này bổ sung người gác cổng còn thiếu — ủy quyền theo từng hàm, giới hạn tốc độ, ẩn PII và nhật ký kiểm toán.",p3name:"moltdisk",p3d:"Thứ nặng nhất trên ổ đĩa thường là các artifact build có thể xây lại từ mã nguồn. Tìm chúng, đo kích thước, đưa bằng chứng — rồi dừng lại. Nó không bao giờ xóa.",p4name:"Marvis · Persona Spec",p4d:"Một hợp đồng persona có thể kiểm tra bằng code: 30 slot thoại, 20 câu cấm, một linter chạy được và benchmark, kèm hệ thống hình ảnh Fault Bloom.",p5name:"Trang web này",p5d:"Trang bạn đang đọc: viết tay, không phụ thuộc, 20 ngôn ngữ chuyển tức thì, không framework và không bước build."},
-stack:{tag:"STACK",title:"Stack công nghệ",subtitle:"Điều tôi tự làm được, tôi không giao cho hộp đen.",lang:"Ngôn ngữ",tool:"Nền tảng và toolchain"},
-phil:{tag:"NGUYÊN TẮC",title:"Điều tôi tin",subtitle:"Một vài nguyên tắc giúp tôi tránh rắc rối và hoàn thành mọi việc.",i1t:"Bớt một trừu tượng, bớt một lỗi",i1d:"API nền tảng trước framework; mỗi lớp bỏ qua làm nhỏ bề mặt lỗi.",i2t:"Build tái tạo được > build khéo léo",i2d:"Không cache, không daemon, thời gian build dự đoán được — đáng giá hơn nhanh-nhưng-bí ẩn.",i3t:"Xuất bản trước, trau chuốt sau",i3d:"Biến thành hiện thực quan trọng hơn nghĩ cho hết; chạy được trước, rồi mới đánh bóng.",i4t:"Kiểm toán, không bao giờ xóa",i4d:"Công cụ nên đưa bằng chứng và để quyết định cho con người, không hành động thay họ."},
-journey:{tag:"HÀNH TRÌNH",title:"Hành trình",subtitle:"Từng bước đến đây — mỗi bước đều đáng.",j1w:"Bây giờ",j1t:"Năm dự án, một người bảo trì",j1d:"Chuỗi build không Gradle, SDK canh gác cho agent AI, CLI ổ đĩa chỉ-kiểm-toán.",j2w:"Nightglean",j2t:"Thành lập Nightglean Studio",j2d:"Biến «bớt một lớp» thành tôn chỉ: native-first, ít phụ thuộc nhất.",j3w:"Android native",j3t:"Bỏ qua framework",j3d:"Từ JNI và aapt2 đến zig cc, làm việc trực tiếp với toolchain nền tảng.",j4w:"Khởi đầu",j4t:"Ứng dụng ra đời thế nào?",j4d:"Bắt đầu từ tò mò: code biến thành ứng dụng cài đặt được như thế nào?"},
-contact:{title:"Trò chuyện chứ?",subtitle:"Hợp tác, câu hỏi hay chỉ là lời chào — đều được chào đón; issue thường nhanh hơn email.",email:"Email",wechat:"WeChat",studio:"Studio",copied:"Đã sao chép — tìm tôi trên WeChat"},
-kbd:{title:"Phím tắt",hint:"Nhấn ? hoặc Esc để đóng",github:"Mở GitHub",notes:"Mở ghi chú",theme:"Đổi giao diện",lang:"Đổi ngôn ngữ"},footer:{line:"Bớt một lớp trừu tượng là bớt một lớp lỗi.",top:"Lên đầu trang ↑"}},
-
-"th":{skip:"ข้ามไปยังเนื้อหา",ui:{langTitle:"เลือกภาษา / Language"},
-nav:{about:"เกี่ยวกับ",projects:"โปรเจกต์",stack:"สแตก",phil:"หลักคิด",journey:"เส้นทาง",notes:"บันทึก",contact:"ติดต่อ"},
-hero:{status:"นักพัฒนาอิสระ · Nightglean Studio",lead:"ลดชั้นนามธรรมลงหนึ่งชั้น ก็ลดบั๊กได้หนึ่งประเภท ผลิตภัณฑ์ โค้ด เทสต์ รีลีส — ทั้งหมดคนเดียว ด้วยโค้ดเนทีฟและ dependency น้อยที่สุด",cta1:"ดูผลงานของฉัน",cta2:"ติดต่อ",scroll:"เลื่อนลง",roles:["นักพัฒนาอิสระ","วิศวกร Android เนทีฟ","ผู้สร้าง build ไร้ Gradle","นักวิจัยความปลอดภัย AI","สตูดิโอคนเดียว"]},
-about:{tag:"เกี่ยวกับ",title:"เกี่ยวกับฉัน",subtitle:"นักเรียน และสตูดิโออิสระคนเดียว",p1:"ผมคือ หวัง ซุนหยาง ผู้ก่อตั้ง Nightglean Studio ผมดูแลครบวงจรด้วยตัวเอง — ผลิตภัณฑ์ โค้ด เทสต์ รีลีส",p2:"ผมยึดหลักเนทีฟก่อน: ใช้ API ของแพลตฟอร์มแทน framework ใช้ toolchain ของระบบแทน build system dependency น้อยลง พื้นที่ให้พังก็น้อยลง",p3:"เว็บนี้คือนามบัตรไร้ dependency ของผม — เขียน HTML / CSS / JS ล้วน ๆ ไม่มี framework ไม่มี build ไม่มี request ไปยังบุคคลที่สาม แก้แล้ว git push ก็เผยแพร่",s1k:"โปรเจกต์โอเพนซอร์ส",s2k:"ภาษาของ UI",s3k:"Dependency ภายนอก",s4k:"เนทีฟก่อน"},
-projects:{tag:"โปรเจกต์",title:"ผลงานโอเพนซอร์ส",subtitle:"เนทีฟก่อน dependency น้อยที่สุด — แต่ละตัวรันได้และทำซ้ำได้",view:"ดู repo",moreTitle:"ยังมีอีกมากระหว่างทาง",moreDesc:"Nightglean — ขัดเกลาทุกโปรเจกต์ทีละชิ้น",moreLink:"ชมบน GitHub →",p1name:"OneStar",p1d:"บิลด์ Android เนทีฟแบบไม่ใช้ Gradle / AGP: aapt2 + javac + d8 + apksigner + zig cc ทั้งไพพ์ไลน์ใน build.sh ไฟล์เดียว",p2name:"AppFunction Guard",p2d:"Android 16 ให้ AI agent เรียกฟังก์ชันในแอปคุณได้ โปรเจกต์นี้เพิ่มยามที่แพลตฟอร์มไม่มี — อนุญาตรายฟังก์ชัน จำกัดอัตรา ปกปิด PII และบันทึกการตรวจสอบ",p3name:"moltdisk",p3d:"สิ่งที่หนักที่สุดบนดิสก์มักเป็น build artifact ที่สร้างใหม่จากซอร์สได้ ค้นหา วัดขนาด แสดงหลักฐาน แล้วหยุด — มันไม่เคยลบ",p4name:"Marvis · Persona Spec",p4d:"สัญญาบุคลิกที่ตรวจสอบได้ด้วยโค้ด: 30 ช่องบทพูด 20 ประโยคต้องห้าม linter ที่รันได้และ benchmark พร้อมระบบภาพ Fault Bloom",p5name:"เว็บนี้",p5d:"หน้าที่คุณกำลังอ่าน: เขียนมือ ไร้ dependency 20 ภาษาสลับได้ทันที ไม่มี framework และไม่มีขั้นตอน build"},
-stack:{tag:"สแตก",title:"สแตกเทคโนโลยี",subtitle:"สิ่งที่ผมทำเองได้ จะไม่ยื่นให้กล่องดำ",lang:"ภาษา",tool:"แพลตฟอร์มและ toolchain"},
-phil:{tag:"หลักคิด",title:"สิ่งที่ผมเชื่อ",subtitle:"หลักการไม่กี่ข้อที่ช่วยกันปัญหาและทำให้งานสำเร็จ",i1t:"ลดชั้นนามธรรมลงหนึ่งชั้น ก็ลดบั๊กได้หนึ่งตัว",i1d:"ใช้ API แพลตฟอร์มก่อน framework ทุกชั้นที่ข้ามได้ก็ลดพื้นที่ให้พัง",i2t:"Build ที่ทำซ้ำได้ > build ที่ฉลาด",i2d:"ไม่มี cache ไม่มี daemon เวลาบิลด์คาดการณ์ได้ — มีค่ากว่าเร็วแต่ลึกลับ",i3t:"ปล่อยก่อน แล้วค่อยขัดเกลา",i3d:"ทำให้เป็นจริงสำคัญกว่าคิดให้หมด ทำให้รันได้ก่อน แล้วค่อยขัด",i4t:"ตรวจสอบ ไม่เคยลบ",i4d:"เครื่องมือควรแสดงหลักฐานและปล่อยให้คนตัดสินใจ ไม่ใช่ทำแทน"},
-journey:{tag:"เส้นทาง",title:"เส้นทาง",subtitle:"ก้าวทีละก้าวมาถึงตรงนี้ — ทุกก้าวมีความหมาย",j1w:"ตอนนี้",j1t:"ห้าโปรเจกต์ คนดูแลคนเดียว",j1d:"build chain ไร้ Gradle, SDK กัน AI agent, CLI ตรวจดิสก์แบบไม่ลบ",j2w:"Nightglean",j2t:"ก่อตั้ง Nightglean Studio",j2d:"เปลี่ยน «ลดชั้นลงหนึ่ง» ให้เป็นคติประจำสตูดิโอ: เนทีฟก่อน dependency น้อยที่สุด",j3w:"Android เนทีฟ",j3t:"เลี่ยง framework",j3d:"จาก JNI และ aapt2 ถึง zig cc ทำงานกับ toolchain ของแพลตฟอร์มโดยตรง",j4w:"จุดเริ่มต้น",j4t:"แอปเกิดขึ้นได้อย่างไร?",j4d:"เริ่มจากความสงสัย: โค้ดกลายเป็นแอปที่ติดตั้งได้จริง ๆ ได้อย่างไร?"},
-contact:{title:"คุยกันไหม?",subtitle:"ร่วมงาน สอบถาม หรือแค่ทักทาย — ยินดีทุกอย่าง issue มักเร็วกว่าอีเมล",email:"อีเมล",wechat:"WeChat",studio:"สตูดิโอ",copied:"คัดลอกแล้ว — หาผมใน WeChat"},
-kbd:{title:"แป้นพิมพ์ลัด",hint:"กด ? หรือ Esc เพื่อปิด",github:"เปิด GitHub",notes:"เปิดบันทึก",theme:"สลับธีม",lang:"เปลี่ยนภาษา"},footer:{line:"ลดชั้นนามธรรมลงหนึ่งชั้น ก็ลดบั๊กได้หนึ่งประเภท",top:"ขึ้นบน ↑"}}
+"zh":{"skip":"跳到主要内容","ui":{"langTitle":"选择语言 / Language","langSwitched":"已切换为{lang}"},"nav":{"about":"关于","projects":"作品","stack":"技术栈","phil":"理念","journey":"轨迹","notes":"笔记","contact":"联系"},"hero":{"status":"独立开发者 · 长夜拾星工作室","lead":"少一层抽象，就少一类 bug。一个人做完产品、开发、测试、发布——用原生代码与最少的依赖，把想法做成能跑的东西。","cta1":"看看作品","cta2":"联系我","scroll":"向下滚动","roles":["独立开发者","原生 Android 工程师","无 Gradle 构建链实践者","AI Agent 安全研究者","一人成军的创作者"]},"about":{"tag":"ABOUT","title":"关于我","subtitle":"中职在读，同时是一人成军的独立开发者。","p1":"我是王孙阳，长夜拾星工作室（Nightglean Studio）的创始人。产品、编码、测试、发版，全流程自己一个人跑。","p2":"技术取向是「原生优先」：能用平台 API 就不引框架，能用系统工具链就不上构建系统。我笃信——依赖越少，出问题的面越小。","p3":"这个网站是我的零依赖数字名片：纯手写 HTML / CSS / JS，没有框架、没有构建、没有第三方请求，改完 git push 就发布。","s1k":"开源项目","s2k":"界面语言","s3k":"第三方依赖","s4k":"原生实现"},"projects":{"tag":"PROJECTS","title":"开源作品","subtitle":"原生优先、最少依赖，每一个都在跑、都能复现。","view":"查看仓库","moreTitle":"还有更多在路上。","moreDesc":"长夜拾星，慢慢打磨每一个作品。","moreLink":"去 GitHub 逛逛 →","p1name":"拾光 · OneStar","p1d":"不用 Gradle / AGP 的原生 Android 构建实验：aapt2 + javac + d8 + apksigner + zig cc，一条 build.sh 走完全程。","p2name":"AppFunction Guard","p2d":"Android 16 让 AI Agent 能直接调用你 App 里的函数；它补上平台没给的门卫——逐函数授权、限流、PII 脱敏与审计。","p3name":"蜕冗 · moltdisk","p3d":"磁盘里最占地方的，往往是能由源码重建的构建产物。找出它们、算清体积、给出证据，然后停手——它不删任何东西。","p4name":"Marvis · Persona Spec","p4d":"一份可被程序检查的人格规范：30 格台词位、20 条禁句、可运行的 lint 与基准测试，附 Fault Bloom 视觉系统。","p5name":"本站 · 零依赖个人站","p5d":"你正在看的这个页面：纯手写、零依赖、{n} 种语言实时切换，没有框架也没有构建步骤。"},"stack":{"tag":"STACK","title":"技术栈","subtitle":"能自己动手的，就不交给黑盒。","lang":"语言","tool":"平台与工具链"},"phil":{"tag":"PHILOSOPHY","title":"我的信条","subtitle":"几条让我少踩坑、把东西做出来的原则。","i1t":"少一层抽象，就少一类 bug","i1d":"能用平台 API 就绝不引框架；每少一层，出问题的面就小一圈。","i2t":"可复现的构建 > 聪明的构建","i2d":"无缓存、无守护进程，构建时间可预期——比「快但玄学」更值钱。","i3t":"先做出来，再优化","i3d":"做出来比想清楚更重要；先跑通，再打磨。","i4t":"只审计，不删除","i4d":"工具应给出证据、把决定权留给人，而不是替人动手。"},"journey":{"tag":"JOURNEY","title":"成长轨迹","subtitle":"一步步走到现在，每一步都算数。","j1w":"现在","j1t":"五个项目独立维护","j1d":"一条无 Gradle 的构建链、一套 AI Agent 权限闸门、一个只审计不删除的 CLI。","j2w":"长夜拾星","j2t":"成立 Nightglean Studio","j2d":"把「少一层抽象」做成工作室的信条：原生优先、最少依赖。","j3w":"入门原生 Android","j3t":"绕开框架直连工具链","j3d":"从 JNI、aapt2 到 zig cc，直接和平台工具链打交道。","j4w":"起点","j4t":"好奇一个 App 如何诞生","j4d":"从「一个 App 到底是怎么从代码变成安装包的」开始自己动手。"},"contact":{"title":"一起聊聊？","subtitle":"合作、提问或单纯打个招呼，我都欢迎；开 Issue 通常比邮件更快。","email":"邮箱","wechat":"微信","studio":"工作室","copied":"已复制，去微信搜我"},"kbd":{"title":"键盘快捷键","hint":"按 ? 或 Esc 关闭","github":"打开 GitHub","notes":"打开笔记","theme":"切换深浅主题","lang":"切换语言"},"footer":{"line":"少一层抽象，就少一类 bug。","top":"回到顶部 ↑"}},
+"zh-TW":{"skip":"跳到主要內容","ui":{"langTitle":"選擇語言 / Language","langSwitched":"已切換為{lang}"},"nav":{"about":"關於","projects":"作品","stack":"技術棧","phil":"理念","journey":"軌跡","notes":"筆記","contact":"聯繫"},"hero":{"status":"獨立開發者 · 長夜拾星工作室","lead":"少一層抽象，就少一類 bug。一個人做完產品、開發、測試、發佈——用原生程式碼與最少的依賴，把想法做成能跑的東西。","cta1":"看看作品","cta2":"聯絡我","scroll":"向下捲動","roles":["獨立開發者","原生 Android 工程師","無 Gradle 建置鏈實踐者","AI Agent 安全研究者","一人成軍的創作者"]},"about":{"tag":"ABOUT","title":"關於我","subtitle":"中職在讀，同時是一人成軍的獨立開發者。","p1":"我是王孫陽，長夜拾星工作室（Nightglean Studio）的創辦人。產品、編碼、測試、發版，全流程自己一個人跑。","p2":"技術取向是「原生優先」：能用平台 API 就不引框架，能用系統工具鏈就不上建置系統。我深信——依賴越少，出問題的面越小。","p3":"這個網站是我的零依賴數位名片：純手寫 HTML / CSS / JS，沒有框架、沒有建置、沒有第三方請求，改完 git push 就發佈。","s1k":"開源專案","s2k":"介面語言","s3k":"第三方依賴","s4k":"原生實作"},"projects":{"tag":"PROJECTS","title":"開源作品","subtitle":"原生優先、最少依賴，每一個都在跑、都能重現。","view":"查看倉庫","moreTitle":"還有更多在路上。","moreDesc":"長夜拾星，慢慢打磨每一個作品。","moreLink":"去 GitHub 逛逛 →","p1name":"拾光 · OneStar","p1d":"不用 Gradle / AGP 的原生 Android 建置實驗：aapt2 + javac + d8 + apksigner + zig cc，一條 build.sh 走完全程。","p2name":"AppFunction Guard","p2d":"Android 16 讓 AI Agent 能直接呼叫你 App 裡的函式；它補上平台沒給的守衛——逐函式授權、限流、PII 去識別化與稽核。","p3name":"蛻冗 · moltdisk","p3d":"磁碟裡最佔地方的，往往是能由原始碼重建的建置產物。找出它們、算清體積、給出證據，然後停手——它不刪任何東西。","p4name":"Marvis · Persona Spec","p4d":"一份可被程式檢查的人格規範：30 格臺詞位、20 條禁句、可執行的 lint 與基準測試，附 Fault Bloom 視覺系統。","p5name":"本站 · 零依賴個人站","p5d":"你正在看的這個頁面：純手寫、零依賴、{n} 種語言即時切換，沒有框架也沒有建置步驟。"},"stack":{"tag":"STACK","title":"技術棧","subtitle":"能自己動手的，就不交給黑盒。","lang":"語言","tool":"平台與工具鏈"},"phil":{"tag":"PHILOSOPHY","title":"我的信條","subtitle":"幾條讓我少踩坑、把東西做出來的原則。","i1t":"少一層抽象，就少一類 bug","i1d":"能用平台 API 就絕不引框架；每少一層，出問題的面就小一圈。","i2t":"可重現的建置 > 聰明的建置","i2d":"無快取、無守護行程，建置時間可預期——比「快但玄學」更值錢。","i3t":"先做出來，再最佳化","i3d":"做出來比想清楚更重要；先跑通，再打磨。","i4t":"只稽核，不刪除","i4d":"工具應給出證據、把決定權留給人，而不是替人動手。"},"journey":{"tag":"JOURNEY","title":"成長軌跡","subtitle":"一步步走到現在，每一步都算數。","j1w":"現在","j1t":"五個專案獨立維護","j1d":"一條無 Gradle 的建置鏈、一套 AI Agent 權限閘門、一個只稽核不刪除的 CLI。","j2w":"長夜拾星","j2t":"成立 Nightglean Studio","j2d":"把「少一層抽象」做成工作室的信條：原生優先、最少依賴。","j3w":"入門原生 Android","j3t":"繞開框架直連工具鏈","j3d":"從 JNI、aapt2 到 zig cc，直接和平台工具鏈打交道。","j4w":"起點","j4t":"好奇一個 App 如何誕生","j4d":"從「一個 App 到底是怎麼從程式碼變成安裝包的」開始自己動手。"},"contact":{"title":"一起聊聊？","subtitle":"合作、提問或單純打個招呼，我都歡迎；開 Issue 通常比郵件更快。","email":"信箱","wechat":"微信","studio":"工作室","copied":"已複製，去微信搜我"},"kbd":{"title":"鍵盤快捷鍵","hint":"按 ? 或 Esc 關閉","github":"開啟 GitHub","notes":"開啟筆記","theme":"切換深淺主題","lang":"切換語言"},"footer":{"line":"少一層抽象，就少一類 bug。","top":"回到頂部 ↑"}},
+"en":{"skip":"Skip to content","ui":{"langTitle":"Choose language / Language","langSwitched":"Switched to {lang}"},"nav":{"about":"About","projects":"Projects","stack":"Stack","phil":"Philosophy","journey":"Journey","notes":"Notes","contact":"Contact"},"hero":{"status":"Independent Developer · Nightglean Studio","lead":"One fewer layer of abstraction is one fewer class of bug. I ship product, code, tests and releases solo — native code, minimal dependencies, ideas turned into things that run.","cta1":"See my work","cta2":"Get in touch","scroll":"Scroll down","roles":["Independent Developer","Native Android Engineer","No-Gradle Build-Chain Builder","AI-Agent Security Researcher","One-Person Studio"]},"about":{"tag":"ABOUT","title":"About me","subtitle":"A student, and a one-person indie studio.","p1":"I'm Wang Sunyang, founder of Nightglean Studio. I run the whole loop myself — product, code, test, release.","p2":"My bias is native-first: use platform APIs instead of pulling in a framework, use the system toolchain instead of a build system. Fewer dependencies, a smaller surface for things to break.","p3":"This site is my zero-dependency calling card — hand-written HTML / CSS / JS, no framework, no build, no third-party requests. Edit, git push, published.","s1k":"Open-source projects","s2k":"UI languages","s3k":"Third-party deps","s4k":"Native-first"},"projects":{"tag":"PROJECTS","title":"Open-source work","subtitle":"Native-first, minimal dependencies — each one runs and reproduces.","view":"View repo","moreTitle":"More on the way.","moreDesc":"Nightglean — polishing every project, one at a time.","moreLink":"Browse on GitHub →","p1name":"OneStar","p1d":"A native Android build without Gradle / AGP: aapt2 + javac + d8 + apksigner + zig cc, the whole pipeline in one build.sh.","p2name":"AppFunction Guard","p2d":"Android 16 lets AI agents call functions inside your app. This adds the guard the platform left out — per-function authorization, rate limits, PII redaction and an audit trail.","p3name":"moltdisk","p3d":"The heaviest things on a disk are often build artifacts rebuildable from source. Find them, size them, show the evidence — then stop. It never deletes.","p4name":"Marvis · Persona Spec","p4d":"A persona contract that code can check: 30 dialogue slots, 20 forbidden lines, a runnable linter and benchmarks, plus the Fault Bloom visual system.","p5name":"This site","p5d":"The page you're reading: hand-written, zero dependencies, {n} languages switching live, no framework and no build step."},"stack":{"tag":"STACK","title":"Tech stack","subtitle":"What I can do myself, I don't hand to a black box.","lang":"Languages","tool":"Platform & toolchain"},"phil":{"tag":"PHILOSOPHY","title":"What I believe","subtitle":"A few principles that keep me out of trouble and ship things.","i1t":"One fewer abstraction, one fewer bug","i1d":"Use a platform API before a framework; every layer you skip shrinks the surface for failure.","i2t":"Reproducible builds > clever builds","i2d":"No cache, no daemon, predictable build times — worth more than fast-but-mystical.","i3t":"Ship it, then refine","i3d":"Making it real matters more than thinking it through; get it running first, then polish.","i4t":"Audit, never delete","i4d":"A tool should present evidence and leave the decision to a human, not act for them."},"journey":{"tag":"JOURNEY","title":"The journey","subtitle":"Step by step to here — every step counted.","j1w":"Now","j1t":"Five projects, one maintainer","j1d":"A no-Gradle build chain, an AI-agent guard SDK, an audit-only disk CLI.","j2w":"Nightglean","j2t":"Founded Nightglean Studio","j2d":"Turned \"one fewer layer\" into a studio creed: native-first, minimal dependencies.","j3w":"Native Android","j3t":"Skipping the framework","j3d":"From JNI and aapt2 to zig cc, working with the platform toolchain directly.","j4w":"The start","j4t":"How is an app born?","j4d":"It began with curiosity: how does code actually become an installable app?"},"contact":{"title":"Let's talk?","subtitle":"Collabs, questions or just a hello — all welcome; an issue is usually faster than email.","email":"Email","wechat":"WeChat","studio":"Studio","copied":"Copied — find me on WeChat"},"kbd":{"title":"Keyboard shortcuts","hint":"Press ? or Esc to close","github":"Open GitHub","notes":"Open notes","theme":"Toggle theme","lang":"Switch language"},"footer":{"line":"One fewer layer of abstraction, one fewer bug.","top":"Back to top ↑"}}
 };
 
 /* ============================================================
    i18n runtime
    ============================================================ */
+
+/* ---- additional languages ---- */
+
+LANGS.push({code:"el",native:"Ελληνικά",sub:"Greek"},{code:"sv",native:"Svenska",sub:"Swedish"},{code:"cs",native:"Čeština",sub:"Czech"},{code:"ro",native:"Română",sub:"Romanian"});
+LANGS.push({code:"bn",native:"বাংলা",sub:"Bengali"},{code:"ur",native:"اردو",sub:"Urdu"},{code:"ms",native:"Bahasa Melayu",sub:"Malay"},{code:"tl",native:"Filipino",sub:"Filipino"});
+/* fill any missing entry from English, so a new language never shows blanks */
+(function(){
+  var base=I18N.en;
+  if(!base)return;
+  function fill(dst,src){
+    for(var k in src){
+      if(!Object.prototype.hasOwnProperty.call(src,k))continue;
+      var v=src[k];
+      if(dst[k]===undefined||dst[k]===null||dst[k]==="")dst[k]=v;
+      else if(v&&typeof v==="object"&&typeof dst[k]==="object")fill(dst[k],v);
+    }
+  }
+  for(var code in I18N){
+    if(code!=="en"&&I18N[code]&&typeof I18N[code]==="object")fill(I18N[code],base);
+  }
+  window.__i18nFill=fill;
+})();
+LANGS.push({code:"he",native:"עברית",sub:"Hebrew"},{code:"fa",native:"فارسی",sub:"Persian"});
 var rootEl=document.documentElement;
 var typedEl=document.getElementById("typed");
 function getPath(obj,path){return path.split(".").reduce(function(o,k){return o?o[k]:undefined;},obj);}
 function currentLang(){
   try{return localStorage.getItem("lang")||"zh";}catch(e){return "zh";}
 }
-function setLang(code){
+function __renderLang(code){
   var lang=I18N[code]||I18N["zh"];
   try{localStorage.setItem("lang",code);}catch(e){}
-  rootEl.setAttribute("lang",code==="zh-TW"?"zh-TW":code);
-  rootEl.setAttribute("dir", code==="ar"?"rtl":"ltr");
+  rootEl.setAttribute("lang",langAttrOf(code));
+  rootEl.setAttribute("dir", langDirOf(code));
   document.querySelectorAll("[data-i18n]").forEach(function(el){
     var v=getPath(lang,el.getAttribute("data-i18n"));
     if(v!==undefined) el.textContent=v;
@@ -1027,7 +913,62 @@ function setLang(code){
 }
 
 /* build language list */
-(function(){
+var I18N_EXT_BASE="i18n/index/";
+/* ============================================================
+   i18n 词典按需加载
+   首屏只内联 zh / zh-TW / en（三份就够首屏用），其余 27 种语言
+   每种一个外链文件，切换或命中浏览器语言时才注入 <script>。
+   用 <script> 而不是 fetch：file:// 双击打开同样能加载，不需要服务器。
+   ============================================================ */
+var __INLINE_LANGS={"zh":1,"zh-TW":1,"en":1};
+var __EXT_LANGS=[];
+(function(){for(var i=0;i<LANGS.length;i++){var c=LANGS[i].code;if(!__INLINE_LANGS[c])__EXT_LANGS.push(c);}})();
+function __isKnownLang(code){return !!(code&&(I18N[code]||__EXT_LANGS.indexOf(code)>-1));}
+var __langBusy={},__langQueue={};
+function __loadLang(code,cb){
+  if(I18N[code]){cb();return;}
+  if(!__isKnownLang(code)){cb();return;}
+  if(__langBusy[code]){__langQueue[code].push(cb);return;}
+  __langBusy[code]=true;__langQueue[code]=[cb];
+  var s=document.createElement("script");
+  s.src=I18N_EXT_BASE+code+".js";s.async=true;
+  function done(ok){
+    if(!ok)I18N[code]=I18N.zh;
+    __langBusy[code]=false;
+    var q=__langQueue[code]||[];__langQueue[code]=[];
+    for(var i=0;i<q.length;i++){try{q[i]();}catch(e){}}
+  }
+  s.onload=function(){done(true);};
+  s.onerror=function(){done(false);};
+  document.head.appendChild(s);
+}
+window.__I18N_PUSH__=function(code,data){
+  if(!code||!data)return;
+  I18N[code]=data;
+  if(window.__i18nFill)window.__i18nFill(I18N[code],I18N.en);
+};
+function __announceLang(code){
+  var box=document.getElementById("srStatus");
+  if(!box)return;
+  var d=I18N[code]||I18N.zh||{};
+  var native=(LANGS.filter(function(l){return l.code===code;})[0]||{}).native||code;
+  var t=(d.ui&&d.ui.langSwitched)||"";
+  box.textContent="";
+  setTimeout(function(){box.textContent=t?t.replace(/\{lang\}/g,native):native;},40);
+}
+function setLang(code){
+  if(!__isKnownLang(code))code="zh";
+  try{localStorage.setItem("lang",code);}catch(e){}
+  __loadLang(code,function(){
+    __renderLang(code);
+    __announceLang(code);
+    if(typeof syncLangUI==="function")syncLangUI();
+    document.documentElement.classList.remove("i18n-boot");
+    window.__LANG_READY__=true;
+  });
+}
+
+/* build language list */(function(){
   var list=document.getElementById("langList");
   var html="";
   LANGS.forEach(function(l){
@@ -1037,64 +978,183 @@ function setLang(code){
 })();
 
 /* auto-detect best language on first visit */
+/* auto-detect best language on first visit (script/region aware) */
 (function(){
+  var APPLY=(typeof setLang==="function")?setLang:applyLang;
   var saved=null;try{saved=localStorage.getItem("lang");}catch(e){}
-  if(saved && I18N[saved]){setLang(saved);return;}
-  var nav=(navigator.language||"zh").toLowerCase();
+  if(saved && __isKnownLang(saved)){APPLY(saved);return;}
+  var list=(navigator.languages&&navigator.languages.length)?navigator.languages:[navigator.language||"zh"];
   var cand="zh";
-  if(nav.indexOf("zh-tw")>-1||nav.indexOf("zh-hk")>-1||nav.indexOf("zh-mo")>-1){cand="zh-TW";}
-  else if(nav.indexOf("zh")>-1){cand="zh";}
-  else if(nav.indexOf("en")>-1){cand="en";}
-  else if(nav.indexOf("ja")>-1){cand="ja";}
-  else if(nav.indexOf("ko")>-1){cand="ko";}
-  else if(nav.indexOf("fr")>-1){cand="fr";}
-  else if(nav.indexOf("de")>-1){cand="de";}
-  else if(nav.indexOf("es")>-1){cand="es";}
-  else if(nav.indexOf("pt")>-1){cand="pt";}
-  else if(nav.indexOf("it")>-1){cand="it";}
-  else if(nav.indexOf("ru")>-1){cand="ru";}
-  else if(nav.indexOf("uk")>-1){cand="uk";}
-  else if(nav.indexOf("pl")>-1){cand="pl";}
-  else if(nav.indexOf("nl")>-1){cand="nl";}
-  else if(nav.indexOf("tr")>-1){cand="tr";}
-  else if(nav.indexOf("ar")>-1){cand="ar";}
-  else if(nav.indexOf("hi")>-1){cand="hi";}
-  else if(nav.indexOf("id")>-1){cand="id";}
-  else if(nav.indexOf("vi")>-1){cand="vi";}
-  else if(nav.indexOf("th")>-1){cand="th";}
-  setLang(cand);
+  for(var i=0;i<list.length;i++){
+    var tag=String(list[i]||"").toLowerCase();
+    if(!tag)continue;
+    var bits=tag.split("-"),prim=bits[0],rest=bits.slice(1).join("-");
+    if(prim==="zh"){cand=(rest.indexOf("hant")>-1||rest==="tw"||rest==="hk"||rest==="mo")?"zh-TW":"zh";break;}
+    if(I18N[tag]){cand=tag;break;}
+    if(I18N[prim]){cand=prim;break;}
+  }
+  APPLY(cand);
 })();
 
 /* language panel open/close */
+/* ============================================================
+   language panel — unified controller (identical on every page)
+   ============================================================ */
 var langPanel=document.getElementById("langPanel");
 var langBtn=document.getElementById("langBtn");
+var langListEl=document.getElementById("langList");
+var langCloseBtn=document.getElementById("langClose");
+var LANG_APPLY=(typeof applyLang==="function")?applyLang:(typeof setLang==="function"?setLang:null);
+
+function langDirOf(code){return (["ar","he","fa","ur","yi","dv","ps","ckb","sd","ug"].indexOf(code)>-1)?"rtl":"ltr";}
+function langAttrOf(code){return ({"zh":"zh-CN","zh-TW":"zh-Hant"})[code]||code;}
+function currentLang(){
+  var saved=null;
+  try{saved=localStorage.getItem("lang");}catch(e){}
+  return (saved && __isKnownLang(saved))?saved:"zh";
+}
 function positionPanel(){
+  if(!langPanel||!langBtn)return;
   if(window.innerWidth<=680){langPanel.style.top="";langPanel.style.right="";return;}
   var r=langBtn.getBoundingClientRect();
   langPanel.style.top=(r.bottom+10)+"px";
   langPanel.style.right=Math.max(12,window.innerWidth-r.right)+"px";
 }
-langBtn.addEventListener("click",function(){
-  var open=langPanel.classList.toggle("open");
-  langBtn.setAttribute("aria-expanded",open?"true":"false");
-  if(open)positionPanel();
-});
-document.getElementById("langClose").addEventListener("click",function(){
+function panelIsOpen(){return !!(langPanel&&langPanel.classList.contains("open"));}
+function setPanelLock(on){
+  if(!document.documentElement)return;
+  document.documentElement.classList.toggle("lang-lock", !!on && window.innerWidth<=680);
+}
+function focusLangButton(){
+  if(!langListEl)return;
+  var cur=langListEl.querySelector('button[data-lang="'+currentLang()+'"]')||langListEl.querySelector("button[data-lang]");
+  if(!cur)return;
+  try{cur.focus({preventScroll:true});}catch(e){try{cur.focus();}catch(e2){}}
+  if(cur.scrollIntoView)try{cur.scrollIntoView({block:"nearest"});}catch(e3){}
+}
+function openPanel(){
+  if(!langPanel||panelIsOpen())return;
+  langPanel.classList.add("open");
+  langPanel.setAttribute("aria-hidden","false");
+  if(langBtn)langBtn.setAttribute("aria-expanded","true");
+  positionPanel();setPanelLock(true);focusLangButton();
+}
+function closePanel(refocus){
+  if(!langPanel||!panelIsOpen())return;
   langPanel.classList.remove("open");
-  langBtn.setAttribute("aria-expanded","false");
-});
+  langPanel.setAttribute("aria-hidden","true");
+  if(langBtn)langBtn.setAttribute("aria-expanded","false");
+  setPanelLock(false);
+  var s=document.getElementById("langSearch");
+  if(s&&s.value){s.value="";filterLangList("");}
+  if(refocus&&langBtn)try{langBtn.focus({preventScroll:true});}catch(e){}
+}
+function filterLangList(q){
+  if(!langListEl)return;
+  q=String(q||"").trim().toLowerCase();
+  var btns=langListEl.querySelectorAll("button[data-lang]"),n=0;
+  for(var i=0;i<btns.length;i++){
+    var b=btns[i];
+    var hay=((b.textContent||"")+" "+(b.getAttribute("data-lang")||"")).toLowerCase();
+    var ok=!q||hay.indexOf(q)>-1;
+    b.hidden=!ok;if(ok)n++;
+  }
+  langPanel.classList.toggle("no-match",n===0);
+}
+function visibleLangButtons(){
+  if(!langListEl)return [];
+  var all=langListEl.querySelectorAll("button[data-lang]"),out=[];
+  for(var i=0;i<all.length;i++)if(!all[i].hidden)out.push(all[i]);
+  return out;
+}
+
+if(langPanel){
+  langPanel.setAttribute("role","dialog");
+  langPanel.setAttribute("aria-modal","true");
+  langPanel.setAttribute("aria-hidden","true");
+  if(!langPanel.hasAttribute("aria-label"))langPanel.setAttribute("aria-label","Language");
+  /* search field — only meaningful once the list gets long */
+  (function(){
+    if(!langListEl||document.getElementById("langSearch"))return;
+    var wrap=document.createElement("div");
+    wrap.className="lang-search-wrap";
+    var input=document.createElement("input");
+    input.id="langSearch";input.className="lang-search";input.type="search";
+    input.setAttribute("autocomplete","off");input.setAttribute("spellcheck","false");
+    input.setAttribute("aria-label","Language");
+    input.setAttribute("placeholder","\u2315  Language / \u8bed\u8a00");
+    input.addEventListener("input",function(){filterLangList(input.value);});
+    input.addEventListener("keydown",function(e){
+      if(e.key!=="Enter")return;
+      var first=visibleLangButtons()[0];
+      if(first){e.preventDefault();first.click();}
+    });
+    wrap.appendChild(input);
+    langListEl.parentNode.insertBefore(wrap,langListEl);
+  })();
+}
+
+if(langBtn)langBtn.addEventListener("click",function(e){e.preventDefault();panelIsOpen()?closePanel(false):openPanel();});
+if(langCloseBtn)langCloseBtn.addEventListener("click",function(){closePanel(true);});
 document.addEventListener("click",function(e){
-  if(langPanel.classList.contains("open") && !langPanel.contains(e.target) && e.target!==langBtn && !langBtn.contains(e.target)){
-    langPanel.classList.remove("open");langBtn.setAttribute("aria-expanded","false");
+  if(panelIsOpen() && !langPanel.contains(e.target) && e.target!==langBtn && !(langBtn&&langBtn.contains(e.target)))closePanel(false);
+});
+document.addEventListener("keydown",function(e){
+  if(!panelIsOpen())return;
+  if(e.key==="Escape"){e.preventDefault();closePanel(true);return;}
+  var btns=visibleLangButtons();
+  if(!btns.length)return;
+  var idx=btns.indexOf(document.activeElement);
+  if(e.key==="ArrowDown"){e.preventDefault();btns[idx<0?0:(idx+1)%btns.length].focus();return;}
+  if(e.key==="ArrowUp"){e.preventDefault();btns[idx<=0?btns.length-1:idx-1].focus();return;}
+  if(e.key==="Home"){e.preventDefault();btns[0].focus();return;}
+  if(e.key==="End"){e.preventDefault();btns[btns.length-1].focus();return;}
+  if(e.key==="Tab"){
+    var items=[];
+    var s=document.getElementById("langSearch");
+    if(s)items.push(s);
+    if(langCloseBtn)items.push(langCloseBtn);
+    items=items.concat(btns);
+    var first=items[0],last=items[items.length-1];
+    if(e.shiftKey && document.activeElement===first){e.preventDefault();last.focus();}
+    else if(!e.shiftKey && document.activeElement===last){e.preventDefault();first.focus();}
   }
 });
-window.addEventListener("resize",function(){if(langPanel.classList.contains("open"))positionPanel();});
-document.getElementById("langList").addEventListener("click",function(e){
+if(langListEl)langListEl.addEventListener("click",function(e){
   var b=e.target.closest("button[data-lang]");
   if(!b)return;
-  setLang(b.getAttribute("data-lang"));
-  langPanel.classList.remove("open");langBtn.setAttribute("aria-expanded","false");
+  var code=b.getAttribute("data-lang");
+  if(LANG_APPLY)LANG_APPLY(code);syncLangUI();
+  closePanel(true);
 });
+window.addEventListener("resize",function(){if(panelIsOpen())positionPanel();});
+window.addEventListener("scroll",function(){if(panelIsOpen())positionPanel();},{passive:true});
+window.addEventListener("storage",function(e){
+  if(e.key!=="lang"||!e.newValue||!__isKnownLang(e.newValue)||!LANG_APPLY)return;
+  LANG_APPLY(e.newValue);syncLangUI();
+});
+function syncLangUI(){
+  var code=currentLang(),dict=I18N[code]||{};
+  if(langListEl){
+    var btns=langListEl.querySelectorAll("button[data-lang]");
+    for(var i=0;i<btns.length;i++){
+      if(btns[i].getAttribute("data-lang")===code)btns[i].setAttribute("aria-current","true");
+      else btns[i].removeAttribute("aria-current");
+    }
+  }
+  if(typeof LANGS!=="undefined"){
+    var n=LANGS.length;
+    var p=document.querySelector('[data-i18n="projects.p5d"]');
+    if(p&&p.textContent.indexOf("{n}")>-1)p.textContent=p.textContent.replace(/\{n\}/g,String(n));
+    var st=document.querySelector('[data-i18n="about.s2k"]');
+    var cb=st&&st.parentNode?st.parentNode.querySelector("[data-count]"):null;
+    if(cb){cb.setAttribute("data-count",String(n));cb.textContent=String(n);}
+  }
+  var label=(dict.kbd&&dict.kbd.lang)||"Language";
+  if(langBtn)langBtn.setAttribute("title",label);
+  if(langPanel)langPanel.setAttribute("aria-label",label);
+}
+syncLangUI();
 
 /* mobile menu */
 var menuBtn=document.getElementById("menuBtn");
