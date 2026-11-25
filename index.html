@@ -325,7 +325,8 @@ h1 .latin{display:block;font-size:clamp(20px,3vw,30px);letter-spacing:.02em;font
 
 /* journey */
 .timeline{position:relative;padding-left:34px;max-width:820px}
-.timeline::before{content:"";position:absolute;left:7px;top:8px;bottom:8px;width:1px;background:linear-gradient(180deg,var(--acc1),var(--acc2),transparent)}
+.timeline::before{content:"";position:absolute;left:7px;top:8px;bottom:8px;width:1px;background:linear-gradient(180deg,var(--acc1),var(--acc2),transparent);opacity:.32}
+.timeline::after{content:"";position:absolute;left:7px;top:8px;bottom:8px;width:1px;background:linear-gradient(180deg,var(--acc1),var(--acc2));transform-origin:top;transform:scaleY(var(--tl-p,0));transition:transform .15s linear;box-shadow:0 0 12px var(--glow-1)}
 .tl-item{position:relative;padding-bottom:38px}
 .tl-item:last-child{padding-bottom:0}
 .tl-item::before{content:"";position:absolute;left:-33px;top:6px;width:11px;height:11px;border-radius:50%;background:var(--bg);border:2px solid var(--acc1);box-shadow:0 0 0 5px var(--acc1-soft),0 0 16px var(--glow-1)}
@@ -378,6 +379,20 @@ footer a:hover{color:var(--acc1)}
 #toast .tick svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
 #toTop svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 
+/* keyboard shortcuts panel */
+#kbdPanel{position:fixed;inset:0;z-index:280;display:flex;align-items:center;justify-content:center;padding:20px;pointer-events:none}
+#kbdPanel .kbd-backdrop{position:absolute;inset:0;background:rgba(3,5,12,.6);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);opacity:0;transition:opacity .3s var(--ease)}
+#kbdPanel .kbd-card{position:relative;background:var(--bg-2);border:1px solid var(--line-strong);border-radius:20px;padding:26px 24px;max-width:400px;width:100%;box-shadow:var(--shadow);transform:translateY(14px) scale(.96);opacity:0;transition:transform .32s var(--ease),opacity .32s var(--ease)}
+#kbdPanel.open{pointer-events:auto}
+#kbdPanel.open .kbd-backdrop{opacity:1}
+#kbdPanel.open .kbd-card{transform:none;opacity:1}
+#kbdPanel .kbd-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+#kbdPanel .kbd-head b{font-size:16px;letter-spacing:-.01em}
+#kbdPanel .kbd-row{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:11px 0;border-bottom:1px solid var(--line);font-size:14px;color:var(--text-2)}
+#kbdPanel .kbd-row:last-of-type{border-bottom:none}
+#kbdPanel kbd{font-family:inherit;font-size:12px;font-weight:750;color:var(--acc1);background:var(--acc1-soft);border:1px solid rgba(94,234,212,.32);border-radius:8px;padding:4px 10px;min-width:28px;text-align:center;box-shadow:0 2px 0 rgba(94,234,212,.16);line-height:1}
+#kbdPanel .kbd-hint{font-size:12px;color:var(--text-3);margin-top:16px;text-align:center}
+
 /* reveal */
 .js .reveal{opacity:0;transform:translateY(24px);filter:blur(6px);transition:opacity .7s var(--ease),transform .7s var(--ease),filter .7s var(--ease)}
 .js .reveal.in{opacity:1;transform:none;filter:none}
@@ -387,6 +402,7 @@ footer a:hover{color:var(--acc1)}
 [dir="rtl"] .sec-tag::before{order:2}
 [dir="rtl"] .timeline{padding-left:0;padding-right:34px}
 [dir="rtl"] .timeline::before{left:auto;right:7px}
+[dir="rtl"] .timeline::after{left:auto;right:7px}
 [dir="rtl"] .tl-item::before{left:auto;right:-33px}
 [dir="rtl"] .proj .idx{right:auto;left:22px}
 [dir="rtl"] .btn .arrow{transform:rotate(180deg)}
@@ -440,6 +456,17 @@ footer a:hover{color:var(--acc1)}
 <div id="cdot" aria-hidden="true"></div>
 <div id="cring" aria-hidden="true"></div>
 <div id="toast" role="status" aria-live="polite"></div>
+<div id="kbdPanel" role="dialog" aria-label="键盘快捷键" aria-hidden="true">
+  <div class="kbd-backdrop" data-kbd-close></div>
+  <div class="kbd-card">
+    <div class="kbd-head"><b data-i18n="kbd.title">键盘快捷键</b><button class="lang-close" id="kbdClose" type="button" aria-label="关闭">✕</button></div>
+    <div class="kbd-row"><span data-i18n="kbd.github">打开 GitHub</span><kbd>G</kbd></div>
+    <div class="kbd-row"><span data-i18n="kbd.notes">打开笔记</span><kbd>N</kbd></div>
+    <div class="kbd-row"><span data-i18n="kbd.theme">切换深浅主题</span><kbd>T</kbd></div>
+    <div class="kbd-row"><span data-i18n="kbd.lang">切换语言</span><kbd>L</kbd></div>
+    <div class="kbd-hint" data-i18n="kbd.hint">按 ? 或 Esc 关闭</div>
+  </div>
+</div>
 
 <nav class="site-nav" aria-label="主导航">
   <div class="nav-inner">
@@ -758,7 +785,7 @@ stack:{tag:"STACK",title:"技术栈",subtitle:"能自己动手的，就不交给
 phil:{tag:"PHILOSOPHY",title:"我的信条",subtitle:"几条让我少踩坑、把东西做出来的原则。",i1t:"少一层抽象，就少一类 bug",i1d:"能用平台 API 就绝不引框架；每少一层，出问题的面就小一圈。",i2t:"可复现的构建 > 聪明的构建",i2d:"无缓存、无守护进程，构建时间可预期——比「快但玄学」更值钱。",i3t:"先做出来，再优化",i3d:"做出来比想清楚更重要；先跑通，再打磨。",i4t:"只审计，不删除",i4d:"工具应给出证据、把决定权留给人，而不是替人动手。"},
 journey:{tag:"JOURNEY",title:"成长轨迹",subtitle:"一步步走到现在，每一步都算数。",j1w:"现在",j1t:"五个项目独立维护",j1d:"一条无 Gradle 的构建链、一套 AI Agent 权限闸门、一个只审计不删除的 CLI。",j2w:"长夜拾星",j2t:"成立 Nightglean Studio",j2d:"把「少一层抽象」做成工作室的信条：原生优先、最少依赖。",j3w:"入门原生 Android",j3t:"绕开框架直连工具链",j3d:"从 JNI、aapt2 到 zig cc，直接和平台工具链打交道。",j4w:"起点",j4t:"好奇一个 App 如何诞生",j4d:"从「一个 App 到底是怎么从代码变成安装包的」开始自己动手。"},
 contact:{title:"一起聊聊？",subtitle:"合作、提问或单纯打个招呼，我都欢迎；开 Issue 通常比邮件更快。",email:"邮箱",wechat:"微信",studio:"工作室",copied:"已复制，去微信搜我"},
-footer:{line:"少一层抽象，就少一类 bug。",top:"回到顶部 ↑"}},
+kbd:{title:"键盘快捷键",hint:"按 ? 或 Esc 关闭",github:"打开 GitHub",notes:"打开笔记",theme:"切换深浅主题",lang:"切换语言"},footer:{line:"少一层抽象，就少一类 bug。",top:"回到顶部 ↑"}},
 
 "zh-TW":{skip:"跳到主要內容",ui:{langTitle:"選擇語言 / Language"},
 nav:{about:"關於",projects:"作品",stack:"技術棧",phil:"理念",journey:"軌跡",notes:"筆記",contact:"聯繫"},
@@ -769,7 +796,7 @@ stack:{tag:"STACK",title:"技術棧",subtitle:"能自己動手的，就不交給
 phil:{tag:"PHILOSOPHY",title:"我的信條",subtitle:"幾條讓我少踩坑、把東西做出來的原則。",i1t:"少一層抽象，就少一類 bug",i1d:"能用平台 API 就絕不引框架；每少一層，出問題的面就小一圈。",i2t:"可重現的建置 > 聰明的建置",i2d:"無快取、無守護行程，建置時間可預期——比「快但玄學」更值錢。",i3t:"先做出來，再最佳化",i3d:"做出來比想清楚更重要；先跑通，再打磨。",i4t:"只稽核，不刪除",i4d:"工具應給出證據、把決定權留給人，而不是替人動手。"},
 journey:{tag:"JOURNEY",title:"成長軌跡",subtitle:"一步步走到現在，每一步都算數。",j1w:"現在",j1t:"五個專案獨立維護",j1d:"一條無 Gradle 的建置鏈、一套 AI Agent 權限閘門、一個只稽核不刪除的 CLI。",j2w:"長夜拾星",j2t:"成立 Nightglean Studio",j2d:"把「少一層抽象」做成工作室的信條：原生優先、最少依賴。",j3w:"入門原生 Android",j3t:"繞開框架直連工具鏈",j3d:"從 JNI、aapt2 到 zig cc，直接和平台工具鏈打交道。",j4w:"起點",j4t:"好奇一個 App 如何誕生",j4d:"從「一個 App 到底是怎麼從程式碼變成安裝包的」開始自己動手。"},
 contact:{title:"一起聊聊？",subtitle:"合作、提問或單純打個招呼，我都歡迎；開 Issue 通常比郵件更快。",email:"信箱",wechat:"微信",studio:"工作室",copied:"已複製，去微信搜我"},
-footer:{line:"少一層抽象，就少一類 bug。",top:"回到頂部 ↑"}},
+kbd:{title:"鍵盤快捷鍵",hint:"按 ? 或 Esc 關閉",github:"開啟 GitHub",notes:"開啟筆記",theme:"切換深淺主題",lang:"切換語言"},footer:{line:"少一層抽象，就少一類 bug。",top:"回到頂部 ↑"}},
 
 "en":{skip:"Skip to content",ui:{langTitle:"Choose language / Language"},
 nav:{about:"About",projects:"Projects",stack:"Stack",phil:"Philosophy",journey:"Journey",notes:"Notes",contact:"Contact"},
@@ -780,7 +807,7 @@ stack:{tag:"STACK",title:"Tech stack",subtitle:"What I can do myself, I don't ha
 phil:{tag:"PHILOSOPHY",title:"What I believe",subtitle:"A few principles that keep me out of trouble and ship things.",i1t:"One fewer abstraction, one fewer bug",i1d:"Use a platform API before a framework; every layer you skip shrinks the surface for failure.",i2t:"Reproducible builds > clever builds",i2d:"No cache, no daemon, predictable build times — worth more than fast-but-mystical.",i3t:"Ship it, then refine",i3d:"Making it real matters more than thinking it through; get it running first, then polish.",i4t:"Audit, never delete",i4d:"A tool should present evidence and leave the decision to a human, not act for them."},
 journey:{tag:"JOURNEY",title:"The journey",subtitle:"Step by step to here — every step counted.",j1w:"Now",j1t:"Five projects, one maintainer",j1d:"A no-Gradle build chain, an AI-agent guard SDK, an audit-only disk CLI.",j2w:"Nightglean",j2t:"Founded Nightglean Studio",j2d:"Turned \"one fewer layer\" into a studio creed: native-first, minimal dependencies.",j3w:"Native Android",j3t:"Skipping the framework",j3d:"From JNI and aapt2 to zig cc, working with the platform toolchain directly.",j4w:"The start",j4t:"How is an app born?",j4d:"It began with curiosity: how does code actually become an installable app?"},
 contact:{title:"Let's talk?",subtitle:"Collabs, questions or just a hello — all welcome; an issue is usually faster than email.",email:"Email",wechat:"WeChat",studio:"Studio",copied:"Copied — find me on WeChat"},
-footer:{line:"One fewer layer of abstraction, one fewer bug.",top:"Back to top ↑"}},
+kbd:{title:"Keyboard shortcuts",hint:"Press ? or Esc to close",github:"Open GitHub",notes:"Open notes",theme:"Toggle theme",lang:"Switch language"},footer:{line:"One fewer layer of abstraction, one fewer bug.",top:"Back to top ↑"}},
 
 "ja":{skip:"本文へスキップ",ui:{langTitle:"言語を選択 / Language"},
 nav:{about:"私について",projects:"作品",stack:"技術スタック",phil:"信条",journey:"軌跡",notes:"ノート",contact:"連絡"},
@@ -791,7 +818,7 @@ stack:{tag:"STACK",title:"技術スタック",subtitle:"自分でできること
 phil:{tag:"PHILOSOPHY",title:"私の信条",subtitle:"失敗を減らし、ものを形にするためのいくつかの原則。",i1t:"抽象を 1 つ減らせば、バグは 1 つ減る",i1d:"フレームワークより先にプラットフォーム API。省いた層の分だけ、壊れる面は小さくなる。",i2t:"再現できるビルド > 賢いビルド",i2d:"キャッシュなし、デーモンなし、予測可能なビルド時間——「速いけれど不確か」より価値がある。",i3t:"まず形に、それから磨く",i3d:"考え抜くより形にすることが大事。まず動かし、それから磨く。",i4t:"監査する、削除しない",i4d:"ツールは根拠を示し、判断は人に委ねるべきで、人の代わりに手を下さない。"},
 journey:{tag:"JOURNEY",title:"軌跡",subtitle:"一歩ずつ今へ——どの一歩も意味があった。",j1w:"現在",j1t:"5 つのプロジェクトを一人で維持",j1d:"Gradle レスビルド、AI エージェント向け権限 SDK、監査専用ディスク CLI。",j2w:"Nightglean",j2t:"Nightglean Studio を設立",j2d:"「1 つ少ない抽象」をスタジオの信条に：ネイティブ優先・最小依存。",j3w:"ネイティブ Android",j3t:"フレームワークを回避",j3d:"JNI や aapt2 から zig cc まで、プラットフォームのツールチェーンと直接向き合う。",j4w:"原点",j4t:"アプリはどう生まれるのか",j4d:"「コードがどうやってインストール可能なアプリになるのか」という好奇心から始まった。"},
 contact:{title:"話しませんか？",subtitle:"協業・質問・ただの挨拶、どれも歓迎。Issue の方がメールより早いことが多い。",email:"メール",wechat:"WeChat",studio:"スタジオ",copied:"コピーしました、WeChat で検索を"},
-footer:{line:"抽象を 1 つ減らせば、バグは 1 種類減る。",top:"トップへ ↑"}},
+kbd:{title:"キーボードショートカット",hint:"? か Esc で閉じる",github:"GitHub を開く",notes:"ノートを開く",theme:"テーマ切替",lang:"言語切替"},footer:{line:"抽象を 1 つ減らせば、バグは 1 種類減る。",top:"トップへ ↑"}},
 
 "ko":{skip:"본문으로 건너뛰기",ui:{langTitle:"언어 선택 / Language"},
 nav:{about:"소개",projects:"프로젝트",stack:"스택",phil:"신념",journey:"여정",notes:"노트",contact:"연락처"},
@@ -802,7 +829,7 @@ stack:{tag:"STACK",title:"기술 스택",subtitle:"직접 할 수 있는 일은 
 phil:{tag:"PHILOSOPHY",title:"저의 신념",subtitle:"실수를 줄이고 결과물을 만들어내는 몇 가지 원칙.",i1t:"추상화 한 겹을 줄이면 버그도 한 부류 줄어든다",i1d:"프레임워크보다 플랫폼 API를 먼저. 건너뛴 층만큼 실패할 면도 줄어듭니다.",i2t:"재현 가능한 빌드 > 영리한 빌드",i2d:"캐시도 데몬도 없이 예측 가능한 빌드 시간——'빠르지만 미신 같은' 것보다 가치 있습니다.",i3t:"먼저 만들고, 그다음 다듬기",i3d:"완벽히 구상하는 것보다 실제로 만드는 게 중요합니다. 먼저 돌리고, 그다음 다듬습니다.",i4t:"감사하되, 삭제하지 않는다",i4d:"도구는 근거를 제시하고 결정은 사람에게 남겨야 합니다. 대신 손을 대지 않습니다."},
 journey:{tag:"JOURNEY",title:"여정",subtitle:"한 걸음씩 여기까지——모든 걸음이 의미 있었다.",j1w:"지금",j1t:"프로젝트 5개, 유지보수는 혼자",j1d:"무-Gradle 빌드 체인, AI 에이전트 권한 SDK, 감사 전용 디스크 CLI.",j2w:"Nightglean",j2t:"Nightglean Studio 설립",j2d:"'한 겹 적은 추상화'를 스튜디오의 신조로: 네이티브 우선·최소 의존.",j3w:"네이티브 Android",j3t:"프레임워크 우회하기",j3d:"JNI와 aapt2에서 zig cc까지, 플랫폼 툴체인과 직접 마주합니다.",j4w:"시작",j4t:"앱은 어떻게 태어나는가",j4d:"'코드가 어떻게 설치 가능한 앱이 되는가'라는 호기심에서 출발했습니다."},
 contact:{title:"이야기해볼까요?",subtitle:"협업·질문·가벼운 인사 모두 환영합니다. 이슈가 메일보다 빠를 때가 많습니다.",email:"이메일",wechat:"위챗",studio:"스튜디오",copied:"복사됨, 위챗에서 검색하세요"},
-footer:{line:"추상화 한 겹을 줄이면 버그도 한 부류 줄어든다.",top:"맨 위로 ↑"}},
+kbd:{title:"키보드 단축키",hint:"? 또는 Esc로 닫기",github:"GitHub 열기",notes:"노트 열기",theme:"테마 전환",lang:"언어 전환"},footer:{line:"추상화 한 겹을 줄이면 버그도 한 부류 줄어든다.",top:"맨 위로 ↑"}},
 
 "fr":{skip:"Aller au contenu",ui:{langTitle:"Choisir la langue / Language"},
 nav:{about:"À propos",projects:"Projets",stack:"Stack",phil:"Philosophie",journey:"Parcours",notes:"Notes",contact:"Contact"},
@@ -813,7 +840,7 @@ stack:{tag:"STACK",title:"Stack technique",subtitle:"Ce que je peux faire moi-m�
 phil:{tag:"PHILOSOPHIE",title:"Ce que je crois",subtitle:"Quelques principes qui m'évitent des ennuis et font aboutir les choses.",i1t:"Une abstraction en moins, un bug en moins",i1d:"Une API de plateforme avant un framework ; chaque couche sautée réduit la surface de panne.",i2t:"Builds reproductibles > builds malins",i2d:"Pas de cache, pas de démon, des temps de build prévisibles — plus précieux que rapide-mais-mystique.",i3t:"Livrer d'abord, affiner ensuite",i3d:"Rendre réel compte plus que tout penser ; faire tourner d'abord, polir ensuite.",i4t:"Auditer, jamais supprimer",i4d:"Un outil doit présenter des preuves et laisser la décision à un humain, pas agir à sa place."},
 journey:{tag:"PARCOURS",title:"Le parcours",subtitle:"Pas à pas jusqu'ici — chaque pas a compté.",j1w:"Maintenant",j1t:"Cinq projets, un mainteneur",j1d:"Une chaîne de build sans Gradle, un SDK de garde pour agents IA, un CLI disque audit-only.",j2w:"Nightglean",j2t:"Fondation de Nightglean Studio",j2d:"Faire d'« une couche en moins » un credo : natif d'abord, dépendances minimales.",j3w:"Android natif",j3t:"Contourner le framework",j3d:"De JNI et aapt2 à zig cc, travailler directement avec la chaîne d'outils de la plateforme.",j4w:"Le départ",j4t:"Comment naît une app ?",j4d:"Tout est parti d'une curiosité : comment le code devient-il une app installable ?"},
 contact:{title:"On en parle ?",subtitle:"Collabs, questions ou simple bonjour — bienvenus ; une issue est souvent plus rapide qu'un mail.",email:"E-mail",wechat:"WeChat",studio:"Studio",copied:"Copié — retrouvez-moi sur WeChat"},
-footer:{line:"Une couche d'abstraction en moins, une classe de bugs en moins.",top:"Retour en haut ↑"}},
+kbd:{title:"Raccourcis clavier",hint:"? ou Échap pour fermer",github:"Ouvrir GitHub",notes:"Ouvrir les notes",theme:"Changer de thème",lang:"Changer de langue"},footer:{line:"Une couche d'abstraction en moins, une classe de bugs en moins.",top:"Retour en haut ↑"}},
 
 "de":{skip:"Zum Inhalt springen",ui:{langTitle:"Sprache wählen / Language"},
 nav:{about:"Über",projects:"Projekte",stack:"Stack",phil:"Prinzipien",journey:"Weg",notes:"Notizen",contact:"Kontakt"},
@@ -824,7 +851,7 @@ stack:{tag:"STACK",title:"Tech-Stack",subtitle:"Was ich selbst kann, gebe ich ke
 phil:{tag:"PRINZIPIEN",title:"Woran ich glaube",subtitle:"Ein paar Prinzipien, die mir Ärger ersparen und Dinge fertig werden lassen.",i1t:"Eine Abstraktion weniger, ein Bug weniger",i1d:"Erst Plattform-API, dann Framework; jede übersprungene Schicht verkleinert die Fehlerfläche.",i2t:"Reproduzierbare Builds > clevere Builds",i2d:"Kein Cache, kein Daemon, vorhersagbare Buildzeiten — mehr wert als schnell-aber-mystisch.",i3t:"Erst ausliefern, dann verfeinern",i3d:"Realisieren zählt mehr als Durchdenken; erst zum Laufen bringen, dann polieren.",i4t:"Prüfen, nie löschen",i4d:"Ein Tool soll Belege liefern und die Entscheidung dem Menschen lassen, nicht selbst handeln."},
 journey:{tag:"WEG",title:"Der Weg",subtitle:"Schritt für Schritt hierher — jeder Schritt zählte.",j1w:"Jetzt",j1t:"Fünf Projekte, ein Maintainer",j1d:"Eine Gradle-lose Build-Kette, ein Guard-SDK für KI-Agenten, ein audit-only Disk-CLI.",j2w:"Nightglean",j2t:"Nightglean Studio gegründet",j2d:"Aus „eine Schicht weniger“ ein Credo gemacht: native first, minimale Abhängigkeiten.",j3w:"Natives Android",j3t:"Am Framework vorbei",j3d:"Von JNI und aapt2 bis zig cc, direkt mit der Plattform-Toolchain arbeiten.",j4w:"Der Anfang",j4t:"Wie entsteht eine App?",j4d:"Es begann mit Neugier: Wie wird Code eigentlich zu einer installierbaren App?"},
 contact:{title:"Reden wir?",subtitle:"Kooperationen, Fragen oder einfach ein Hallo — willkommen; ein Issue ist meist schneller als Mail.",email:"E-Mail",wechat:"WeChat",studio:"Studio",copied:"Kopiert — finde mich auf WeChat"},
-footer:{line:"Eine Abstraktionsschicht weniger, eine Fehlerklasse weniger.",top:"Nach oben ↑"}},
+kbd:{title:"Tastenkürzel",hint:"? oder Esc zum Schließen",github:"GitHub öffnen",notes:"Notizen öffnen",theme:"Theme wechseln",lang:"Sprache wechseln"},footer:{line:"Eine Abstraktionsschicht weniger, eine Fehlerklasse weniger.",top:"Nach oben ↑"}},
 
 "es":{skip:"Saltar al contenido",ui:{langTitle:"Elegir idioma / Language"},
 nav:{about:"Sobre mí",projects:"Proyectos",stack:"Stack",phil:"Filosofía",journey:"Trayectoria",notes:"Notas",contact:"Contacto"},
@@ -835,7 +862,7 @@ stack:{tag:"STACK",title:"Stack tecnológico",subtitle:"Lo que puedo hacer yo, n
 phil:{tag:"FILOSOFÍA",title:"En lo que creo",subtitle:"Unos principios que me ahorran problemas y hacen que las cosas salgan.",i1t:"Una abstracción menos, un bug menos",i1d:"API de plataforma antes que framework; cada capa que saltas reduce la superficie de fallo.",i2t:"Builds reproducibles > builds ingeniosos",i2d:"Sin caché, sin demonio, tiempos de build predecibles — valen más que rápido-pero-místico.",i3t:"Primero entrégalo, luego refina",i3d:"Hacerlo real importa más que pensarlo todo; primero hazlo correr, luego pule.",i4t:"Auditar, nunca borrar",i4d:"Una herramienta debe presentar evidencia y dejar la decisión a una persona, no actuar por ella."},
 journey:{tag:"TRAYECTORIA",title:"La trayectoria",subtitle:"Paso a paso hasta aquí — cada paso contó.",j1w:"Ahora",j1t:"Cinco proyectos, un mantenedor",j1d:"Una cadena de build sin Gradle, un SDK de guardia para agentes IA, un CLI de disco solo-auditoría.",j2w:"Nightglean",j2t:"Fundé Nightglean Studio",j2d:"Convertí «una capa menos» en un credo: nativo primero, dependencias mínimas.",j3w:"Android nativo",j3t:"Saltándome el framework",j3d:"De JNI y aapt2 a zig cc, trabajando directo con la toolchain de la plataforma.",j4w:"El inicio",j4t:"¿Cómo nace una app?",j4d:"Empezó con curiosidad: ¿cómo se convierte el código en una app instalable?"},
 contact:{title:"¿Hablamos?",subtitle:"Colaboraciones, preguntas o solo un saludo — bienvenido; un issue suele ser más rápido que un correo.",email:"Correo",wechat:"WeChat",studio:"Estudio",copied:"Copiado — búscame en WeChat"},
-footer:{line:"Una capa de abstracción menos, una clase de bugs menos.",top:"Volver arriba ↑"}},
+kbd:{title:"Atajos de teclado",hint:"? o Esc para cerrar",github:"Abrir GitHub",notes:"Abrir notas",theme:"Cambiar tema",lang:"Cambiar idioma"},footer:{line:"Una capa de abstracción menos, una clase de bugs menos.",top:"Volver arriba ↑"}},
 
 "pt":{skip:"Ir ao conteúdo",ui:{langTitle:"Escolher idioma / Language"},
 nav:{about:"Sobre",projects:"Projetos",stack:"Stack",phil:"Filosofia",journey:"Trajetória",notes:"Notas",contact:"Contato"},
@@ -846,7 +873,7 @@ stack:{tag:"STACK",title:"Stack de tecnologia",subtitle:"O que eu consigo fazer,
 phil:{tag:"FILOSOFIA",title:"No que acredito",subtitle:"Alguns princípios que me poupam problemas e fazem as coisas saírem.",i1t:"Uma abstração a menos, um bug a menos",i1d:"API da plataforma antes de framework; cada camada pulada reduz a superfície de falha.",i2t:"Builds reproduzíveis > builds espertos",i2d:"Sem cache, sem daemon, tempos de build previsíveis — valem mais que rápido-mas-místico.",i3t:"Entregue primeiro, refine depois",i3d:"Tornar real importa mais que pensar tudo; primeiro faça rodar, depois polir.",i4t:"Auditar, nunca apagar",i4d:"Uma ferramenta deve apresentar evidências e deixar a decisão com uma pessoa, não agir por ela."},
 journey:{tag:"TRAJETÓRIA",title:"A trajetória",subtitle:"Passo a passo até aqui — cada passo contou.",j1w:"Agora",j1t:"Cinco projetos, um mantenedor",j1d:"Uma cadeia de build sem Gradle, um SDK de guarda para agentes de IA, um CLI de disco só-auditoria.",j2w:"Nightglean",j2t:"Fundei o Nightglean Studio",j2d:"Transformei «uma camada a menos» em credo: nativo primeiro, dependências mínimas.",j3w:"Android nativo",j3t:"Pulando o framework",j3d:"De JNI e aapt2 a zig cc, trabalhando direto com a toolchain da plataforma.",j4w:"O início",j4t:"Como nasce um app?",j4d:"Começou com curiosidade: como o código vira um app instalável?"},
 contact:{title:"Vamos conversar?",subtitle:"Parcerias, perguntas ou só um oi — bem-vindo; uma issue costuma ser mais rápida que e-mail.",email:"E-mail",wechat:"WeChat",studio:"Estúdio",copied:"Copiado — me ache no WeChat"},
-footer:{line:"Uma camada de abstração a menos, uma classe de bugs a menos.",top:"Voltar ao topo ↑"}},
+kbd:{title:"Atalhos de teclado",hint:"? ou Esc para fechar",github:"Abrir GitHub",notes:"Abrir notas",theme:"Alternar tema",lang:"Mudar idioma"},footer:{line:"Uma camada de abstração a menos, uma classe de bugs a menos.",top:"Voltar ao topo ↑"}},
 
 "it":{skip:"Vai al contenuto",ui:{langTitle:"Scegli lingua / Language"},
 nav:{about:"Su di me",projects:"Progetti",stack:"Stack",phil:"Filosofia",journey:"Percorso",notes:"Note",contact:"Contatti"},
@@ -857,7 +884,7 @@ stack:{tag:"STACK",title:"Stack tecnologico",subtitle:"Ciò che posso fare da me
 phil:{tag:"FILOSOFIA",title:"In cosa credo",subtitle:"Alcuni principi che mi risparmiano guai e fanno uscire le cose.",i1t:"Un'astrazione in meno, un bug in meno",i1d:"API di piattaforma prima di un framework; ogni strato saltato riduce la superficie di guasto.",i2t:"Build riproducibili > build ingegnose",i2d:"Niente cache, niente demone, tempi di build prevedibili — valgono più di veloce-ma-misterioso.",i3t:"Prima consegna, poi rifinisci",i3d:"Renderlo reale conta più che pensarci tutto; prima fallo girare, poi lucida.",i4t:"Controlla, non cancellare mai",i4d:"Uno strumento deve presentare prove e lasciare la decisione a una persona, non agire al suo posto."},
 journey:{tag:"PERCORSO",title:"Il percorso",subtitle:"Passo dopo passo fin qui — ogni passo è contato.",j1w:"Ora",j1t:"Cinque progetti, un manutentore",j1d:"Una catena di build senza Gradle, un SDK di guardia per agenti IA, una CLI disco solo-audit.",j2w:"Nightglean",j2t:"Fondato Nightglean Studio",j2d:"Trasformato «uno strato in meno» in un credo: nativo prima di tutto, dipendenze minime.",j3w:"Android nativo",j3t:"Aggirando il framework",j3d:"Da JNI e aapt2 a zig cc, lavorando direttamente con la toolchain della piattaforma.",j4w:"L'inizio",j4t:"Come nasce un'app?",j4d:"È iniziato con la curiosità: come fa il codice a diventare un'app installabile?"},
 contact:{title:"Parliamone?",subtitle:"Collaborazioni, domande o solo un saluto — benvenuto; un'issue è spesso più veloce di una mail.",email:"Email",wechat:"WeChat",studio:"Studio",copied:"Copiato — trovami su WeChat"},
-footer:{line:"Uno strato di astrazione in meno, una classe di bug in meno.",top:"Torna su ↑"}},
+kbd:{title:"Scorciatoie da tastiera",hint:"? o Esc per chiudere",github:"Apri GitHub",notes:"Apri note",theme:"Cambia tema",lang:"Cambia lingua"},footer:{line:"Uno strato di astrazione in meno, una classe di bug in meno.",top:"Torna su ↑"}},
 
 "ru":{skip:"К содержанию",ui:{langTitle:"Выбрать язык / Language"},
 nav:{about:"Обо мне",projects:"Проекты",stack:"Стек",phil:"Принципы",journey:"Путь",notes:"Заметки",contact:"Контакты"},
@@ -868,7 +895,7 @@ stack:{tag:"СТЕК",title:"Технологический стек",subtitle:"
 phil:{tag:"ПРИНЦИПЫ",title:"Во что я верю",subtitle:"Несколько принципов, которые экономят нервы и доводят дело до конца.",i1t:"Слоем меньше — багом меньше",i1d:"Сначала API платформы, потом фреймворк; каждый пропущенный слой уменьшает поверхность сбоя.",i2t:"Воспроизводимые сборки > хитрые сборки",i2d:"Без кеша, без демона, предсказуемое время сборки — ценнее, чем «быстро, но непонятно как».",i3t:"Сначала выпустить, потом отшлифовать",i3d:"Сделать реальным важнее, чем всё продумать; сначала запусти, потом отполируй.",i4t:"Проверять, но не удалять",i4d:"Инструмент должен показывать доказательства и оставлять решение человеку, а не действовать за него."},
 journey:{tag:"ПУТЬ",title:"Путь",subtitle:"Шаг за шагом сюда — каждый шаг имел значение.",j1w:"Сейчас",j1t:"Пять проектов, один мейнтейнер",j1d:"Цепочка сборки без Gradle, SDK-«караул» для ИИ-агентов, CLI для диска только с аудитом.",j2w:"Nightglean",j2t:"Основал Nightglean Studio",j2d:"Сделал «слоем меньше» кредо студии: натив в первую очередь, минимум зависимостей.",j3w:"Нативный Android",j3t:"В обход фреймворка",j3d:"От JNI и aapt2 до zig cc — работа напрямую с тулчейном платформы.",j4w:"Начало",j4t:"Как рождается приложение?",j4d:"Всё началось с любопытства: как код превращается в устанавливаемое приложение?"},
 contact:{title:"Поговорим?",subtitle:"Сотрудничество, вопросы или просто привет — добро пожаловать; issue обычно быстрее письма.",email:"Почта",wechat:"WeChat",studio:"Студия",copied:"Скопировано — найдите меня в WeChat"},
-footer:{line:"На один слой абстракции меньше — на один класс багов меньше.",top:"Наверх ↑"}},
+kbd:{title:"Горячие клавиши",hint:"? или Esc — закрыть",github:"Открыть GitHub",notes:"Открыть заметки",theme:"Сменить тему",lang:"Сменить язык"},footer:{line:"На один слой абстракции меньше — на один класс багов меньше.",top:"Наверх ↑"}},
 
 "uk":{skip:"До змісту",ui:{langTitle:"Обрати мову / Language"},
 nav:{about:"Про мене",projects:"Проєкти",stack:"Стек",phil:"Принципи",journey:"Шлях",notes:"Нотатки",contact:"Контакти"},
@@ -879,7 +906,7 @@ stack:{tag:"СТЕК",title:"Технологічний стек",subtitle:"Що
 phil:{tag:"ПРИНЦИПИ",title:"У що я вірю",subtitle:"Кілька принципів, що економлять нерви й доводять справу до кінця.",i1t:"Шаром менше — багом менше",i1d:"Спочатку API платформи, потім фреймворк; кожен пропущений шар зменшує поверхню збою.",i2t:"Відтворювані збірки > хитрі збірки",i2d:"Без кешу, без демона, передбачуваний час збірки — цінніше за «швидко, але незрозуміло як».",i3t:"Спершу випустити, потім відшліфувати",i3d:"Зробити реальним важливіше, ніж усе продумати; спершу запусти, потім відполіруй.",i4t:"Перевіряти, але не видаляти",i4d:"Інструмент має показувати докази й лишати рішення людині, а не діяти замість неї."},
 journey:{tag:"ШЛЯХ",title:"Шлях",subtitle:"Крок за кроком сюди — кожен крок мав значення.",j1w:"Зараз",j1t:"П'ять проєктів, один мейнтейнер",j1d:"Ланцюг збірки без Gradle, SDK-«вартовий» для ШІ-агентів, CLI для диска лише з аудитом.",j2w:"Nightglean",j2t:"Заснував Nightglean Studio",j2d:"Зробив «шаром менше» кредо студії: натив передусім, мінімум залежностей.",j3w:"Нативний Android",j3t:"В обхід фреймворка",j3d:"Від JNI і aapt2 до zig cc — робота напряму з тулчейном платформи.",j4w:"Початок",j4t:"Як народжується застосунок?",j4d:"Усе почалося з цікавості: як код перетворюється на встановлюваний застосунок?"},
 contact:{title:"Поговорімо?",subtitle:"Співпраця, запитання чи просто привіт — ласкаво просимо; issue зазвичай швидше за лист.",email:"Пошта",wechat:"WeChat",studio:"Студія",copied:"Скопійовано — знайдіть мене в WeChat"},
-footer:{line:"На один шар абстракції менше — на один клас багів менше.",top:"Догори ↑"}},
+kbd:{title:"Гарячі клавіші",hint:"? або Esc — закрити",github:"Відкрити GitHub",notes:"Відкрити нотатки",theme:"Змінити тему",lang:"Змінити мову"},footer:{line:"На один шар абстракції менше — на один клас багів менше.",top:"Догори ↑"}},
 
 "pl":{skip:"Przejdź do treści",ui:{langTitle:"Wybierz język / Language"},
 nav:{about:"O mnie",projects:"Projekty",stack:"Stack",phil:"Zasady",journey:"Droga",notes:"Notatki",contact:"Kontakt"},
@@ -890,7 +917,7 @@ stack:{tag:"STACK",title:"Stack technologiczny",subtitle:"Czego mogę dokonać s
 phil:{tag:"ZASADY",title:"W co wierzę",subtitle:"Kilka zasad, które oszczędzają nerwów i doprowadzają rzeczy do końca.",i1t:"O abstrakcję mniej, o bug mniej",i1d:"Najpierw API platformy, potem framework; każda pominięta warstwa zmniejsza powierzchnię awarii.",i2t:"Odtwarzalne buildy > sprytne buildy",i2d:"Bez cache, bez demona, przewidywalny czas builda — cenniejsze niż szybko-ale-magicznie.",i3t:"Najpierw wydaj, potem szlifuj",i3d:"Liczy się zrobienie, nie przemyślenie; najpierw uruchom, potem dopracuj.",i4t:"Audytuj, nigdy nie usuwaj",i4d:"Narzędzie ma pokazywać dowody i zostawiać decyzję człowiekowi, nie działać za niego."},
 journey:{tag:"DROGA",title:"Droga",subtitle:"Krok po kroku aż tutaj — każdy krok się liczył.",j1w:"Teraz",j1t:"Pięć projektów, jeden opiekun",j1d:"Łańcuch builda bez Gradle, SDK-strażnik dla agentów AI, dyskowe CLI tylko do audytu.",j2w:"Nightglean",j2t:"Założyłem Nightglean Studio",j2d:"Zrobiłem z „o warstwę mniej” credo studia: natywnie najpierw, minimalne zależności.",j3w:"Natywny Android",j3t:"Omijając framework",j3d:"Od JNI i aapt2 po zig cc — praca wprost z toolchainem platformy.",j4w:"Początek",j4t:"Jak rodzi się aplikacja?",j4d:"Zaczęło się od ciekawości: jak kod staje się instalowalną aplikacją?"},
 contact:{title:"Porozmawiajmy?",subtitle:"Współpraca, pytania czy samo „cześć” — zapraszam; issue jest zwykle szybsze niż mail.",email:"E-mail",wechat:"WeChat",studio:"Studio",copied:"Skopiowano — znajdź mnie na WeChat"},
-footer:{line:"O jedną warstwę abstrakcji mniej to o jedną klasę bugów mniej.",top:"Do góry ↑"}},
+kbd:{title:"Skróty klawiszowe",hint:"? lub Esc, aby zamknąć",github:"Otwórz GitHub",notes:"Otwórz notatki",theme:"Przełącz motyw",lang:"Zmień język"},footer:{line:"O jedną warstwę abstrakcji mniej to o jedną klasę bugów mniej.",top:"Do góry ↑"}},
 
 "nl":{skip:"Naar inhoud",ui:{langTitle:"Kies taal / Language"},
 nav:{about:"Over",projects:"Projecten",stack:"Stack",phil:"Filosofie",journey:"Pad",notes:"Notities",contact:"Contact"},
@@ -901,7 +928,7 @@ stack:{tag:"STACK",title:"Tech-stack",subtitle:"Wat ik zelf kan, geef ik niet aa
 phil:{tag:"FILOSOFIE",title:"Waar ik in geloof",subtitle:"Een paar principes die me uit de problemen houden en dingen afmaken.",i1t:"Eén abstractie minder, één bug minder",i1d:"Platform-API vóór framework; elke overgeslagen laag verkleint het foutoppervlak.",i2t:"Reproduceerbare builds > slimme builds",i2d:"Geen cache, geen daemon, voorspelbare buildtijden — meer waard dan snel-maar-mystiek.",i3t:"Eerst leveren, dan verfijnen",i3d:"Realiseren telt meer dan doordenken; eerst laten draaien, dan polijsten.",i4t:"Auditen, nooit verwijderen",i4d:"Een tool moet bewijs tonen en de beslissing aan een mens laten, niet zelf handelen."},
 journey:{tag:"PAD",title:"Het pad",subtitle:"Stap voor stap hierheen — elke stap telde.",j1w:"Nu",j1t:"Vijf projecten, één maintainer",j1d:"Een Gradle-loze buildketen, een guard-SDK voor AI-agents, een audit-only schijf-CLI.",j2w:"Nightglean",j2t:"Nightglean Studio opgericht",j2d:"Maakte van „één laag minder” een credo: native first, minimale afhankelijkheden.",j3w:"Native Android",j3t:"Om het framework heen",j3d:"Van JNI en aapt2 tot zig cc, direct werken met de platform-toolchain.",j4w:"Het begin",j4t:"Hoe ontstaat een app?",j4d:"Het begon met nieuwsgierigheid: hoe wordt code eigenlijk een installeerbare app?"},
 contact:{title:"Zullen we praten?",subtitle:"Samenwerkingen, vragen of gewoon een hallo — welkom; een issue is meestal sneller dan mail.",email:"E-mail",wechat:"WeChat",studio:"Studio",copied:"Gekopieerd — vind me op WeChat"},
-footer:{line:"Eén abstractielaag minder, één klasse bugs minder.",top:"Naar boven ↑"}},
+kbd:{title:"Sneltoetsen",hint:"? of Esc om te sluiten",github:"GitHub openen",notes:"Notities openen",theme:"Thema wisselen",lang:"Taal wisselen"},footer:{line:"Eén abstractielaag minder, één klasse bugs minder.",top:"Naar boven ↑"}},
 
 "tr":{skip:"İçeriğe geç",ui:{langTitle:"Dil seçin / Language"},
 nav:{about:"Hakkında",projects:"Projeler",stack:"Stack",phil:"İlkeler",journey:"Yol",notes:"Notlar",contact:"İletişim"},
@@ -912,7 +939,7 @@ stack:{tag:"STACK",title:"Teknoloji yığını",subtitle:"Kendim yapabildiğimi 
 phil:{tag:"İLKELER",title:"İnandıklarım",subtitle:"Beni dertten kurtaran ve işleri bitiren birkaç ilke.",i1t:"Bir soyutlama eksik, bir bug eksik",i1d:"Framework'ten önce platform API'si; atlanan her katman hata yüzeyini küçültür.",i2t:"Yeniden üretilebilir build > akıllı build",i2d:"Cache yok, daemon yok, öngörülebilir build süresi — hızlı-ama-gizemli'den daha değerli.",i3t:"Önce yayınla, sonra cilala",i3d:"Gerçek kılmak, her şeyi düşünmekten önemli; önce çalıştır, sonra parlat.",i4t:"Denetle, asla silme",i4d:"Araç kanıt sunmalı ve kararı insana bırakmalı; onun yerine hareket etmemeli."},
 journey:{tag:"YOL",title:"Yol",subtitle:"Adım adım buraya — her adım değerdi.",j1w:"Şimdi",j1t:"Beş proje, tek bakıcı",j1d:"Gradle'sız build zinciri, yapay zekâ ajanları için guard SDK, yalnızca denetleyen disk CLI.",j2w:"Nightglean",j2t:"Nightglean Studio'yu kurdum",j2d:"„Bir katman eksik“i stüdyo ilkesi yaptım: önce native, minimum bağımlılık.",j3w:"Native Android",j3t:"Framework'ü atlayarak",j3d:"JNI ve aapt2'den zig cc'ye, platform toolchain'iyle doğrudan çalışmak.",j4w:"Başlangıç",j4t:"Bir uygulama nasıl doğar?",j4d:"Merakla başladı: kod nasıl kurulabilir bir uygulamaya dönüşür?"},
 contact:{title:"Konuşalım mı?",subtitle:"İş birlikleri, sorular ya da sadece selam — hepsi hoş geldi; issue genellikle e-postadan hızlıdır.",email:"E-posta",wechat:"WeChat",studio:"Stüdyo",copied:"Kopyalandı — beni WeChat'te bul"},
-footer:{line:"Bir soyutlama katmanı eksikse, bir bug sınıfı eksiktir.",top:"Yukarı ↑"}},
+kbd:{title:"Klavye kısayolları",hint:"Kapatmak için ? veya Esc",github:"GitHub'ı aç",notes:"Notları aç",theme:"Temayı değiştir",lang:"Dili değiştir"},footer:{line:"Bir soyutlama katmanı eksikse, bir bug sınıfı eksiktir.",top:"Yukarı ↑"}},
 
 "ar":{skip:"الانتقال إلى المحتوى",ui:{langTitle:"اختر اللغة / Language"},
 nav:{about:"عنّي",projects:"المشاريع",stack:"التقنيات",phil:"المبادئ",journey:"المسار",notes:"ملاحظات",contact:"تواصل"},
@@ -923,7 +950,7 @@ stack:{tag:"التقنيات",title:"التقنيات",subtitle:"ما أستطي
 phil:{tag:"المبادئ",title:"ما أؤمن به",subtitle:"مبادئ قليلة تُبعدني عن المتاعب وتُنجز الأشياء.",i1t:"طبقة تجريد أقل، خطأ أقل",i1d:"واجهة المنصة قبل الإطار؛ كل طبقة تتجاوزها تصغّر سطح العطل.",i2t:"البناء القابل للتكرار > البناء الذكي",i2d:"بلا ذاكرة مخبأة ولا خادم خلفي، وأوقات بناء متوقعة — أثمن من سريع-لكن-غامض.",i3t:"أطلق أولًا، ثم صقّل",i3d:"تحقيق الواقع أهم من التفكير في كل شيء؛ اجعله يعمل أولًا ثم اصقله.",i4t:"دقّق، ولا تحذف أبدًا",i4d:"يجب أن تقدم الأداة الدليل وتترك القرار للإنسان، لا أن تتصرف عنه."},
 journey:{tag:"المسار",title:"المسار",subtitle:"خطوة بخطوة إلى هنا — كل خطوة كانت لها قيمة.",j1w:"الآن",j1t:"خمسة مشاريع ومشرف واحد",j1d:"سلسلة بناء بلا Gradle، وSDK حراسة لوكلاء الذكاء الاصطناعي، وCLI للقرص للتدقيق فقط.",j2w:"Nightglean",j2t:"أسست Nightglean Studio",j2d:"جعلت «طبقة أقل» شعار الاستوديو: الأصل أولًا وبأقل الاعتماديات.",j3w:"Android الأصلي",j3t:"تجاوز الإطار",j3d:"من JNI وaapt2 إلى zig cc، العمل مباشرة مع سلسلة أدوات المنصة.",j4w:"البداية",j4t:"كيف يولد التطبيق؟",j4d:"بدأ الأمر بالفضول: كيف يتحول الكود إلى تطبيق قابل للتثبيت؟"},
 contact:{title:"هل نتحدث؟",subtitle:"تعاون أو أسئلة أو مجرد تحية — أهلًا بك؛ فتح issue غالبًا أسرع من البريد.",email:"البريد",wechat:"WeChat",studio:"الاستوديو",copied:"نُسخ — ابحث عني في WeChat"},
-footer:{line:"طبقة تجريد أقل تعني فئة أخطاء أقل.",top:"إلى الأعلى ↑"}},
+kbd:{title:"اختصارات لوحة المفاتيح",hint:"اضغط ? أو Esc للإغلاق",github:"فتح GitHub",notes:"فتح الملاحظات",theme:"تبديل المظهر",lang:"تغيير اللغة"},footer:{line:"طبقة تجريد أقل تعني فئة أخطاء أقل.",top:"إلى الأعلى ↑"}},
 
 "hi":{skip:"सामग्री पर जाएँ",ui:{langTitle:"भाषा चुनें / Language"},
 nav:{about:"परिचय",projects:"प्रोजेक्ट",stack:"स्टैक",phil:"सिद्धांत",journey:"सफ़र",notes:"नोट्स",contact:"संपर्क"},
@@ -934,7 +961,7 @@ stack:{tag:"स्टैक",title:"टेक स्टैक",subtitle:"जो 
 phil:{tag:"सिद्धांत",title:"मैं क्या मानता हूँ",subtitle:"कुछ सिद्धांत जो मुझे मुसीबत से बचाते हैं और काम पूरा कराते हैं।",i1t:"एक परत कम, एक बग कम",i1d:"फ्रेमवर्क से पहले प्लेटफ़ॉर्म API; हर छोड़ी गई परत विफलता की सतह घटाती है।",i2t:"पुनरुत्पादनीय बिल्ड > चालाक बिल्ड",i2d:"न कैश, न डेमन, अनुमानित बिल्ड समय — तेज़-लेकिन-रहस्यमय से अधिक मूल्यवान।",i3t:"पहले जारी करो, फिर निखारो",i3d:"असली बनाना सब सोचने से ज़्यादा मायने रखता है; पहले चलाओ, फिर पॉलिश करो।",i4t:"ऑडिट करो, कभी हटाओ मत",i4d:"टूल को सबूत देना चाहिए और निर्णय इंसान पर छोड़ना चाहिए, उसकी जगह काम नहीं करना।"},
 journey:{tag:"सफ़र",title:"सफ़र",subtitle:"कदम-दर-कदम यहाँ तक — हर कदम मायने रखता था।",j1w:"अभी",j1t:"पाँच प्रोजेक्ट, एक मेंटेनर",j1d:"बिना Gradle की बिल्ड चेन, AI एजेंटों के लिए गार्ड SDK, केवल-ऑडिट डिस्क CLI।",j2w:"Nightglean",j2t:"Nightglean Studio की स्थापना",j2d:"'एक परत कम' को स्टूडियो का मूलमंत्र बनाया: नेटिव-फर्स्ट, न्यूनतम निर्भरताएँ।",j3w:"नेटिव Android",j3t:"फ्रेमवर्क को छोड़कर",j3d:"JNI और aapt2 से zig cc तक, सीधे प्लेटफ़ॉर्म टूलचेन के साथ काम।",j4w:"शुरुआत",j4t:"ऐप कैसे जन्म लेता है?",j4d:"जिज्ञासा से शुरू हुआ: कोड आख़िर इंस्टॉल होने वाला ऐप कैसे बनता है?"},
 contact:{title:"बात करें?",subtitle:"सहयोग, सवाल या सिर्फ़ नमस्ते — सबका स्वागत है; issue अक्सर ईमेल से तेज़ होता है।",email:"ईमेल",wechat:"WeChat",studio:"स्टूडियो",copied:"कॉपी हो गया — मुझे WeChat पर खोजें"},
-footer:{line:"एक परत कम, एक तरह के बग कम।",top:"ऊपर ↑"}},
+kbd:{title:"कीबोर्ड शॉर्टकट",hint:"बंद करने के लिए ? या Esc",github:"GitHub खोलें",notes:"नोट्स खोलें",theme:"थीम बदलें",lang:"भाषा बदलें"},footer:{line:"एक परत कम, एक तरह के बग कम।",top:"ऊपर ↑"}},
 
 "id":{skip:"Langsung ke konten",ui:{langTitle:"Pilih bahasa / Language"},
 nav:{about:"Tentang",projects:"Proyek",stack:"Stack",phil:"Prinsip",journey:"Perjalanan",notes:"Catatan",contact:"Kontak"},
@@ -945,7 +972,7 @@ stack:{tag:"STACK",title:"Stack teknologi",subtitle:"Yang bisa saya kerjakan sen
 phil:{tag:"PRINSIP",title:"Yang saya yakini",subtitle:"Beberapa prinsip yang menjauhkan saya dari masalah dan menyelesaikan pekerjaan.",i1t:"Satu abstraksi lebih sedikit, satu bug lebih sedikit",i1d:"API platform sebelum framework; setiap lapisan yang dilewati memperkecil permukaan kegagalan.",i2t:"Build yang dapat direproduksi > build yang cerdik",i2d:"Tanpa cache, tanpa daemon, waktu build dapat diprediksi — lebih berharga daripada cepat-tapi-misterius.",i3t:"Terbitkan dulu, lalu poles",i3d:"Mewujudkan lebih penting daripada memikirkan semuanya; jalankan dulu, lalu poles.",i4t:"Audit, jangan pernah hapus",i4d:"Sebuah alat harus menunjukkan bukti dan menyerahkan keputusan pada manusia, bukan bertindak untuknya."},
 journey:{tag:"PERJALANAN",title:"Perjalanan",subtitle:"Selangkah demi selangkah sampai di sini — setiap langkah berarti.",j1w:"Sekarang",j1t:"Lima proyek, satu maintainer",j1d:"Rantai build tanpa Gradle, SDK penjaga untuk agen AI, CLI disk khusus audit.",j2w:"Nightglean",j2t:"Mendirikan Nightglean Studio",j2d:"Menjadikan «satu lapisan lebih sedikit» sebagai kredo studio: native-first, dependensi minimal.",j3w:"Android native",j3t:"Melewati framework",j3d:"Dari JNI dan aapt2 hingga zig cc, bekerja langsung dengan toolchain platform.",j4w:"Awal",j4t:"Bagaimana sebuah aplikasi lahir?",j4d:"Berawal dari rasa ingin tahu: bagaimana kode menjadi aplikasi yang bisa dipasang?"},
 contact:{title:"Mari bicara?",subtitle:"Kolaborasi, pertanyaan, atau sekadar sapaan — semuanya diterima; issue biasanya lebih cepat daripada email.",email:"Email",wechat:"WeChat",studio:"Studio",copied:"Disalin — temukan saya di WeChat"},
-footer:{line:"Satu lapisan abstraksi lebih sedikit berarti satu kelas bug lebih sedikit.",top:"Ke atas ↑"}},
+kbd:{title:"Pintasan keyboard",hint:"Tekan ? atau Esc untuk menutup",github:"Buka GitHub",notes:"Buka catatan",theme:"Ganti tema",lang:"Ganti bahasa"},footer:{line:"Satu lapisan abstraksi lebih sedikit berarti satu kelas bug lebih sedikit.",top:"Ke atas ↑"}},
 
 "vi":{skip:"Đến nội dung",ui:{langTitle:"Chọn ngôn ngữ / Language"},
 nav:{about:"Giới thiệu",projects:"Dự án",stack:"Stack",phil:"Nguyên tắc",journey:"Hành trình",notes:"Ghi chú",contact:"Liên hệ"},
@@ -956,7 +983,7 @@ stack:{tag:"STACK",title:"Stack công nghệ",subtitle:"Điều tôi tự làm �
 phil:{tag:"NGUYÊN TẮC",title:"Điều tôi tin",subtitle:"Một vài nguyên tắc giúp tôi tránh rắc rối và hoàn thành mọi việc.",i1t:"Bớt một trừu tượng, bớt một lỗi",i1d:"API nền tảng trước framework; mỗi lớp bỏ qua làm nhỏ bề mặt lỗi.",i2t:"Build tái tạo được > build khéo léo",i2d:"Không cache, không daemon, thời gian build dự đoán được — đáng giá hơn nhanh-nhưng-bí ẩn.",i3t:"Xuất bản trước, trau chuốt sau",i3d:"Biến thành hiện thực quan trọng hơn nghĩ cho hết; chạy được trước, rồi mới đánh bóng.",i4t:"Kiểm toán, không bao giờ xóa",i4d:"Công cụ nên đưa bằng chứng và để quyết định cho con người, không hành động thay họ."},
 journey:{tag:"HÀNH TRÌNH",title:"Hành trình",subtitle:"Từng bước đến đây — mỗi bước đều đáng.",j1w:"Bây giờ",j1t:"Năm dự án, một người bảo trì",j1d:"Chuỗi build không Gradle, SDK canh gác cho agent AI, CLI ổ đĩa chỉ-kiểm-toán.",j2w:"Nightglean",j2t:"Thành lập Nightglean Studio",j2d:"Biến «bớt một lớp» thành tôn chỉ: native-first, ít phụ thuộc nhất.",j3w:"Android native",j3t:"Bỏ qua framework",j3d:"Từ JNI và aapt2 đến zig cc, làm việc trực tiếp với toolchain nền tảng.",j4w:"Khởi đầu",j4t:"Ứng dụng ra đời thế nào?",j4d:"Bắt đầu từ tò mò: code biến thành ứng dụng cài đặt được như thế nào?"},
 contact:{title:"Trò chuyện chứ?",subtitle:"Hợp tác, câu hỏi hay chỉ là lời chào — đều được chào đón; issue thường nhanh hơn email.",email:"Email",wechat:"WeChat",studio:"Studio",copied:"Đã sao chép — tìm tôi trên WeChat"},
-footer:{line:"Bớt một lớp trừu tượng là bớt một lớp lỗi.",top:"Lên đầu trang ↑"}},
+kbd:{title:"Phím tắt",hint:"Nhấn ? hoặc Esc để đóng",github:"Mở GitHub",notes:"Mở ghi chú",theme:"Đổi giao diện",lang:"Đổi ngôn ngữ"},footer:{line:"Bớt một lớp trừu tượng là bớt một lớp lỗi.",top:"Lên đầu trang ↑"}},
 
 "th":{skip:"ข้ามไปยังเนื้อหา",ui:{langTitle:"เลือกภาษา / Language"},
 nav:{about:"เกี่ยวกับ",projects:"โปรเจกต์",stack:"สแตก",phil:"หลักคิด",journey:"เส้นทาง",notes:"บันทึก",contact:"ติดต่อ"},
@@ -967,7 +994,7 @@ stack:{tag:"สแตก",title:"สแตกเทคโนโลยี",subtit
 phil:{tag:"หลักคิด",title:"สิ่งที่ผมเชื่อ",subtitle:"หลักการไม่กี่ข้อที่ช่วยกันปัญหาและทำให้งานสำเร็จ",i1t:"ลดชั้นนามธรรมลงหนึ่งชั้น ก็ลดบั๊กได้หนึ่งตัว",i1d:"ใช้ API แพลตฟอร์มก่อน framework ทุกชั้นที่ข้ามได้ก็ลดพื้นที่ให้พัง",i2t:"Build ที่ทำซ้ำได้ > build ที่ฉลาด",i2d:"ไม่มี cache ไม่มี daemon เวลาบิลด์คาดการณ์ได้ — มีค่ากว่าเร็วแต่ลึกลับ",i3t:"ปล่อยก่อน แล้วค่อยขัดเกลา",i3d:"ทำให้เป็นจริงสำคัญกว่าคิดให้หมด ทำให้รันได้ก่อน แล้วค่อยขัด",i4t:"ตรวจสอบ ไม่เคยลบ",i4d:"เครื่องมือควรแสดงหลักฐานและปล่อยให้คนตัดสินใจ ไม่ใช่ทำแทน"},
 journey:{tag:"เส้นทาง",title:"เส้นทาง",subtitle:"ก้าวทีละก้าวมาถึงตรงนี้ — ทุกก้าวมีความหมาย",j1w:"ตอนนี้",j1t:"ห้าโปรเจกต์ คนดูแลคนเดียว",j1d:"build chain ไร้ Gradle, SDK กัน AI agent, CLI ตรวจดิสก์แบบไม่ลบ",j2w:"Nightglean",j2t:"ก่อตั้ง Nightglean Studio",j2d:"เปลี่ยน «ลดชั้นลงหนึ่ง» ให้เป็นคติประจำสตูดิโอ: เนทีฟก่อน dependency น้อยที่สุด",j3w:"Android เนทีฟ",j3t:"เลี่ยง framework",j3d:"จาก JNI และ aapt2 ถึง zig cc ทำงานกับ toolchain ของแพลตฟอร์มโดยตรง",j4w:"จุดเริ่มต้น",j4t:"แอปเกิดขึ้นได้อย่างไร?",j4d:"เริ่มจากความสงสัย: โค้ดกลายเป็นแอปที่ติดตั้งได้จริง ๆ ได้อย่างไร?"},
 contact:{title:"คุยกันไหม?",subtitle:"ร่วมงาน สอบถาม หรือแค่ทักทาย — ยินดีทุกอย่าง issue มักเร็วกว่าอีเมล",email:"อีเมล",wechat:"WeChat",studio:"สตูดิโอ",copied:"คัดลอกแล้ว — หาผมใน WeChat"},
-footer:{line:"ลดชั้นนามธรรมลงหนึ่งชั้น ก็ลดบั๊กได้หนึ่งประเภท",top:"ขึ้นบน ↑"}}
+kbd:{title:"แป้นพิมพ์ลัด",hint:"กด ? หรือ Esc เพื่อปิด",github:"เปิด GitHub",notes:"เปิดบันทึก",theme:"สลับธีม",lang:"เปลี่ยนภาษา"},footer:{line:"ลดชั้นนามธรรมลงหนึ่งชั้น ก็ลดบั๊กได้หนึ่งประเภท",top:"ขึ้นบน ↑"}}
 };
 
 /* ============================================================
@@ -1152,7 +1179,7 @@ function stopTyped(){clearInterval(typedTimer);clearTimeout(typedTimer);}
   var canvas=document.getElementById("stars");
   var ctx=canvas.getContext("2d");
   var reduce=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  var stars=[],W,H,raf=null,mx=0,my=0;
+  var stars=[],W,H,raf=null,mx=0,my=0,meteor=null,meteorCd=0;
   function resize(){
     W=canvas.width=window.innerWidth;
     H=canvas.height=window.innerHeight;
@@ -1183,6 +1210,29 @@ function stopTyped(){clearInterval(typedTimer);clearTimeout(typedTimer);}
         var dx=stars[a].x-stars[b].x,dy=stars[a].y-stars[b].y;
         var d=dx*dx+dy*dy;
         if(d<12000){ctx.beginPath();ctx.moveTo(stars[a].x,stars[a].y);ctx.lineTo(stars[b].x,stars[b].y);ctx.stroke();}
+      }
+    }
+    // shooting star
+    if(!reduce){
+      if(!meteor){
+        if(meteorCd>0){meteorCd--;}
+        else if(Math.random()<0.006){
+          meteor={x:Math.random()*W*0.5+W*0.25,y:Math.random()*H*0.3,vx:-(2.4+Math.random()*2.6),vy:(1.8+Math.random()*2.2),life:1,len:60+Math.random()*70};
+        }
+      }else{
+        var m=meteor;
+        m.x+=m.vx;m.y+=m.vy;m.life-=0.012;
+        var mag=Math.sqrt(m.vx*m.vx+m.vy*m.vy),ux=m.vx/mag,uy=m.vy/mag;
+        var tx=m.x-ux*m.len,ty=m.y-uy*m.len;
+        var lg=ctx.createLinearGradient(m.x,m.y,tx,ty);
+        lg.addColorStop(0,light?"rgba(255,255,255,"+Math.max(m.life,0)+")":"rgba(226,232,240,"+Math.max(m.life,0)+")");
+        lg.addColorStop(1,"rgba(94,234,212,0)");
+        ctx.strokeStyle=lg;ctx.lineWidth=1.6;ctx.lineCap="round";
+        ctx.beginPath();ctx.moveTo(m.x,m.y);ctx.lineTo(tx,ty);ctx.stroke();
+        ctx.beginPath();ctx.arc(m.x,m.y,1.4,0,6.283);
+        ctx.fillStyle=light?"rgba(255,255,255,"+Math.max(m.life,0)+")":"rgba(255,255,255,"+(Math.max(m.life,0)*0.9)+")";
+        ctx.fill();
+        if(m.life<=0||m.x<-50||m.y>H+50){meteor=null;meteorCd=120+Math.floor(Math.random()*180);}
       }
     }
     raf=requestAnimationFrame(draw);
@@ -1247,6 +1297,16 @@ window.addEventListener("scroll",function(){
     bar.style.width=(max>0?(h.scrollTop/max)*100:0)+"%";
     var toTop=document.getElementById("toTop");
     toTop.classList.toggle("show",h.scrollTop>600);
+    // starfield parallax
+    var sc=document.getElementById("stars");
+    if(sc)sc.style.transform="translateY("+(h.scrollTop*0.08)+"px)";
+    // timeline fill progress
+    var tl=document.querySelector(".timeline");
+    if(tl){
+      var r=tl.getBoundingClientRect(),vh=window.innerHeight;
+      var p=Math.max(0,Math.min(1,(vh*0.65-r.top)/r.height));
+      tl.style.setProperty("--tl-p",p);
+    }
     ticking=false;
   });
 },{passive:true});
@@ -1373,6 +1433,27 @@ function showToast(msg){
   function onScroll(){nav.classList.toggle("scrolled",window.scrollY>12);}
   window.addEventListener("scroll",onScroll,{passive:true});
   onScroll();
+})();
+
+/* keyboard shortcuts */
+(function(){
+  var panel=document.getElementById("kbdPanel");
+  if(!panel)return;
+  function openKbd(){panel.classList.add("open");panel.setAttribute("aria-hidden","false");}
+  function closeKbd(){panel.classList.remove("open");panel.setAttribute("aria-hidden","true");}
+  document.getElementById("kbdClose").addEventListener("click",closeKbd);
+  panel.querySelector("[data-kbd-close]").addEventListener("click",closeKbd);
+  document.addEventListener("keydown",function(e){
+    var tag=(e.target&&e.target.tagName||"").toLowerCase();
+    if(tag==="input"||tag==="textarea"||tag==="select"||e.metaKey||e.ctrlKey||e.altKey)return;
+    var k=e.key;
+    if(k==="Escape"){closeKbd();return;}
+    if(k==="?"||(e.shiftKey&&k==="/")){e.preventDefault();panel.classList.contains("open")?closeKbd():openKbd();return;}
+    if(k==="g"||k==="G"){closeKbd();window.open("https://github.com/wang-sunyang","_blank");return;}
+    if(k==="n"||k==="N"){location.href="blog.html";return;}
+    if(k==="t"||k==="T"){closeKbd();var tb=document.getElementById("themeToggle");if(tb)tb.click();return;}
+    if(k==="l"||k==="L"){closeKbd();var lb=document.getElementById("langBtn");if(lb)lb.click();return;}
+  });
 })();
 
 /* footer year */
