@@ -68,10 +68,17 @@ body{
 body.cursor-on{cursor:none}
 body.cursor-on a,body.cursor-on button{cursor:none}
 
+::selection{background:var(--acc1);color:#04110f}
 a:focus-visible,button:focus-visible{outline:2px solid var(--acc1);outline-offset:3px;border-radius:10px}
+html{scrollbar-width:thin;scrollbar-color:var(--line-strong) transparent}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--line-strong);border-radius:8px;border:2.5px solid var(--bg)}
+::-webkit-scrollbar-thumb:hover{background:var(--acc1)}
 
 /* 导航 */
 .site-nav{position:fixed;top:0;left:0;right:0;z-index:100;background:var(--nav-bg);backdrop-filter:blur(20px) saturate(150%);-webkit-backdrop-filter:blur(20px) saturate(150%);border-bottom:1px solid var(--line)}
+.site-nav.scrolled{box-shadow:0 12px 34px -24px rgba(0,0,0,.6);border-bottom-color:var(--line-strong)}
 .nav-inner{max-width:960px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;gap:12px}
 .logo{font-weight:800;font-size:16px;letter-spacing:.02em;text-decoration:none;display:inline-flex;align-items:center;gap:10px;color:var(--text)}
 .logo .lg-mark{width:28px;height:28px;border-radius:9px;display:grid;place-items:center;font-size:15px;font-weight:800;color:var(--on-acc);background:var(--grad);box-shadow:0 4px 18px -4px var(--glow-1);position:relative;overflow:hidden;flex:none;animation:gradHuePlain 9s linear infinite}
@@ -157,6 +164,10 @@ footer b{color:var(--text-2);font-weight:600}
   .nav-inner{padding:11px 16px}
   .btns{flex-direction:column}
   a.btn{justify-content:center}
+}
+@media (max-width:680px){
+  #langPanel{left:12px;right:12px;width:auto;top:auto;bottom:calc(12px + env(safe-area-inset-bottom,0px));max-height:520px;max-height:min(74dvh,520px);transform-origin:bottom center;transform:translateY(20px) scale(.98)}
+  .lang-list{max-height:460px;max-height:calc(min(74dvh,520px) - 60px);-webkit-overflow-scrolling:touch}
 }
 </style>
 <script>
@@ -285,6 +296,7 @@ function setLang(code){applyLang(code);}
 var langPanel=document.getElementById("langPanel");
 var langBtn=document.getElementById("langBtn");
 function positionPanel(){
+  if(window.innerWidth<=680){langPanel.style.top="";langPanel.style.right="";return;}
   var r=langBtn.getBoundingClientRect();
   langPanel.style.top=(r.bottom+10)+"px";
   langPanel.style.right=Math.max(12,window.innerWidth-r.right)+"px";
@@ -310,6 +322,15 @@ document.getElementById("langList").addEventListener("click",function(e){
   applyLang(b.getAttribute("data-lang"));
   langPanel.classList.remove("open");langBtn.setAttribute("aria-expanded","false");
 });
+
+/* nav scrolled state */
+(function(){
+  var nav=document.querySelector(".site-nav");
+  if(!nav)return;
+  function onScroll(){nav.classList.toggle("scrolled",window.scrollY>12);}
+  window.addEventListener("scroll",onScroll,{passive:true});
+  onScroll();
+})();
 
 (function(){
   var saved=null;try{saved=localStorage.getItem("theme");}catch(e){}
