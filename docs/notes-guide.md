@@ -13,6 +13,7 @@ blog.html                      笔记列表页
 posts/
   handwritten-html.html        第 1 篇（前端）
   three-habits.html            第 2 篇（效率）
+  site-r6-optimization.html    第 3 篇（前端）
 ```
 
 `posts/` 里的每一篇都是一个独立的 HTML 文件。**加新文章 = 复制一篇 + 改内容 + 补词条 + 在 `blog.html` 里加一张卡片。**

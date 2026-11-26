@@ -5,8 +5,16 @@
     <link>https://wang-sunyang.github.io/</link>
     <description>原生 Android、零依赖构建链、AI Agent 权限闸门。少一层抽象，就少一类 bug。</description>
     <language>zh-CN</language>
-    <lastBuildDate>Wed, 25 Nov 2026 10:00:00 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 26 Nov 2026 10:00:00 +0800</lastBuildDate>
     <atom:link href="https://wang-sunyang.github.io/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>给站点做一轮减法：首屏、图标和弱网</title>
+      <link>https://wang-sunyang.github.io/posts/site-r6-optimization.html</link>
+      <guid isPermaLink="true">https://wang-sunyang.github.io/posts/site-r6-optimization.html</guid>
+      <pubDate>Wed, 26 Nov 2026 00:00:00 +0800</pubDate>
+      <author>3383927177@qq.com (王孙阳)</author>
+      <description>这一轮没有改设计，也没有加功能，只把一个纯手写站点的三类开销按量级各砍一次：首屏不再靠隐藏正文防闪，分享图与图标砍掉一半体积，弱网下让 Service Worker 先交缓存。</description>
+    </item>
     <item>
       <title>为什么我用纯手写 HTML 做个人主页</title>
       <link>https://wang-sunyang.github.io/posts/handwritten-html.html</link>

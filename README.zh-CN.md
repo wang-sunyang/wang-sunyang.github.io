@@ -33,6 +33,7 @@
 - [命名与路径约定](#命名与路径约定)
 - [浏览器支持与降级](#浏览器支持与降级)
 - [刻意保留的取舍](#刻意保留的取舍)
+- [近期优化记录](#近期优化记录)
 - [联系方式](#联系方式)
 - [版权](#版权)
 
@@ -45,12 +46,14 @@
 | `404.html` | 404 页 | 路径不存在时 GitHub Pages 自动使用 |
 | `posts/handwritten-html.html` | 第 1 篇笔记 | 《为什么我用纯手写 HTML 做个人主页》，2026-11-08 |
 | `posts/three-habits.html` | 第 2 篇笔记 | 《把重复的事交给工具：三个小习惯》，2026-10-21 |
+| `posts/site-r6-optimization.html` | 第 3 篇笔记 | 《给站点做一轮减法：首屏、图标和弱网》，2026-11-26 |
 | `docs/notes-guide.md` | 维护文档 | 加新文章、改分类、接上一篇/下一篇、补词条的全流程 |
 | `i18n/` | 外链语言包 | 5 个页面对应 5 个子目录 × 27 种语言 = 135 个 js，选中语言时才注入 |
 | `feed.xml` | RSS 2.0 订阅源 | 收录全部文章，含作者、日期与正文摘要 |
 | `sitemap.xml`、`robots.txt` | 抓取入口 | sitemap 列 4 个可索引页面；robots 允许全站、屏蔽 404、声明 sitemap |
-| `site.webmanifest`、`favicon-192.png`、`og-cover.png` | 站点级资产 | manifest 提供 PWA 图标（192/512）；`og-cover.png` 是 1200×630 分享卡片图 |
+| `site.webmanifest`、`favicon-192.png`、`favicon-512.webp`、`og-cover.jpg` | 站点级资产 | manifest 提供 PWA 图标（192/512）；`og-cover.jpg` 是 1200×630 分享卡片图（PNG 原图仍在仓库，但页面已不再引用） |
 | `favicon.svg`、`favicon-16.png`、`favicon-32.png`、`favicon-512.png`、`apple-touch-icon.png` | 图标 | SVG 给现代浏览器，PNG 兜底老浏览器与 iOS 主屏 |
+| `favicon-192.webp`、`favicon-512.webp`、`apple-touch-icon.webp` | WebP 图标派生 | 每页 `<link rel="icon">` 追加引用，体积比 PNG 小一个数量级，PNG 保留为兜底 |
 
 五个 HTML 文件加起来约 350 KB（内联词典外链化后从 810 KB 降下来），再加 135 个按需加载的语言包、站点级资产和文档。没有 `package.json`、没有 `node_modules`、没有构建产物——克隆下来，仓库本身就是线上站点。
 
@@ -212,6 +215,14 @@ python3 -m http.server 8000
 - **没有分语言网址**：没有 `/en/` 或 `?lang=` 变体，搜索引擎每个网址只索引一份页面，语言选择存在本地。要做静态分语言副本，文件数要乘 30——正好违背初衷
 - **没有分语言网址的 sitemap 变体**：`sitemap.xml` 只列 4 个可索引页面（404 已排除），每个 URL 一份，不按语言拆分
 - **深色模式不处理图片**：现在站内没有照片。将来要放，每张图得准备两版或加滤镜
+
+## 近期优化记录（2026-11-26）
+
+- **首屏可见性不再依赖隐藏 body**：此前目标语言不是中文时会隐藏正文防闪；现在改为 body 始终可见、仅靠底色防闪，并收紧 i18n 兜底到 300ms。语言包慢或失败时直接展示已渲染的内容，不再白屏。
+- **分享图与图标大幅收敛**：`og-cover.png` 转为 JPEG（-58.8%），三个 favicon PNG 量化到 256 色后各省约 1–14 KB，另新增 `favicon-*.webp` 派生。`favicon-512` 每次导航都会请求，单次少下约 63 KB。
+- **Service Worker 加入导航竞速**：弱网下 3 秒拿不到响应即回退缓存，避免长时间白屏；版本号升至 v20261127，五页语言包请求同步带版本参数。
+- **焦点环统一为 CSS 变量**：15 处硬编码色全部改为 `var(--acc1)` / `var(--accent)`，随主题自动变色。
+- **锚点滚动偏移**：新增 `:target,[id]{scroll-margin-top:96px}`，修复 sticky 顶栏下锚点跳转被标题遮挡的问题。
 
 ## 联系方式
 

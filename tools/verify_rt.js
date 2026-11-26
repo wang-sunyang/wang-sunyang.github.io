@@ -7,7 +7,7 @@ try { jsdom = require('jsdom'); }
 catch (e) { jsdom = require(path.join(__dirname, 'node_modules', 'jsdom')); }
 const { JSDOM, VirtualConsole } = jsdom;
 const BASE = path.join(__dirname, '..') + path.sep;
-const PAGES = ['index.html', 'blog.html', '404.html', 'posts/handwritten-html.html', 'posts/three-habits.html'];
+const PAGES = ['index.html', 'blog.html', '404.html', 'posts/handwritten-html.html', 'posts/three-habits.html', 'posts/site-r6-optimization.html'];
 
 const rows = [];
 function chk(page, name, ok, detail) { rows.push({ page, name, ok: !!ok, detail: detail === undefined ? '' : String(detail) }); }
@@ -63,6 +63,23 @@ const wait = ms => new Promise(r => setTimeout(r, ms));
       chk(f, 'B 切 en 后 aria 无中文残留', zhAria.length === 0, zhAria.slice(0, 3).join(' / '));
       chk(f, 'B 切 en 后 title 英文', !CJK.test(d.title), d.title);
       chk(f, 'B 切 en 无 i18n-boot', !/\bi18n-boot\b/.test(d.documentElement.className), '');
+      /* R5: 语言列表选中态语义 + og/twitter 元信息随语言同步 */
+      const btns = [...d.querySelectorAll('.lang-list button[data-lang]')];
+      const allRadio = btns.length > 0 && btns.every(b => b.getAttribute('role') === 'radio');
+      const checked = btns.filter(b => b.getAttribute('aria-checked') === 'true').map(b => b.getAttribute('data-lang'));
+      chk(f, 'R5 语言按钮均带 role=radio', allRadio, btns.length + ' 个按钮');
+      chk(f, 'R5 en 选中态唯一且 aria-checked=true', checked.length === 1 && checked[0] === 'en', '选中=' + checked.join(','));
+      chk(f, 'R5 未选中项 aria-checked=false',
+        btns.filter(b => b.getAttribute('data-lang') !== 'en').every(b => b.getAttribute('aria-checked') === 'false'), '');
+      const ogLoc = (d.querySelector('meta[property="og:locale"]') || {}).getAttribute
+        ? d.querySelector('meta[property="og:locale"]').getAttribute('content') : '';
+      chk(f, 'R5 og:locale 随语言切换', ogLoc === 'en_US', ogLoc);
+      const ogDesc = d.querySelector('meta[property="og:description"]');
+      const twDesc = d.querySelector('meta[name="twitter:description"]');
+      chk(f, 'R5 og/twitter description 已同步', !!(ogDesc && ogDesc.getAttribute('content')) && !!(twDesc && twDesc.getAttribute('content')),
+        (ogDesc && ogDesc.getAttribute('content') || '').slice(0, 40));
+      const ogTitle = d.querySelector('meta[property="og:title"]');
+      chk(f, 'R5 og:title 随语言切换', !!(ogTitle && !CJK.test(ogTitle.getAttribute('content') || '')), ogTitle ? ogTitle.getAttribute('content') : '缺');
       chk(f, 'B en 无脚本异常', errs.length === 0, errs.slice(0, 2).join(' | '));
       dom.window.close();
     }

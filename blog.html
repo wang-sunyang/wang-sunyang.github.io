@@ -24,14 +24,15 @@
 <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="512x512" href="https://wang-sunyang.github.io/favicon-512.png">
+<link rel="icon" type="image/webp" sizes="512x512" href="https://wang-sunyang.github.io/favicon-512.webp">
 <link rel="manifest" href="https://wang-sunyang.github.io/site.webmanifest">
 <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml">
   <link rel="alternate" type="application/rss+xml" title="王孙阳 · Wang Sunyang — 独立开发者" href="https://wang-sunyang.github.io/feed.xml">
-<meta property="og:image" content="https://wang-sunyang.github.io/og-cover.png">
+<meta property="og:image" content="https://wang-sunyang.github.io/og-cover.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="王孙阳 · Wang Sunyang — 独立开发者">
-<meta name="twitter:image" content="https://wang-sunyang.github.io/og-cover.png">
+<meta name="twitter:image" content="https://wang-sunyang.github.io/og-cover.jpg">
 <meta name="twitter:image:alt" content="王孙阳 · Wang Sunyang — 独立开发者">
 
 <script>
@@ -63,7 +64,7 @@
   de.setAttribute("dir",RTL.indexOf(code)>-1?"rtl":"ltr");
   window.__BOOT_LANG__=code;
   if(code!=="zh")de.className=(de.className?de.className+" ":"")+"i18n-boot";
-  setTimeout(function(){if(!window.__LANG_READY__)de.className=de.className.replace(/\s*i18n-boot/g,"");},1200);
+  setTimeout(function(){if(!window.__LANG_READY__)de.className=de.className.replace(/\s*i18n-boot/g,"");},300);
 })();
 </script>
 <style>
@@ -136,7 +137,7 @@ body{
 
 /* ---------- layered background ---------- */
 #aurora{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;filter:blur(70px) saturate(130%)}
-#aurora i{position:absolute;border-radius:50%;opacity:.55;mix-blend-mode:screen;will-change:transform}
+#aurora i{position:absolute;border-radius:50%;opacity:.55;mix-blend-mode:screen}
 #aurora i:nth-child(1){width:52vw;height:52vw;left:-14vw;top:-18vw;background:radial-gradient(circle,var(--acc1) 0%,transparent 62%);animation:drift1 26s var(--ease) infinite alternate}
 #aurora i:nth-child(2){width:46vw;height:46vw;right:-12vw;top:8vw;background:radial-gradient(circle,var(--acc2) 0%,transparent 62%);animation:drift2 32s var(--ease) infinite alternate}
 #aurora i:nth-child(3){width:38vw;height:38vw;left:30vw;bottom:-16vw;background:radial-gradient(circle,var(--acc4) 0%,transparent 60%);animation:drift3 38s var(--ease) infinite alternate}
@@ -233,7 +234,7 @@ main{position:relative;z-index:5}
 /* ---------- post list ---------- */
 .post-list{list-style:none;display:grid;gap:18px;padding:34px 0 96px}
 .post-item{display:contents}
-.post-card{display:flex;flex-direction:column;text-decoration:none;color:inherit;position:relative;overflow:hidden;transform-style:preserve-3d;will-change:transform;padding:30px 34px}
+.post-card{display:flex;flex-direction:column;text-decoration:none;color:inherit;position:relative;overflow:hidden;transform-style:preserve-3dpadding:30px 34px}
 .post-card .idx{position:absolute;top:20px;right:24px;font-size:46px;font-weight:800;color:var(--text);opacity:.05;line-height:1;font-variant-numeric:tabular-nums}
 .post-card .glare{position:absolute;inset:0;pointer-events:none;background:radial-gradient(320px 200px at var(--gx,50%) var(--gy,0%),rgba(255,255,255,.1),transparent 60%);opacity:0;transition:opacity .3s}@media (hover:hover){.post-card:hover .glare{opacity:1}}
 .post-meta{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:12.5px;color:var(--text-3);margin-bottom:16px}
@@ -310,8 +311,8 @@ footer a{color:var(--text-2);text-decoration:none}@media (hover:hover){footer a:
 #langPanel .lang-search-wrap{padding:10px 12px 4px;}
 #langPanel .lang-search{width:100%;box-sizing:border-box;padding:8px 11px;border-radius:9px;border:1px solid rgba(128,128,128,.35);background:rgba(128,128,128,.08);color:inherit;font:inherit;font-size:13px;line-height:1.3;-webkit-appearance:none;appearance:none;}
 #langPanel .lang-search::-webkit-search-cancel-button{-webkit-appearance:none;}
-#langPanel .lang-search:focus{outline:2px solid rgba(120,170,255,.85);outline-offset:1px;}
-#langPanel .lang-list button[data-lang]:focus-visible{outline:2px solid rgba(120,170,255,.85);outline-offset:2px;}
+#langPanel .lang-search:focus{outline:2px solid var(--acc1);outline-offset:1px;}
+#langPanel .lang-list button[data-lang]:focus-visible{outline:2px solid var(--acc1);outline-offset:2px;}
 #langPanel.no-match .lang-list::after{content:"\2014";display:block;padding:22px 0;text-align:center;opacity:.55;}
 html.lang-lock,html.lang-lock body{overflow:hidden;}
 @media (prefers-reduced-motion:reduce){#langPanel,.lang-search-wrap{transition:none!important;animation:none!important;}}
@@ -330,7 +331,7 @@ html:lang(fa),html:lang(he),html:lang(ar),html:lang(sd),html:lang(ps){font-famil
 .lr-switch .lr-knob{position:absolute;top:2px;left:2px;width:19px;height:19px;border-radius:50%;background:var(--text-3);transition:transform .22s var(--ease),background .22s var(--ease)}
 .lr-switch[aria-checked="true"]{background:var(--acc1-soft);border-color:rgba(94,234,212,.45)}
 .lr-switch[aria-checked="true"] .lr-knob{transform:translateX(19px);background:var(--acc1)}
-.lr-switch:focus-visible{outline:2px solid rgba(120,170,255,.85);outline-offset:2px}
+.lr-switch:focus-visible{outline:2px solid var(--acc1);outline-offset:2px}
 html[dir="rtl"] .lr-switch .lr-knob{left:auto;right:2px}
 html[dir="rtl"] .lr-switch[aria-checked="true"] .lr-knob{transform:translateX(-19px)}
 #langPanel .lang-list .lg-native,#langPanel .lang-list .lg-sub{overflow-wrap:anywhere}
@@ -342,8 +343,9 @@ html[dir="rtl"] .lr-switch[aria-checked="true"] .lr-knob{transform:translateX(-1
 @media (max-width:400px){.lang-remember{padding:9px 16px}.lang-remember .lr-sub{display:none}}
 
 
-/* i18n 首屏防闪：目标语言不是中文时，切换完成前不显示正文 */
-html.i18n-boot body{visibility:hidden}
+/* i18n 首屏：不再隐藏 body，只用底色防闪；语言包 300ms 内未就绪即放弃等待 */
+/* R6: 不再隐藏 body —— 语言包慢或失败时首屏直接可见，不再白屏 */
+:target,[id]{scroll-margin-top:96px}
 html.i18n-boot{background:#05060e}
 html[data-theme="light"].i18n-boot{background:#f4f5fb}
 /* ============================================================
@@ -369,6 +371,12 @@ html[data-theme="light"].i18n-boot{background:#f4f5fb}
   .prose pre,.prose code{color:#111!important;background:#f4f4f4!important}
   .prose img{max-width:100%!important;height:auto}
   .prose a{word-break:break-word}
+}
+/* R5: forced-colors 兜底 —— 强制配色下毛玻璃/半透明失效，改用系统色保边界与选中态 */
+@media (forced-colors: active){
+  .site-nav,.mobile-menu,.menu-overlay,#langPanel .lang-card,#kbdPanel .kbd-card,.card,.proj,.post-card{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+  .site-nav,.mobile-menu,.card,.proj,.post-card{border-color:CanvasText}
+  .lang-list button[aria-checked="true"]{outline:2px solid Highlight;outline-offset:-2px;forced-color-adjust:none}
 }
 </style>
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Person","@id":"https://wang-sunyang.github.io/#person","name":"王孙阳","alternateName":"Wang Sunyang","url":"https://wang-sunyang.github.io/","jobTitle":"独立开发者","description":"独立开发者，做原生 Android、端侧 ML 与零依赖网页项目；长夜拾星工作室（Nightglean Studio）主理人。","sameAs":["https://github.com/wang-sunyang","https://github.com/nightglean"],"knowsAbout":["Native Android","Kotlin","On-device ML","LiteRT","WebGL","Three.js","静态站点工程"]},{"@type":"Blog","@id":"https://wang-sunyang.github.io/blog.html#blog","url":"https://wang-sunyang.github.io/blog.html","name":"笔记 · 王孙阳","inLanguage":"zh-Hans","author":{"@id":"https://wang-sunyang.github.io/#person"}}]}</script>
@@ -421,7 +429,7 @@ html[data-theme="light"].i18n-boot{background:#f4f5fb}
     <span class="lr-text"><b id="rememberLangText" data-i18n="ui.remember">记住语言</b><span class="lr-sub" data-i18n="ui.rememberSub">下次访问沿用当前语言</span></span>
     <button class="lr-switch" id="rememberLang" type="button" role="switch" aria-checked="true" aria-labelledby="rememberLangText"><span class="lr-knob" aria-hidden="true"></span></button>
   </div>
-  <div class="lang-list" id="langList"></div>
+  <div class="lang-list" id="langList" role="radiogroup" data-i18n-aria="a11y.langPanel"></div>
 </div>
 
 <main id="main">
@@ -435,15 +443,31 @@ html[data-theme="light"].i18n-boot{background:#f4f5fb}
 
   <div class="wrap">
     <div class="filter-bar" role="group" aria-label="按分类筛选笔记" data-i18n-aria="a11y.filterBar">
-      <button class="filter" data-filter="all" aria-pressed="true"><span data-i18n="filter.all">全部</span><span class="count">2</span></button>
-      <button class="filter" data-filter="fe" aria-pressed="false"><span data-i18n="cat.fe">前端</span><span class="count">1</span></button>
+      <button class="filter" data-filter="all" aria-pressed="true"><span data-i18n="filter.all">全部</span><span class="count">3</span></button>
+      <button class="filter" data-filter="fe" aria-pressed="false"><span data-i18n="cat.fe">前端</span><span class="count">2</span></button>
       <button class="filter" data-filter="prod" aria-pressed="false"><span data-i18n="cat.prod">效率</span><span class="count">1</span></button>
     </div>
 
     <ul class="post-list" id="postList">
-      <li class="post-item" data-cat="fe">
-        <a class="card glow-card post-card reveal" data-tilt href="posts/handwritten-html.html">
+            <li class="post-item" data-cat="fe">
+        <a class="card glow-card post-card reveal" data-tilt href="posts/site-r6-optimization.html">
           <span class="idx" aria-hidden="true">01</span>
+          <span class="glare" aria-hidden="true"></span>
+          <div class="post-meta">
+            <span class="cat-chip" data-i18n="cat.fe">前端</span>
+            <span class="sep" aria-hidden="true">·</span>
+            <time datetime="2026-11-26" data-i18n="p3.date">2026 年 11 月 26 日</time>
+            <span class="sep" aria-hidden="true">·</span>
+            <span class="read" data-i18n="p3.read">约 7 分钟</span>
+          </div>
+          <h2 data-i18n="p3.title">给站点做一轮减法：首屏、图标和弱网</h2>
+          <p data-i18n="p3.desc">不改设计也不加功能，只把三类开销按量级各砍一次：首屏不再靠隐藏正文防闪，分享图与图标砍掉一半体积，弱网下让缓存先说话。</p>
+          <span class="post-foot"><span data-i18n="readMore">阅读全文</span> <span class="arrow" aria-hidden="true">→</span></span>
+        </a>
+      </li>
+<li class="post-item" data-cat="fe">
+        <a class="card glow-card post-card reveal" data-tilt href="posts/handwritten-html.html">
+          <span class="idx" aria-hidden="true">02</span>
           <span class="glare" aria-hidden="true"></span>
           <div class="post-meta">
             <span class="cat-chip" data-i18n="cat.fe">前端</span>
@@ -460,7 +484,7 @@ html[data-theme="light"].i18n-boot{background:#f4f5fb}
 
       <li class="post-item" data-cat="prod">
         <a class="card glow-card post-card reveal" data-tilt href="posts/three-habits.html">
-          <span class="idx" aria-hidden="true">02</span>
+          <span class="idx" aria-hidden="true">03</span>
           <span class="glare" aria-hidden="true"></span>
           <div class="post-meta">
             <span class="cat-chip" data-i18n="cat.prod">效率</span>
@@ -531,11 +555,7 @@ var LANGS=[
   {code:"th",native:"ไทย",sub:"Thai"}
 ];
 
-var I18N={
-"zh":{"theme":{"toDark":"切换到深色模式","toLight":"切换到浅色模式"},"a11y":{"close":"关闭","langBtn":"切换语言 / Switch language","themeToggle":"切换深浅色","langPanel":"选择语言 / Choose language","mainNav":"主导航","nav":"导航","toTop":"回到顶部","tocSidebar":"本页目录","tocDrawer":"文章目录","kbdPanel":"键盘快捷键","openMenu":"打开菜单","mobileMenu":"移动端菜单","closeMenu":"关闭菜单","copyWechat":"复制微信号","filterBar":"按分类筛选笔记"},"meta":{"title":"笔记 · 王孙阳"},"skip":"跳到主要内容","ui":{"remember":"记住语言","rememberSub":"下次访问沿用当前语言","langTitle":"选择语言 / Language","langSwitched":"已切换为{lang}"},"nav":{"about":"关于","projects":"作品","stack":"技术栈","phil":"理念","journey":"轨迹","notes":"笔记","contact":"联系"},"page":{"eyebrow":"NOTES","title":"写下来，才真正学会","subtitle":"这里放我的学习笔记和技术随笔。不是教程，更像是给未来的自己留的备忘：做过什么、卡在哪里、后来怎么想通的。"},"filter":{"all":"全部"},"cat":{"fe":"前端","prod":"效率"},"p1":{"title":"为什么我用纯手写 HTML 做个人主页","desc":"用框架三分钟能搭出来的页面，我断断续续写了几个晚上。不是不会用工具，而是想把那些被框架藏起来的东西，亲手摸一遍。","date":"2026 年 11 月 8 日","read":"约 6 分钟"},"p2":{"title":"把重复的事交给工具：三个小习惯","desc":"效率提升往往不来自什么大动作，而是来自三个具体的判断：什么该省、什么绝不能省、以及怎么让工具替你记住规则。","date":"2026 年 10 月 21 日","read":"约 5 分钟"},"readMore":"阅读全文","empty":"这个分类下还没有笔记。","sub":{"title":"不定期更新","desc":"有想明白的事就写一篇，不追热点，不硬凑数量。","cta":"订阅更新","back":"回到主页"},"footer":{"line":"少一层抽象，就少一类 bug。","top":"回到顶部 ↑"}},
-"zh-TW":{"meta":{"title":"筆記 · 王孫陽"},"skip":"跳到主要內容","ui":{"remember":"記住語言","rememberSub":"下次造訪沿用目前語言","langTitle":"選擇語言 / Language","langSwitched":"已切換為{lang}"},"nav":{"about":"關於","projects":"作品","stack":"技術棧","phil":"理念","journey":"軌跡","notes":"筆記","contact":"聯繫"},"page":{"eyebrow":"NOTES","title":"寫下來，才真正學會","subtitle":"這裡放我的學習筆記和技術隨筆。不是教學，更像是給未來的自己留的備忘：做過什麼、卡在哪裡、後來怎麼想通的。"},"filter":{"all":"全部"},"cat":{"fe":"前端","prod":"效率"},"p1":{"title":"為什麼我用純手寫 HTML 做個人主頁","desc":"用框架三分鐘能搭出來的頁面，我斷斷續續寫了幾個晚上。不是不會用工具，而是想把那些被框架藏起來的東西，親手摸一遍。","date":"2026 年 11 月 8 日","read":"約 6 分鐘"},"p2":{"title":"把重複的事交給工具：三個小習慣","desc":"效率提升往往不來自什麼大動作，而是來自三個具體的判斷：什麼該省、什麼絕不能省、以及怎麼讓工具替你記住規則。","date":"2026 年 10 月 21 日","read":"約 5 分鐘"},"readMore":"閱讀全文","empty":"這個分類下還沒有筆記。","sub":{"title":"不定期更新","desc":"有想明白的事就寫一篇，不追熱點，不硬湊數量。","cta":"訂閱更新","back":"回到主頁"},"footer":{"line":"少一層抽象，就少一類 bug。","top":"回到頂部 ↑"}},
-"en":{"theme":{"toDark":"Switch to dark mode","toLight":"Switch to light mode"},"a11y":{"close":"Close","langBtn":"Switch language","themeToggle":"Toggle dark / light theme","langPanel":"Choose language","mainNav":"Main navigation","nav":"Navigation","toTop":"Back to top","tocSidebar":"On this page","tocDrawer":"Table of contents","kbdPanel":"Keyboard shortcuts","openMenu":"Open menu","mobileMenu":"Mobile menu","closeMenu":"Close menu","copyWechat":"Copy WeChat ID","filterBar":"Filter notes by category"},"meta":{"title":"Notes · Wang Sunyang"},"skip":"Skip to content","ui":{"remember":"Remember language","rememberSub":"Use this language on your next visit","langTitle":"Choose language / Language","langSwitched":"Switched to {lang}"},"nav":{"about":"About","projects":"Projects","stack":"Stack","phil":"Philosophy","journey":"Journey","notes":"Notes","contact":"Contact"},"page":{"eyebrow":"NOTES","title":"Write it down, then you really learn","subtitle":"My study notes and technical essays. Not tutorials — more like memos for my future self: what I did, where I got stuck, and how I eventually figured it out."},"filter":{"all":"All"},"cat":{"fe":"Frontend","prod":"Productivity"},"p1":{"title":"Why I hand-wrote my homepage in plain HTML","desc":"A page a framework can scaffold in three minutes took me several scattered evenings. Not because I can't use tools, but because I wanted to feel the things frameworks hide away.","date":"Nov 8, 2026","read":"~6 min"},"p2":{"title":"Hand repetitive work to tools: three small habits","desc":"Real efficiency rarely comes from a big move. It comes from three concrete calls: what to skip, what never to skip, and how to make tools remember your rules.","date":"Oct 21, 2026","read":"~5 min"},"readMore":"Read more","empty":"No notes in this category yet.","sub":{"title":"Updates, occasionally","desc":"I write one when I've actually figured something out — no hot takes, no padding the count.","cta":"Subscribe","back":"Back to home"},"footer":{"line":"One fewer layer of abstraction, one fewer bug.","top":"Back to top ↑"}}
-};
+var I18N={"zh":{"theme":{"toDark":"切换到深色模式","toLight":"切换到浅色模式"},"a11y":{"close":"关闭","langBtn":"切换语言 / Switch language","themeToggle":"切换深浅色","langPanel":"选择语言 / Choose language","mainNav":"主导航","nav":"导航","toTop":"回到顶部","tocSidebar":"本页目录","tocDrawer":"文章目录","kbdPanel":"键盘快捷键","openMenu":"打开菜单","mobileMenu":"移动端菜单","closeMenu":"关闭菜单","copyWechat":"复制微信号","filterBar":"按分类筛选笔记"},"meta":{"title":"笔记 · 王孙阳"},"skip":"跳到主要内容","ui":{"remember":"记住语言","rememberSub":"下次访问沿用当前语言","langTitle":"选择语言 / Language","langSwitched":"已切换为{lang}"},"nav":{"about":"关于","projects":"作品","stack":"技术栈","phil":"理念","journey":"轨迹","notes":"笔记","contact":"联系"},"page":{"eyebrow":"NOTES","title":"写下来，才真正学会","subtitle":"这里放我的学习笔记和技术随笔。不是教程，更像是给未来的自己留的备忘：做过什么、卡在哪里、后来怎么想通的。"},"filter":{"all":"全部"},"cat":{"fe":"前端","prod":"效率"},"p1":{"title":"为什么我用纯手写 HTML 做个人主页","desc":"用框架三分钟能搭出来的页面，我断断续续写了几个晚上。不是不会用工具，而是想把那些被框架藏起来的东西，亲手摸一遍。","date":"2026 年 11 月 8 日","read":"约 6 分钟"},"p2":{"title":"把重复的事交给工具：三个小习惯","desc":"效率提升往往不来自什么大动作，而是来自三个具体的判断：什么该省、什么绝不能省、以及怎么让工具替你记住规则。","date":"2026 年 10 月 21 日","read":"约 5 分钟"},"readMore":"阅读全文","empty":"这个分类下还没有笔记。","sub":{"title":"不定期更新","desc":"有想明白的事就写一篇，不追热点，不硬凑数量。","cta":"订阅更新","back":"回到主页"},"footer":{"line":"少一层抽象，就少一类 bug。","top":"回到顶部 ↑"},"p3":{"date":"2026 年 11 月 26 日","read":"约 7 分钟","title":"给站点做一轮减法：首屏、图标和弱网","desc":"不改设计也不加功能，只把三类开销按量级各砍一次：首屏不再靠隐藏正文防闪，分享图与图标砍掉一半体积，弱网下让缓存先说话。"}},"zh-TW":{"meta":{"title":"筆記 · 王孫陽"},"skip":"跳到主要內容","ui":{"remember":"記住語言","rememberSub":"下次造訪沿用目前語言","langTitle":"選擇語言 / Language","langSwitched":"已切換為{lang}"},"nav":{"about":"關於","projects":"作品","stack":"技術棧","phil":"理念","journey":"軌跡","notes":"筆記","contact":"聯繫"},"page":{"eyebrow":"NOTES","title":"寫下來，才真正學會","subtitle":"這裡放我的學習筆記和技術隨筆。不是教學，更像是給未來的自己留的備忘：做過什麼、卡在哪裡、後來怎麼想通的。"},"filter":{"all":"全部"},"cat":{"fe":"前端","prod":"效率"},"p1":{"title":"為什麼我用純手寫 HTML 做個人主頁","desc":"用框架三分鐘能搭出來的頁面，我斷斷續續寫了幾個晚上。不是不會用工具，而是想把那些被框架藏起來的東西，親手摸一遍。","date":"2026 年 11 月 8 日","read":"約 6 分鐘"},"p2":{"title":"把重複的事交給工具：三個小習慣","desc":"效率提升往往不來自什麼大動作，而是來自三個具體的判斷：什麼該省、什麼絕不能省、以及怎麼讓工具替你記住規則。","date":"2026 年 10 月 21 日","read":"約 5 分鐘"},"readMore":"閱讀全文","empty":"這個分類下還沒有筆記。","sub":{"title":"不定期更新","desc":"有想明白的事就寫一篇，不追熱點，不硬湊數量。","cta":"訂閱更新","back":"回到主頁"},"footer":{"line":"少一層抽象，就少一類 bug。","top":"回到頂部 ↑"},"p3":{"date":"2026 年 11 月 26 日","read":"約 7 分鐘","title":"給站點做一輪減法：首屏、圖標和弱網","desc":"不改設計也不加功能，只把三類開銷按量級各砍一次：首屏不再靠隱藏正文防閃，分享圖與圖標砍掉一半體積，弱網下讓緩存先說話。"}},"en":{"theme":{"toDark":"Switch to dark mode","toLight":"Switch to light mode"},"a11y":{"close":"Close","langBtn":"Switch language","themeToggle":"Toggle dark / light theme","langPanel":"Choose language","mainNav":"Main navigation","nav":"Navigation","toTop":"Back to top","tocSidebar":"On this page","tocDrawer":"Table of contents","kbdPanel":"Keyboard shortcuts","openMenu":"Open menu","mobileMenu":"Mobile menu","closeMenu":"Close menu","copyWechat":"Copy WeChat ID","filterBar":"Filter notes by category"},"meta":{"title":"Notes · Wang Sunyang"},"skip":"Skip to content","ui":{"remember":"Remember language","rememberSub":"Use this language on your next visit","langTitle":"Choose language / Language","langSwitched":"Switched to {lang}"},"nav":{"about":"About","projects":"Projects","stack":"Stack","phil":"Philosophy","journey":"Journey","notes":"Notes","contact":"Contact"},"page":{"eyebrow":"NOTES","title":"Write it down, then you really learn","subtitle":"My study notes and technical essays. Not tutorials — more like memos for my future self: what I did, where I got stuck, and how I eventually figured it out."},"filter":{"all":"All"},"cat":{"fe":"Frontend","prod":"Productivity"},"p1":{"title":"Why I hand-wrote my homepage in plain HTML","desc":"A page a framework can scaffold in three minutes took me several scattered evenings. Not because I can't use tools, but because I wanted to feel the things frameworks hide away.","date":"Nov 8, 2026","read":"~6 min"},"p2":{"title":"Hand repetitive work to tools: three small habits","desc":"Real efficiency rarely comes from a big move. It comes from three concrete calls: what to skip, what never to skip, and how to make tools remember your rules.","date":"Oct 21, 2026","read":"~5 min"},"readMore":"Read more","empty":"No notes in this category yet.","sub":{"title":"Updates, occasionally","desc":"I write one when I've actually figured something out — no hot takes, no padding the count.","cta":"Subscribe","back":"Back to home"},"footer":{"line":"One fewer layer of abstraction, one fewer bug.","top":"Back to top ↑"},"p3":{"date":"Nov 26, 2026","read":"~7 min","title":"A round of subtraction: first paint, icons and weak networks","desc":"No redesign and no new features — three costs trimmed in order of size: stop hiding the body to avoid a flash, halve the share card and icons, and let the cache answer first on weak networks."}}};
 
 /* ============================================================
    i18n runtime
@@ -601,7 +621,7 @@ function __renderLang(code){
     if(av!==undefined) el.setAttribute("aria-label",av);
   });
   document.querySelectorAll(".lang-list button").forEach(function(b){
-    b.classList.toggle("active",b.getAttribute("data-lang")===code);
+    var __on=(b.getAttribute("data-lang")===code);b.classList.toggle("active",__on);b.setAttribute("aria-checked",__on?"true":"false");
   });
   var desc=getPath(lang,"page.subtitle");
   if(desc){var m=document.querySelector('meta[name="description"]');if(m)m.setAttribute("content",desc);}
@@ -609,9 +629,18 @@ function __renderLang(code){
   var __mt=getPath(lang,"meta.title");
   if(__mt){document.title=__mt;}
   else if(t){document.title=t+" · "+(code==="zh-TW"?"王孫陽":"王孙阳");}
+  __syncOG(code,lang,__mt||t,desc);
 }
 
 /* build language list */
+/* R5: og/twitter 元信息随语言同步（复用既有 meta.title / 页面描述键，不新增翻译键） */
+var __OG_LOCALE={"zh":"zh_CN","zh-TW":"zh_TW","en":"en_US","ja":"ja_JP","ko":"ko_KR","fr":"fr_FR","de":"de_DE","es":"es_ES","pt":"pt_BR","it":"it_IT","ru":"ru_RU","uk":"uk_UA","pl":"pl_PL","nl":"nl_NL","tr":"tr_TR","ar":"ar_AR","hi":"hi_IN","id":"id_ID","vi":"vi_VN","th":"th_TH","el":"el_GR","sv":"sv_SE","cs":"cs_CZ","ro":"ro_RO","bn":"bn_BD","ur":"ur_PK","ms":"ms_MY","tl":"tl_PH","he":"he_IL","fa":"fa_IR"};
+function __syncOG(code,lang,title,desc){
+  function __set(sel,val){var el=document.querySelector(sel);if(el&&val!=null&&val!=="")el.setAttribute("content",val);}
+  if(title){__set('meta[property="og:title"]',title);__set('meta[name="twitter:title"]',title);}
+  if(desc){var __d=String(desc).replace(/<[^>]*>/g,"").replace(/\s+/g," ").trim();__set('meta[property="og:description"]',__d);__set('meta[name="twitter:description"]',__d);__set('meta[name="description"]',__d);}
+  __set('meta[property="og:locale"]',__OG_LOCALE[code]||String(code).replace("-","_"));
+}
 var I18N_EXT_BASE="i18n/blog/";
 /* ============================================================
    i18n 词典按需加载
@@ -630,7 +659,7 @@ function __loadLang(code,cb){
   if(__langBusy[code]){__langQueue[code].push(cb);return;}
   __langBusy[code]=true;__langQueue[code]=[cb];
   var s=document.createElement("script");
-  s.src=I18N_EXT_BASE+code+".js";s.async=true;
+  s.src=I18N_EXT_BASE+code+".js?v=20261127";s.async=true;
   function done(ok){
     if(!ok){I18N[code]=I18N.zh;
       (window.__i18nErrs=window.__i18nErrs||[]).push("langload:"+code);
@@ -675,7 +704,7 @@ function setLang(code){
   var list=document.getElementById("langList");
   var html="";
   LANGS.forEach(function(l){
-    html+='<button type="button" data-lang="'+l.code+'"><span class="lg-dot" aria-hidden="true"></span><span style="flex:1"><span class="lg-native">'+l.native+'</span><br><span class="lg-sub">'+l.sub+'</span></span><span class="chk">✓</span></button>';
+    html+='<button type="button" role="radio" aria-checked="false" data-lang="'+l.code+'"><span class="lg-dot" aria-hidden="true"></span><span style="flex:1"><span class="lg-native">'+l.native+'</span><br><span class="lg-sub">'+l.sub+'</span></span><span class="chk">✓</span></button>';
   });
   list.innerHTML=html;
 })();
@@ -1091,5 +1120,7 @@ if("IntersectionObserver" in window){
 /* footer year */
 document.getElementById("year").textContent=new Date().getFullYear();
 </script>
+<script>/* R5: PWA 离线兜底，与 site.webmanifest 能力声明对齐 */
+if("serviceWorker" in navigator)window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(e){console.warn("[silent-catch]",e);});});</script>
 </body>
 </html>

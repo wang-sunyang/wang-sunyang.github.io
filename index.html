@@ -24,14 +24,15 @@
 <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="512x512" href="https://wang-sunyang.github.io/favicon-512.png">
+<link rel="icon" type="image/webp" sizes="512x512" href="https://wang-sunyang.github.io/favicon-512.webp">
 <link rel="manifest" href="https://wang-sunyang.github.io/site.webmanifest">
 <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml">
   <link rel="alternate" type="application/rss+xml" title="王孙阳 · Wang Sunyang — 独立开发者" href="https://wang-sunyang.github.io/feed.xml">
-<meta property="og:image" content="https://wang-sunyang.github.io/og-cover.png">
+<meta property="og:image" content="https://wang-sunyang.github.io/og-cover.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="王孙阳 · Wang Sunyang — 独立开发者">
-<meta name="twitter:image" content="https://wang-sunyang.github.io/og-cover.png">
+<meta name="twitter:image" content="https://wang-sunyang.github.io/og-cover.jpg">
 <meta name="twitter:image:alt" content="王孙阳 · Wang Sunyang — 独立开发者">
 
 <script>
@@ -63,7 +64,7 @@
   de.setAttribute("dir",RTL.indexOf(code)>-1?"rtl":"ltr");
   window.__BOOT_LANG__=code;
   if(code!=="zh")de.className=(de.className?de.className+" ":"")+"i18n-boot";
-  setTimeout(function(){if(!window.__LANG_READY__)de.className=de.className.replace(/\s*i18n-boot/g,"");},1200);
+  setTimeout(function(){if(!window.__LANG_READY__)de.className=de.className.replace(/\s*i18n-boot/g,"");},300);
 })();
 </script>
 <style>
@@ -147,7 +148,7 @@ html{scrollbar-width:thin;scrollbar-color:var(--line-strong) transparent}
 
 /* ---------- layered background ---------- */
 #aurora{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;filter:blur(70px) saturate(130%)}
-#aurora i{position:absolute;border-radius:50%;opacity:.55;mix-blend-mode:screen;will-change:transform}
+#aurora i{position:absolute;border-radius:50%;opacity:.55;mix-blend-mode:screen}
 #aurora i:nth-child(1){width:52vw;height:52vw;left:-14vw;top:-18vw;background:radial-gradient(circle,var(--acc1) 0%,transparent 62%);animation:drift1 26s var(--ease) infinite alternate}
 #aurora i:nth-child(2){width:46vw;height:46vw;right:-12vw;top:8vw;background:radial-gradient(circle,var(--acc2) 0%,transparent 62%);animation:drift2 32s var(--ease) infinite alternate}
 #aurora i:nth-child(3){width:38vw;height:38vw;left:30vw;bottom:-16vw;background:radial-gradient(circle,var(--acc4) 0%,transparent 60%);animation:drift3 38s var(--ease) infinite alternate}
@@ -295,7 +296,7 @@ h1 .latin{display:block;font-size:clamp(20px,3vw,30px);letter-spacing:.02em;font
 
 /* projects */
 .projects{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.proj{display:flex;flex-direction:column;text-decoration:none;color:inherit;position:relative;overflow:hidden;transform-style:preserve-3d;will-change:transform}
+.proj{display:flex;flex-direction:column;text-decoration:none;color:inherit;position:relative;overflow:hidden;transform-style:preserve-3d}
 .proj .idx{position:absolute;top:20px;right:22px;font-size:40px;font-weight:800;color:var(--text);opacity:.06;line-height:1;font-variant-numeric:tabular-nums}
 .proj .ico{width:46px;height:46px;border-radius:13px;display:grid;place-items:center;margin-bottom:20px;background:var(--acc1-soft);border:1px solid var(--line);color:var(--acc1);transition:transform .3s var(--ease),box-shadow .3s var(--ease)}
 .proj .ico svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
@@ -445,8 +446,8 @@ footer a{color:var(--text-2);text-decoration:none}@media (hover:hover){footer a:
 #langPanel .lang-search-wrap{padding:10px 12px 4px;}
 #langPanel .lang-search{width:100%;box-sizing:border-box;padding:8px 11px;border-radius:9px;border:1px solid rgba(128,128,128,.35);background:rgba(128,128,128,.08);color:inherit;font:inherit;font-size:13px;line-height:1.3;-webkit-appearance:none;appearance:none;}
 #langPanel .lang-search::-webkit-search-cancel-button{-webkit-appearance:none;}
-#langPanel .lang-search:focus{outline:2px solid rgba(120,170,255,.85);outline-offset:1px;}
-#langPanel .lang-list button[data-lang]:focus-visible{outline:2px solid rgba(120,170,255,.85);outline-offset:2px;}
+#langPanel .lang-search:focus{outline:2px solid var(--acc1);outline-offset:1px;}
+#langPanel .lang-list button[data-lang]:focus-visible{outline:2px solid var(--acc1);outline-offset:2px;}
 #langPanel.no-match .lang-list::after{content:"\2014";display:block;padding:22px 0;text-align:center;opacity:.55;}
 html.lang-lock,html.lang-lock body{overflow:hidden;}
 @media (prefers-reduced-motion:reduce){#langPanel,.lang-search-wrap{transition:none!important;animation:none!important;}}
@@ -465,7 +466,7 @@ html:lang(fa),html:lang(he),html:lang(ar),html:lang(sd),html:lang(ps){font-famil
 .lr-switch .lr-knob{position:absolute;top:2px;left:2px;width:19px;height:19px;border-radius:50%;background:var(--text-3);transition:transform .22s var(--ease),background .22s var(--ease)}
 .lr-switch[aria-checked="true"]{background:var(--acc1-soft);border-color:rgba(94,234,212,.45)}
 .lr-switch[aria-checked="true"] .lr-knob{transform:translateX(19px);background:var(--acc1)}
-.lr-switch:focus-visible{outline:2px solid rgba(120,170,255,.85);outline-offset:2px}
+.lr-switch:focus-visible{outline:2px solid var(--acc1);outline-offset:2px}
 html[dir="rtl"] .lr-switch .lr-knob{left:auto;right:2px}
 html[dir="rtl"] .lr-switch[aria-checked="true"] .lr-knob{transform:translateX(-19px)}
 #langPanel .lang-list .lg-native,#langPanel .lang-list .lg-sub{overflow-wrap:anywhere}
@@ -477,8 +478,9 @@ html[dir="rtl"] .lr-switch[aria-checked="true"] .lr-knob{transform:translateX(-1
 @media (max-width:400px){.lang-remember{padding:9px 16px}.lang-remember .lr-sub{display:none}}
 
 
-/* i18n 首屏防闪：目标语言不是中文时，切换完成前不显示正文 */
-html.i18n-boot body{visibility:hidden}
+/* i18n 首屏：不再隐藏 body，只用底色防闪；语言包 300ms 内未就绪即放弃等待 */
+/* R6: 不再隐藏 body —— 语言包慢或失败时首屏直接可见，不再白屏 */
+:target,[id]{scroll-margin-top:96px}
 html.i18n-boot{background:#05060e}
 html[data-theme="light"].i18n-boot{background:#f4f5fb}
 /* ============================================================
@@ -504,6 +506,12 @@ html[data-theme="light"].i18n-boot{background:#f4f5fb}
   .prose pre,.prose code{color:#111!important;background:#f4f4f4!important}
   .prose img{max-width:100%!important;height:auto}
   .prose a{word-break:break-word}
+}
+/* R5: forced-colors 兜底 —— 强制配色下毛玻璃/半透明失效，改用系统色保边界与选中态 */
+@media (forced-colors: active){
+  .site-nav,.mobile-menu,.menu-overlay,#langPanel .lang-card,#kbdPanel .kbd-card,.card,.proj,.post-card{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+  .site-nav,.mobile-menu,.card,.proj,.post-card{border-color:CanvasText}
+  .lang-list button[aria-checked="true"]{outline:2px solid Highlight;outline-offset:-2px;forced-color-adjust:none}
 }
 </style>
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Person","@id":"https://wang-sunyang.github.io/#person","name":"王孙阳","alternateName":"Wang Sunyang","url":"https://wang-sunyang.github.io/","jobTitle":"独立开发者","description":"独立开发者，做原生 Android、端侧 ML 与零依赖网页项目；长夜拾星工作室（Nightglean Studio）主理人。","sameAs":["https://github.com/wang-sunyang","https://github.com/nightglean"],"knowsAbout":["Native Android","Kotlin","On-device ML","LiteRT","WebGL","Three.js","静态站点工程"]},{"@type":"WebSite","@id":"https://wang-sunyang.github.io/#website","url":"https://wang-sunyang.github.io/","name":"王孙阳 · Wang Sunyang","inLanguage":"zh-Hans","publisher":{"@id":"https://wang-sunyang.github.io/#person"}}]}</script>
@@ -547,7 +555,7 @@ html[data-theme="light"].i18n-boot{background:#f4f5fb}
       <a href="#contact" data-i18n="nav.contact">联系</a>
     </div>
     <div class="nav-tools">
-      <button class="tool-btn burger-btn" id="menuBtn" type="button" aria-label="打开菜单" data-i18n-aria="a11y.openMenu" aria-haspopup="menu" aria-expanded="false" aria-controls="mobileMenu">
+      <button class="tool-btn burger-btn" id="menuBtn" type="button" aria-label="打开菜单" data-i18n-aria="a11y.openMenu" aria-haspopup="dialog" aria-expanded="false" aria-controls="mobileMenu">
         <svg viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
       </button>
       <button class="tool-btn lang-btn" id="langBtn" type="button" aria-label="切换语言 / Switch language" data-i18n-aria="a11y.langBtn" aria-haspopup="dialog" aria-controls="langPanel" aria-expanded="false">
@@ -563,7 +571,7 @@ html[data-theme="light"].i18n-boot{background:#f4f5fb}
 </nav>
 
 <div class="menu-overlay" id="menuOverlay" aria-hidden="true"></div>
-<aside class="mobile-menu" id="mobileMenu" aria-label="移动端菜单" data-i18n-aria="a11y.mobileMenu" aria-hidden="true">
+<aside class="mobile-menu" id="mobileMenu" role="dialog" aria-modal="true" aria-label="移动端菜单" data-i18n-aria="a11y.mobileMenu" aria-hidden="true">
   <div class="mm-head">
     <span class="logo"><span class="lg-mark">王</span><span>王孙阳</span></span>
     <button class="mm-close" id="menuClose" type="button" aria-label="关闭菜单" data-i18n-aria="a11y.closeMenu">✕</button>
@@ -589,7 +597,7 @@ html[data-theme="light"].i18n-boot{background:#f4f5fb}
     <span class="lr-text"><b id="rememberLangText" data-i18n="ui.remember">记住语言</b><span class="lr-sub" data-i18n="ui.rememberSub">下次访问沿用当前语言</span></span>
     <button class="lr-switch" id="rememberLang" type="button" role="switch" aria-checked="true" aria-labelledby="rememberLangText"><span class="lr-knob" aria-hidden="true"></span></button>
   </div>
-  <div class="lang-list" id="langList"></div>
+  <div class="lang-list" id="langList" role="radiogroup" data-i18n-aria="a11y.langPanel"></div>
 </div>
 
 <main id="main">
@@ -920,16 +928,25 @@ function __renderLang(code){
     if(av!==undefined) el.setAttribute("aria-label",av);
   });
   document.querySelectorAll(".lang-list button").forEach(function(b){
-    b.classList.toggle("active",b.getAttribute("data-lang")===code);
+    var __on=(b.getAttribute("data-lang")===code);b.classList.toggle("active",__on);b.setAttribute("aria-checked",__on?"true":"false");
   });
   // typed roles restart
   stopTyped();startTyped(code);
   // meta description
   var desc=getPath(lang,"hero.lead");
   if(desc){document.querySelector('meta[name="description"]').setAttribute("content",desc.replace(/<[^>]*>/g,""));}
+  __syncOG(code,lang,__tt,desc);
 }
 
 /* build language list */
+/* R5: og/twitter 元信息随语言同步（复用既有 meta.title / 页面描述键，不新增翻译键） */
+var __OG_LOCALE={"zh":"zh_CN","zh-TW":"zh_TW","en":"en_US","ja":"ja_JP","ko":"ko_KR","fr":"fr_FR","de":"de_DE","es":"es_ES","pt":"pt_BR","it":"it_IT","ru":"ru_RU","uk":"uk_UA","pl":"pl_PL","nl":"nl_NL","tr":"tr_TR","ar":"ar_AR","hi":"hi_IN","id":"id_ID","vi":"vi_VN","th":"th_TH","el":"el_GR","sv":"sv_SE","cs":"cs_CZ","ro":"ro_RO","bn":"bn_BD","ur":"ur_PK","ms":"ms_MY","tl":"tl_PH","he":"he_IL","fa":"fa_IR"};
+function __syncOG(code,lang,title,desc){
+  function __set(sel,val){var el=document.querySelector(sel);if(el&&val!=null&&val!=="")el.setAttribute("content",val);}
+  if(title){__set('meta[property="og:title"]',title);__set('meta[name="twitter:title"]',title);}
+  if(desc){var __d=String(desc).replace(/<[^>]*>/g,"").replace(/\s+/g," ").trim();__set('meta[property="og:description"]',__d);__set('meta[name="twitter:description"]',__d);__set('meta[name="description"]',__d);}
+  __set('meta[property="og:locale"]',__OG_LOCALE[code]||String(code).replace("-","_"));
+}
 var I18N_EXT_BASE="i18n/index/";
 /* ============================================================
    i18n 词典按需加载
@@ -948,7 +965,7 @@ function __loadLang(code,cb){
   if(__langBusy[code]){__langQueue[code].push(cb);return;}
   __langBusy[code]=true;__langQueue[code]=[cb];
   var s=document.createElement("script");
-  s.src=I18N_EXT_BASE+code+".js";s.async=true;
+  s.src=I18N_EXT_BASE+code+".js?v=20261127";s.async=true;
   function done(ok){
     if(!ok){I18N[code]=I18N.zh;
       (window.__i18nErrs=window.__i18nErrs||[]).push("langload:"+code);
@@ -993,7 +1010,7 @@ function setLang(code){
   var list=document.getElementById("langList");
   var html="";
   LANGS.forEach(function(l){
-    html+='<button type="button" data-lang="'+l.code+'"><span class="lg-dot" aria-hidden="true"></span><span style="flex:1"><span class="lg-native">'+l.native+'</span><br><span class="lg-sub">'+l.sub+'</span></span><span class="chk">✓</span></button>';
+    html+='<button type="button" role="radio" aria-checked="false" data-lang="'+l.code+'"><span class="lg-dot" aria-hidden="true"></span><span style="flex:1"><span class="lg-native">'+l.native+'</span><br><span class="lg-sub">'+l.sub+'</span></span><span class="chk">✓</span></button>';
   });
   list.innerHTML=html;
 })();
@@ -1582,5 +1599,7 @@ function showToast(msg){
 /* footer year */
 document.getElementById("year").textContent=new Date().getFullYear();
 </script>
+<script>/* R5: PWA 离线兜底，与 site.webmanifest 能力声明对齐 */
+if("serviceWorker" in navigator)window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(e){console.warn("[silent-catch]",e);});});</script>
 </body>
 </html>

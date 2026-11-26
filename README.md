@@ -35,6 +35,7 @@ Edit a file, `git push`, GitHub Pages publishes it.
 - [Naming and path conventions](#naming-and-path-conventions)
 - [Browser support and fallbacks](#browser-support-and-fallbacks)
 - [Deliberate trade-offs](#deliberate-trade-offs)
+- [Recent optimizations](#recent-optimizations)
 - [Contact](#contact)
 - [Copyright](#copyright)
 
@@ -47,12 +48,14 @@ Edit a file, `git push`, GitHub Pages publishes it.
 | `404.html` | 404 page | GitHub Pages serves this automatically for unmatched paths |
 | `posts/handwritten-html.html` | Note 1 | "Why I build my personal site in hand-written HTML", 2026-11-08 |
 | `posts/three-habits.html` | Note 2 | "Hand the repetitive work to tools: three small habits", 2026-10-21 |
+| `posts/site-r6-optimization.html` | Note 3 | "A round of subtraction: first paint, icons and weak networks", 2026-11-26 |
 | `docs/notes-guide.md` | Maintenance doc | Full steps for adding a post, changing categories, wiring prev/next, adding dictionary entries |
 | `i18n/` | On-demand language packs | Five page directories x 27 languages = 135 JS files, injected only when that language is picked |
 | `feed.xml` | RSS 2.0 feed | Every post, with author, date and body excerpt |
 | `sitemap.xml`, `robots.txt` | Crawl entry points | sitemap lists the 4 indexable pages; robots allows the site, blocks 404 and declares the sitemap |
-| `site.webmanifest`, `favicon-192.png`, `og-cover.png` | Site-level assets | manifest supplies the 192/512 PWA icons; `og-cover.png` is the 1200x630 share card |
+| `site.webmanifest`, `favicon-192.png`, `favicon-512.webp`, `og-cover.jpg` | Site-level assets | manifest supplies the 192/512 PWA icons; `og-cover.jpg` is the 1200x630 share card (the PNG original is still in the repo but no longer referenced) |
 | `favicon.svg`, `favicon-16.png`, `favicon-32.png`, `favicon-512.png`, `apple-touch-icon.png` | Icons | SVG for modern browsers, PNG fallbacks for older ones and the iOS home screen |
+| `favicon-192.webp`, `favicon-512.webp`, `apple-touch-icon.webp` | WebP icon derivatives | Extra `<link rel="icon">` entries on every page; an order of magnitude smaller than the PNGs, which stay as fallbacks |
 
 Five HTML files, about 350 KB in total (down from 810 KB once the dictionaries moved off-page),
 plus 135 on-demand language packs, site-level assets and docs. No `package.json`, no
@@ -287,6 +290,27 @@ Fallbacks in place:
   one URL each, not split by language
 - **No dark-mode image handling**: the site uses no photos today. If that changes, each image needs
   two variants or a filter
+
+## Recent optimizations (2026-11-26)
+
+- **First-screen visibility no longer hides the body**: previously, when the target language was
+  not Chinese, `body{visibility:hidden}` was used to avoid a flash of untranslated text; the body
+  now stays visible with only a background colour for flash prevention, and the i18n fallback was
+  tightened from 1200ms to 300ms — if a language pack is slow or fails, already-rendered content
+  appears immediately instead of a blank screen
+- **Share card and icons shrank**: `og-cover.png` converted to JPEG (-58.8%, 142 KB → 57 KB, PSNR
+  39.88 dB); three favicon PNGs quantised to 256 colours (‑79% to ‑89%); new `favicon-*.webp`
+  derivatives added as `<link>` entries. `favicon-512` is requested on every navigation, so each
+  visit now downloads roughly 63 KB less
+- **Service Worker navigation race**: `sw.js` now injects a 3-second `navTimeout` that falls back to
+  the cached copy on weak networks instead of waiting indefinitely; cache version bumped to
+  `v20261127` and the five pages' language-pack URLs carry `?v=20261127`
+- **Focus ring unified into a CSS variable**: 15 hard-coded `rgba(120,170,255,.85)` values replaced
+  with `var(--acc1)` / `var(--accent)`, so the ring follows the theme — note that the home / list /
+  404 pages use `--acc1` while the two article pages use `--accent`, and the two naming systems are
+  not interchangeable
+- **Anchor scroll offset**: `:target,[id]{scroll-margin-top:96px}` added to all five pages so that
+  jumping to a heading no longer hides it under the sticky header
 
 ## Contact
 

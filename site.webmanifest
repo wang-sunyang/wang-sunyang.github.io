@@ -1,5 +1,6 @@
 {
   "name": "王孙阳 · Wang Sunyang",
+  "id": "/",
   "short_name": "Wang Sunyang",
   "description": "独立开发者：原生 Android、零依赖构建链、AI Agent 权限闸门。",
   "lang": "zh-CN",
@@ -10,8 +11,29 @@
   "background_color": "#05060e",
   "theme_color": "#05060e",
   "icons": [
-    { "src": "/favicon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
-    { "src": "/favicon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
-    { "src": "/favicon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+    {
+      "src": "favicon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "favicon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "favicon-maskable-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "favicon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
   ]
 }

@@ -6,7 +6,7 @@ const path = require('path');
 const vm = require('vm');
 
 const W = path.join(__dirname, '..');   // 仓库根 = tools 的上一级
-const PAGES = ['index.html', 'blog.html', '404.html', 'posts/handwritten-html.html', 'posts/three-habits.html'];
+const PAGES = ['index.html', 'blog.html', '404.html', 'posts/handwritten-html.html', 'posts/three-habits.html', 'posts/site-r6-optimization.html'];
 const results = [];
 function chk(page, name, ok, detail) {
   results.push({ page, name, ok: !!ok, detail: detail === undefined ? '' : String(detail) });
@@ -90,7 +90,7 @@ for (const f of PAGES) {
     .filter(m => /[\u4e00-\u9fff]/.test(m[1]) && !/data-i18n-aria=/.test(m[0])).length;
   chk(f, '中文 aria-label 均已标记 data-i18n-aria', untagged === 0, untagged + '/' + cjkAria + ' 未标');
   chk(f, 'aria 本地化支持逐键回落 en', /if\(av===undefined\) av=getPath\(I18N\.en/.test(h), '');
-  chk(f, 'i18n 兜底 ≤1200ms', /},1200\);/.test(h) && !/},4000\);/.test(h), '');
+  chk(f, 'i18n 兜底 ≤300ms', /},300\);/.test(h) && !/},1200\);/.test(h), '');
   chk(f, '语言包失败即解除 i18n-boot', /__i18nErrs/.test(h) && /i18n-boot\/g,""\)/.test(h), '');
   chk(f, '无空 catch', !/catch\s*\(\s*[A-Za-z_$][\w$]*\s*\)\s*\{\s*\}/.test(h), '');
   const hasChange = /addEventListener\("change"/.test(h);
@@ -147,6 +147,138 @@ chk('sitemap.xml', '404 未被收录', !sm.includes('404.html'), '');
     const missing = base.drifted.filter(n => !drifted.includes(n));
     chk('五页', '无新增函数体漂移', newDrift.length === 0, newDrift.length ? newDrift.join(',') : ('基线 ' + base.commonCount + ' 个，已知差异 ' + base.drifted.join(',')));
     if (missing.length) chk('五页', '基线差异项已收敛', true, '已自动统一: ' + missing.join(','));
+  }
+}
+
+/* ---------- 7. R5 优化项守护（PWA / 无障碍选中态 / 结构化数据 / 强制配色 / 元信息同步） ---------- */
+{
+  const V = '20261127';
+  for (const f of PAGES) {
+    const h = fs.readFileSync(path.join(W, f), 'utf8');
+
+    // 7.1 语言列表：radiogroup + 按钮 radio + aria-checked 同步
+    const rg = /<div class="lang-list" id="langList" role="radiogroup"[^>]*data-i18n-aria="a11y\.langPanel"/.test(h);
+    const radioBtn = h.includes('role="radio" aria-checked="false" data-lang=');
+    const syncAc = h.includes('classList.toggle("active",__on);b.setAttribute("aria-checked",__on?"true":"false")');
+    chk(f, 'R5 语言列表 radiogroup 语义', rg, rg ? '' : '缺 role=radiogroup/data-i18n-aria');
+    chk(f, 'R5 语言按钮 radio+aria-checked', radioBtn, radioBtn ? '' : '按钮生成缺 role/aria-checked');
+    chk(f, 'R5 选中态同步 aria-checked', syncAc, syncAc ? '' : '切换语言未同步 aria-checked');
+
+    // 7.2 强制配色兜底
+    const fc = /@media \(forced-colors: active\)/.test(h);
+    const fcDetail = fc && h.includes('CanvasText') && h.includes('Highlight') && h.includes('forced-color-adjust');
+    chk(f, 'R5 forced-colors 兜底', fcDetail, fc ? '' : '缺 @media (forced-colors: active)');
+
+    // 7.3 will-change:transform 已移除 / backdrop-filter 保留
+    const wc = [...h.matchAll(/will-change\s*:\s*transform/g)].length;
+    chk(f, 'R5 无常驻 will-change:transform', wc === 0, wc + ' 处残留');
+    const bf = [...h.matchAll(/backdrop-filter/g)].length;
+    chk(f, 'R5 backdrop-filter 未被误删', bf > 0, bf + ' 处');
+
+    // 7.4 og/twitter 随语言同步
+    const defSync = /function __syncOG\(code,lang,title,desc\)/.test(h);
+    const callSync = [...h.matchAll(/__syncOG\(code,lang,/g)].length === 2; // 1 定义 + 1 调用
+    const hasLocaleMap = h.includes('"zh-TW":"zh_TW"') && h.includes('"ja":"ja_JP"');
+    chk(f, 'R5 __syncOG 定义+调用各一次', defSync && callSync && hasLocaleMap,
+      (defSync ? '' : '缺定义 ') + (callSync ? '' : '定义+调用总数≠2 ') + (hasLocaleMap ? '' : '缺 locale 映射'));
+
+    // 7.5 语言包版本参数
+    const vok = h.includes('s.src=I18N_EXT_BASE+code+".js?v=' + V + '"');
+    chk(f, 'R5 语言包带版本参数', vok, vok ? '' : '缺 ?v=' + V);
+
+    // 7.6 SW 注册，路径按页深选择
+    const wantSw = f.startsWith('posts/') ? '../sw.js' : 'sw.js';
+    const regOk = h.includes('serviceWorker.register("' + wantSw + '")');
+    chk(f, 'R5 Service Worker 注册路径', regOk, regOk ? wantSw : '应为 ' + wantSw);
+  }
+
+  // 7.7 index 移动菜单语义
+  {
+    const h = fs.readFileSync(path.join(W, 'index.html'), 'utf8');
+    chk('index.html', 'R5 menuBtn haspopup=dialog', /aria-haspopup="dialog"/.test(h) && !/aria-haspopup="menu"/.test(h), '');
+    const mm = /<aside class="mobile-menu" id="mobileMenu" role="dialog" aria-modal="true"/.test(h);
+    chk('index.html', 'R5 mobileMenu role=dialog', mm, mm ? '' : 'aside 缺 role/aria-modal');
+  }
+
+  // 7.8 文章页结构化数据完整
+  for (const f of ['posts/handwritten-html.html', 'posts/three-habits.html', 'posts/site-r6-optimization.html']) {
+    const h = fs.readFileSync(path.join(W, f), 'utf8');
+    const hasImage = /"dateModified":"\d{4}-\d{2}-\d{2}","image":\{"@type":"ImageObject","url":"https:\/\/wang-sunyang\.github\.io\/og-cover\.jpg","width":1200,"height":630\}/.test(h);
+    chk(f, 'R5 BlogPosting 含 image+dateModified', hasImage, hasImage ? '' : 'JSON-LD 缺 image/dateModified');
+    const am = /<meta property="article:modified_time" content="\d{4}-\d{2}-\d{2}">/.test(h)
+      && h.includes('<meta property="article:author" content="https://wang-sunyang.github.io/">');
+    chk(f, 'R5 article 元信息补齐', am, am ? '' : '缺 modified_time/author');
+    const jl = [...h.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map(m => m[1]);
+    let bad2 = '';
+    jl.forEach(s => { try { JSON.parse(s); } catch (e) { bad2 = e.message; } });
+    chk(f, 'R5 JSON-LD 可解析', !bad2, bad2 || (jl.length + ' 段'));
+  }
+
+  // 7.9 404 描述补全
+  {
+    const h = fs.readFileSync(path.join(W, '404.html'), 'utf8');
+    chk('404.html', 'R5 404 具备 name=description', /<meta name="description" content="[^"]+">/.test(h), '');
+  }
+
+  // 7.10 sw.js 本体
+  {
+    const p = path.join(W, 'sw.js');
+    const exist = fs.existsSync(p);
+    chk('sw.js', 'R5 文件存在', exist, exist ? fs.statSync(p).size + ' bytes' : '缺失');
+    if (exist) {
+      const s = fs.readFileSync(p, 'utf8');
+      let bad3 = '';
+      try { new vm.Script(s, { filename: 'sw.js' }); } catch (e) { bad3 = e.message; }
+      chk('sw.js', 'R5 语法可解析', !bad3, bad3);
+      chk('sw.js', 'R5 缓存版本与页面参数一致', s.includes('"v' + V + '"'), '');
+      const precache = ['index.html', 'blog.html', '404.html', 'posts/handwritten-html.html', 'posts/three-habits.html', 'posts/site-r6-optimization.html']
+        .every(x => s.includes('"./' + x + '"'));
+      chk('sw.js', 'R5 预缓存覆盖五页', precache, '');
+      const strat = s.includes('req.mode === "navigate"') && /function swr\(/.test(s) && s.includes('"/i18n/"');
+      chk('sw.js', 'R5 三层缓存策略齐备', strat, 'navigation / i18n / 静态资源');
+      chk('sw.js', 'R5 无空 catch', !/catch\s*\(\s*(?:[A-Za-z_$][\w$]*\s*)?\)\s*\{\s*\}/.test(s), '');
+    }
+  }
+
+  // 7.11 .nojekyll 与资源体积护栏
+  {
+    chk('.nojekyll', 'R5 存在（下划线目录可发布）', fs.existsSync(path.join(W, '.nojekyll')), '');
+    /* manifest 与 PWA 能力声明一致：有 SW 时 display/id/icons 必须齐备 */
+    let mf = null, mfErr = '';
+    try { mf = JSON.parse(fs.readFileSync(path.join(W, 'site.webmanifest'), 'utf8')); } catch (e) { mfErr = e.message; }
+    chk('site.webmanifest', 'R5 JSON 可解析', !!mf, mfErr);
+    if (mf) {
+      chk('site.webmanifest', 'R5 有 SW 时能力声明完整',
+        mf.display === 'standalone' && mf.id === '/' && mf.scope === '/' && Array.isArray(mf.icons) && mf.icons.length >= 4,
+        'display=' + mf.display + ' id=' + mf.id + ' icons=' + (mf.icons || []).length);
+      const missing = (mf.icons || []).map(i => i.src).filter(src => !fs.existsSync(path.join(W, src)));
+      chk('site.webmanifest', 'R5 图标文件均存在', missing.length === 0, missing.join(','));
+    }
+    const caps = { 'og-cover.jpg': 75000, 'favicon-512.png': 72000, 'apple-touch-icon.png': 18000, 'favicon-maskable-512.png': 60000, 'favicon-192.png': 17500, 'favicon-maskable-192.png': 16000, 'favicon-512.webp': 9000, 'favicon-192.webp': 4000, 'apple-touch-icon.webp': 3500 };
+    for (const [f, cap] of Object.entries(caps)) {
+      const sz = fs.statSync(path.join(W, f)).size;
+      chk(f, 'R5 图片体积未回退', sz <= cap, sz + ' / ' + cap);
+    }
+  }
+}
+
+/* ---------- R6 首屏可见性与资源收敛 ---------- */
+{
+  const P6 = ['index.html', 'blog.html', '404.html', 'posts/handwritten-html.html', 'posts/three-habits.html', 'posts/site-r6-optimization.html'];
+  for (const f of P6) {
+    const h = fs.readFileSync(path.join(W, f), 'utf8');
+    chk(f, 'R6 不再隐藏 body', !/html\.i18n-boot body\{visibility:hidden\}/.test(h), '');
+    chk(f, 'R6 焦点环无硬编码色', !/rgba\(120,170,255,\.85\)/.test(h), '');
+    chk(f, 'R6 锚点滚动偏移', h.includes(':target,[id]{scroll-margin-top:96px}'), '');
+    chk(f, 'R6 分享图指向 jpg', !/og-cover\.png/.test(h), '');
+    chk(f, 'R6 favicon 提供 webp', h.includes('favicon-512.webp'), '');
+  }
+  const s6 = fs.readFileSync(path.join(W, 'sw.js'), 'utf8');
+  chk('sw.js', 'R6 导航 3s 竞速超时', /function navTimeout\(/.test(s6) && s6.includes('navTimeout(3000)'), '');
+  chk('sw.js', 'R6 版本号已升版', s6.includes('"v20261127"'), '');
+  chk('og-cover.jpg', 'R6 分享图已转 JPEG', fs.existsSync(path.join(W, 'og-cover.jpg')), '');
+  for (const p of ['favicon-512.webp', 'favicon-192.webp', 'apple-touch-icon.webp']) {
+    chk(p, 'R6 WebP 派生存在', fs.existsSync(path.join(W, p)), '');
   }
 }
 
