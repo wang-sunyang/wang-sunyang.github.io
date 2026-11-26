@@ -22,6 +22,7 @@
 <meta property="og:description" content="这一页走丢了：你找的地址不存在，或者内容已经搬走了。">
 <meta property="og:url" content="https://wang-sunyang.github.io/404.html">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:locale:alternate" content="en_US">
 <meta name="twitter:title" content="404 · 王孙阳">
 <meta name="twitter:description" content="这一页走丢了：你找的地址不存在，或者内容已经搬走了。">
 <meta property="og:image" content="https://wang-sunyang.github.io/og-cover.jpg">
@@ -230,6 +231,7 @@ function __syncOG(code,lang,title,desc){
   if(title){__set('meta[property="og:title"]',title);__set('meta[name="twitter:title"]',title);}
   if(desc){var __d=String(desc).replace(/<[^>]*>/g,"").replace(/\s+/g," ").trim();__set('meta[property="og:description"]',__d);__set('meta[name="twitter:description"]',__d);__set('meta[name="description"]',__d);}
   __set('meta[property="og:locale"]',__OG_LOCALE[code]||String(code).replace("-","_"));
+  __set('meta[property="og:locale:alternate"]', /^en/.test(code) ? "zh_CN" : "en_US");
 }
 var I18N_EXT_BASE="i18n/notfound/";
 /* ============================================================

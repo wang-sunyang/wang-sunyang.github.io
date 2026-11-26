@@ -415,5 +415,29 @@ chk('site.webmanifest', 'C1 shortcuts 均有图标与 url',
 chk('site.webmanifest', 'C1 shortcuts url 指向真实页面',
   (mf.shortcuts || []).every(s => { const u = s.url.split(/[?#]/)[0]; return u === '/' || fs.existsSync(path.join(W, u.replace(/^\//, ''))); }), '');
 
+
+/* ---------- A2：Open Graph 语言标注补全 ---------- */
+const OG_PAIRS = [
+  ['index.html', 'zh_CN', 'en_US'], ['blog.html', 'zh_CN', 'en_US'], ['404.html', 'zh_CN', 'en_US'],
+  ['posts/handwritten-html.html', 'zh_CN', 'en_US'], ['posts/three-habits.html', 'zh_CN', 'en_US'],
+  ['posts/site-r6-optimization.html', 'zh_CN', 'en_US'],
+  ['en/index.html', 'en_US', 'zh_CN'], ['en/blog.html', 'en_US', 'zh_CN'],
+  ['en/posts/handwritten-html.html', 'en_US', 'zh_CN'], ['en/posts/three-habits.html', 'en_US', 'zh_CN'],
+  ['en/posts/site-r6-optimization.html', 'en_US', 'zh_CN']
+];
+for (const [f, loc, alt] of OG_PAIRS) {
+  const h = fs.readFileSync(path.join(W, f), 'utf8');
+  const m = h.match(/<meta property="og:locale" content="([^"]+)">/);
+  const a = [...h.matchAll(/<meta property="og:locale:alternate" content="([^"]+)">/g)].map(x => x[1]);
+  chk(f, 'A2 og:locale 正确', m && m[1] === loc, m ? m[1] : '缺失');
+  chk(f, 'A2 og:locale:alternate 单一且互补', a.length === 1 && a[0] === alt, a.join(',') || '缺失');
+  const u = h.match(/<meta property="og:url" content="([^"]+)">/);
+  const c = h.match(/<link rel="canonical" href="([^"]+)">/);
+  chk(f, 'A2 og:url 与 canonical 一致', !c || (u && u[1] === c[1]), u ? u[1] : '缺失');
+}
+for (const f of PAGES.filter(x => !x.startsWith('en/'))) {
+  chk(f, 'A2 运行时同步 alternate', fs.readFileSync(path.join(W, f), 'utf8').includes('og:locale:alternate"]\''), '');
+}
+
 console.log('\n合计 ' + results.length + ' 条断言，通过 ' + (results.length - bad.length) + ' 条，失败 ' + bad.length + ' 条');
 process.exit(bad.length ? 1 : 0);

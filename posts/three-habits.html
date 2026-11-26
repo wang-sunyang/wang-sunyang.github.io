@@ -16,6 +16,7 @@
 <meta name="twitter:description" content="效率提升往往不来自什么大动作，而是来自三个具体判断：什么该省、什么绝不能省、怎么让工具替你记住规则。三个小习惯，替我省下每周几小时的重复劳动。">
 <meta property="og:url" content="https://wang-sunyang.github.io/posts/three-habits.html">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:locale:alternate" content="en_US">
 <meta name="twitter:card" content="summary_large_image">
 <meta property="article:published_time" content="2026-10-21">
 <meta property="article:modified_time" content="2026-11-25">
@@ -314,6 +315,7 @@ function __syncOG(code,lang,title,desc){
   if(title){__set('meta[property="og:title"]',title);__set('meta[name="twitter:title"]',title);}
   if(desc){var __d=String(desc).replace(/<[^>]*>/g,"").replace(/\s+/g," ").trim();__set('meta[property="og:description"]',__d);__set('meta[name="twitter:description"]',__d);__set('meta[name="description"]',__d);}
   __set('meta[property="og:locale"]',__OG_LOCALE[code]||String(code).replace("-","_"));
+  __set('meta[property="og:locale:alternate"]', /^en/.test(code) ? "zh_CN" : "en_US");
 }
 var I18N_EXT_BASE="../i18n/posts/three-habits/";
 /* ============================================================

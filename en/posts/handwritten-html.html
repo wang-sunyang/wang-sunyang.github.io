@@ -16,6 +16,7 @@
 <meta name="twitter:description" content="A page a framework can scaffold in three minutes took me several scattered evenings. Not because I can&#x27;t use tools, but because I wanted to feel the things frameworks hide away.">
 <meta property="og:url" content="https://wang-sunyang.github.io/en/posts/handwritten-html.html">
 <meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="zh_CN">
 <meta name="twitter:card" content="summary_large_image">
 <meta property="article:published_time" content="2026-11-08">
 <meta property="article:modified_time" content="2026-11-25">
@@ -311,6 +312,7 @@ function __syncOG(code,lang,title,desc){
   if(title){__set('meta[property="og:title"]',title);__set('meta[name="twitter:title"]',title);}
   if(desc){var __d=String(desc).replace(/<[^>]*>/g,"").replace(/\s+/g," ").trim();__set('meta[property="og:description"]',__d);__set('meta[name="twitter:description"]',__d);__set('meta[name="description"]',__d);}
   __set('meta[property="og:locale"]',__OG_LOCALE[code]||String(code).replace("-","_"));
+  __set('meta[property="og:locale:alternate"]', /^en/.test(code) ? "zh_CN" : "en_US");
 }
 var I18N_EXT_BASE="/i18n/posts/handwritten-html/";
 /* ============================================================

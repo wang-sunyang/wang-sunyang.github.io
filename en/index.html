@@ -15,6 +15,7 @@
 <meta property="og:description" content="One fewer layer of abstraction is one fewer class of bug. I ship product, code, tests and releases solo — native code, minimal dependencies, ideas turned into things that run.">
 <meta property="og:url" content="https://wang-sunyang.github.io/en/">
 <meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="zh_CN">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Wang Sunyang — Native Android Developer, Zero-dependency Front-end, AI Agent Guard">
 <meta name="twitter:description" content="One fewer layer of abstraction is one fewer class of bug. I ship product, code, tests and releases solo — native code, minimal dependencies, ideas turned into things that run.">
@@ -501,6 +502,7 @@ function __syncOG(code,lang,title,desc){
   if(title){__set('meta[property="og:title"]',title);__set('meta[name="twitter:title"]',title);}
   if(desc){var __d=String(desc).replace(/<[^>]*>/g,"").replace(/\s+/g," ").trim();__set('meta[property="og:description"]',__d);__set('meta[name="twitter:description"]',__d);__set('meta[name="description"]',__d);}
   __set('meta[property="og:locale"]',__OG_LOCALE[code]||String(code).replace("-","_"));
+  __set('meta[property="og:locale:alternate"]', /^en/.test(code) ? "zh_CN" : "en_US");
 }
 var I18N_EXT_BASE="/i18n/index/";
 /* ============================================================

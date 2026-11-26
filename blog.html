@@ -17,6 +17,7 @@
 <meta name="twitter:description" content="王孙阳的学习笔记和技术随笔：原生 Android 开发、手写 HTML 的零依赖站点、端侧 ML 与 AI Agent 权限闸门的实践记录，写清做过什么、卡在哪里。">
 <meta property="og:url" content="https://wang-sunyang.github.io/blog.html">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:locale:alternate" content="en_US">
 <meta name="twitter:card" content="summary_large_image">
 
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
@@ -330,6 +331,7 @@ function __syncOG(code,lang,title,desc){
   if(title){__set('meta[property="og:title"]',title);__set('meta[name="twitter:title"]',title);}
   if(desc){var __d=String(desc).replace(/<[^>]*>/g,"").replace(/\s+/g," ").trim();__set('meta[property="og:description"]',__d);__set('meta[name="twitter:description"]',__d);__set('meta[name="description"]',__d);}
   __set('meta[property="og:locale"]',__OG_LOCALE[code]||String(code).replace("-","_"));
+  __set('meta[property="og:locale:alternate"]', /^en/.test(code) ? "zh_CN" : "en_US");
 }
 var I18N_EXT_BASE="i18n/blog/";
 /* ============================================================
