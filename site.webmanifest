@@ -10,6 +10,11 @@
   "display": "standalone",
   "background_color": "#05060e",
   "theme_color": "#05060e",
+  "categories": [
+    "personal",
+    "developer",
+    "education"
+  ],
   "icons": [
     {
       "src": "favicon-192.png",
@@ -34,6 +39,47 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "笔记 · Notes",
+      "short_name": "Notes",
+      "description": "学习笔记与技术随笔列表",
+      "url": "/blog.html",
+      "icons": [
+        {
+          "src": "favicon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "关于我 · About",
+      "short_name": "About",
+      "description": "简介、项目与技术栈",
+      "url": "/#about",
+      "icons": [
+        {
+          "src": "favicon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "English",
+      "short_name": "EN",
+      "description": "Reading in English",
+      "url": "/en/",
+      "icons": [
+        {
+          "src": "favicon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
     }
   ]
 }

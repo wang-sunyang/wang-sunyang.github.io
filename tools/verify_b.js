@@ -7,6 +7,19 @@ const vm = require('vm');
 
 const W = path.join(__dirname, '..');   // 仓库根 = tools 的上一级
 const PAGES = ['index.html', 'blog.html', '404.html', 'posts/handwritten-html.html', 'posts/three-habits.html', 'posts/site-r6-optimization.html'];
+
+/* 内联 CSS + 外链样式表（文章页公共样式已抽到 assets/post.css） */
+function cssOf(f) {
+  const h = fs.readFileSync(path.join(W, f), 'utf8');
+  let css = [...h.matchAll(/<style[^>]*>([\s\S]*?)<\/style>/g)].map(m => m[1]).join('\n');
+  for (const m of h.matchAll(/<link[^>]+rel="stylesheet"[^>]*>/g)) {
+    const hm = /href="([^"]+)"/.exec(m[0]);
+    if (!hm) continue;
+    try { css += '\n' + fs.readFileSync(path.join(W, path.dirname(f), hm[1]), 'utf8'); }
+    catch (e) { console.warn('[silent-catch]', e.message); }
+  }
+  return css;
+}
 const results = [];
 function chk(page, name, ok, detail) {
   results.push({ page, name, ok: !!ok, detail: detail === undefined ? '' : String(detail) });
@@ -30,7 +43,7 @@ for (const f of PAGES) {
 /* ---------- 2. CSS 断言 ---------- */
 for (const f of PAGES) {
   const h = fs.readFileSync(path.join(W, f), 'utf8');
-  const css = [...h.matchAll(/<style[^>]*>([\s\S]*?)<\/style>/g)].map(m => m[1]).join('\n');
+  const css = cssOf(f);
   const t3 = [...css.matchAll(/--text-3\s*:\s*(#[0-9a-fA-F]{6})/g)].map(m => m[1].toLowerCase());
   const T3_OK = f.startsWith('posts/') ? ['#6b7a94', '#647089'] : ['#7b87ad', '#616b83'];
   chk(f, '--text-3 达 AA 且符合本页取值', t3.length && t3.every(v => T3_OK.includes(v)), t3.join(',') + ' 允许 ' + T3_OK.join('/'));
@@ -165,14 +178,15 @@ chk('sitemap.xml', '404 未被收录', !sm.includes('404.html'), '');
     chk(f, 'R5 选中态同步 aria-checked', syncAc, syncAc ? '' : '切换语言未同步 aria-checked');
 
     // 7.2 强制配色兜底
-    const fc = /@media \(forced-colors: active\)/.test(h);
-    const fcDetail = fc && h.includes('CanvasText') && h.includes('Highlight') && h.includes('forced-color-adjust');
+    const cssF = cssOf(f);
+    const fc = /@media \(forced-colors: active\)/.test(cssF);
+    const fcDetail = fc && cssF.includes('CanvasText') && cssF.includes('Highlight') && cssF.includes('forced-color-adjust');
     chk(f, 'R5 forced-colors 兜底', fcDetail, fc ? '' : '缺 @media (forced-colors: active)');
 
     // 7.3 will-change:transform 已移除 / backdrop-filter 保留
-    const wc = [...h.matchAll(/will-change\s*:\s*transform/g)].length;
+    const wc = [...cssF.matchAll(/will-change\s*:\s*transform/g)].length;
     chk(f, 'R5 无常驻 will-change:transform', wc === 0, wc + ' 处残留');
-    const bf = [...h.matchAll(/backdrop-filter/g)].length;
+    const bf = [...cssF.matchAll(/backdrop-filter/g)].length;
     chk(f, 'R5 backdrop-filter 未被误删', bf > 0, bf + ' 处');
 
     // 7.4 og/twitter 随语言同步
@@ -269,7 +283,7 @@ chk('sitemap.xml', '404 未被收录', !sm.includes('404.html'), '');
     const h = fs.readFileSync(path.join(W, f), 'utf8');
     chk(f, 'R6 不再隐藏 body', !/html\.i18n-boot body\{visibility:hidden\}/.test(h), '');
     chk(f, 'R6 焦点环无硬编码色', !/rgba\(120,170,255,\.85\)/.test(h), '');
-    chk(f, 'R6 锚点滚动偏移', h.includes(':target,[id]{scroll-margin-top:96px}'), '');
+    chk(f, 'R6 锚点滚动偏移', cssOf(f).includes(':target,[id]{scroll-margin-top:96px}'), '');
     chk(f, 'R6 分享图指向 jpg', !/og-cover\.png/.test(h), '');
     chk(f, 'R6 favicon 提供 webp', h.includes('favicon-512.webp'), '');
   }
@@ -288,5 +302,118 @@ const w = Math.max(...results.map(r => r.name.length));
 for (const r of results) {
   console.log((r.ok ? '  PASS  ' : '  FAIL  ') + r.page.padEnd(30) + r.name.padEnd(w + 2) + r.detail);
 }
+
+/* ---------- A3：SEO 元信息长度区间 ---------- */
+const SEO = {
+  'index.html': [30, 70],
+  'blog.html': [30, 70],
+  '404.html': [10, 45],
+  'posts/handwritten-html.html': [20, 70],
+  'posts/three-habits.html': [20, 70],
+  'posts/site-r6-optimization.html': [20, 70]
+};
+for (const f of PAGES) {
+  const h = fs.readFileSync(path.join(W, f), 'utf8');
+  const t = (/<title>([\s\S]*?)<\/title>/.exec(h) || [, ''])[1].trim();
+  const d = (/<meta name="description" content="([^"]*)"/.exec(h) || [, ''])[1].trim();
+  const ogd = (/<meta property="og:description" content="([^"]*)"/.exec(h) || [, ''])[1].trim();
+  const twd = (/<meta name="twitter:description" content="([^"]*)"/.exec(h) || [, ''])[1].trim();
+  const ogt = (/<meta property="og:title" content="([^"]*)"/.exec(h) || [, ''])[1].trim();
+  const twt = (/<meta name="twitter:title" content="([^"]*)"/.exec(h) || [, ''])[1].trim();
+  const [lo, hi] = SEO[f];
+  chk(f, 'A3 title 长度在区间内', t.length >= lo && t.length <= hi, t.length + ' 字符，允许 ' + lo + '–' + hi);
+  chk(f, 'A3 description 长度在区间内', d.length >= 70 && d.length <= 120, d.length + ' 字符，允许 70–120');
+  chk(f, 'A3 og/twitter description 与 meta 一致', ogd === d && twd === d, 'og=' + ogd.length + ' tw=' + twd.length + ' meta=' + d.length);
+  chk(f, 'A3 og/twitter title 与 title 一致', ogt === t && twt === t, 'og=' + ogt.length + ' tw=' + twt.length);
+}
+
+/* ---------- A1：/en/ 预渲染与 hreflang 互指 ---------- */
+const LOCALE_PAGES = ['index.html', 'blog.html', 'posts/handwritten-html.html', 'posts/three-habits.html', 'posts/site-r6-optimization.html'];
+const B = 'https://wang-sunyang.github.io/';
+for (const f of LOCALE_PAGES) {
+  const rootPath = path.join(W, f);
+  const enPath = path.join(W, 'en', f);
+  let h = '';
+  try { h = fs.readFileSync(rootPath, 'utf8'); } catch (e) { chk(f, 'A1 根页存在', false, e.message); continue; }
+  let en = '';
+  try { en = fs.readFileSync(enPath, 'utf8'); } catch (e) { chk(f, 'A1 /en/ 预渲染页存在', false, e.message); continue; }
+
+  const zhUrl = B + (f === 'index.html' ? '' : f);
+  const enUrl = B + 'en/' + (f === 'index.html' ? '' : f);
+  const altOf = (src) => [...src.matchAll(/<link rel="alternate" hreflang="([^"]+)" href="([^"]+)">/g)].map(m => [m[1], m[2]]);
+  const ra = altOf(h), ea = altOf(en);
+  const key = a => a.map(x => x.join('=')).sort().join('|');
+  chk(f, 'A1 根页 hreflang 含 en 且自指', ra.some(x => x[0] === 'en' && x[1] === enUrl) && ra.some(x => x[0] === 'zh-Hans' && x[1] === zhUrl), ra.map(x => x[0]).join(','));
+  chk(f, 'A1 /en/ hreflang 含 zh 与 x-default', ea.some(x => x[0] === 'zh-Hans' && x[1] === zhUrl) && ea.some(x => x[0] === 'x-default' && x[1] === zhUrl), ea.map(x => x[0]).join(','));
+  chk(f, 'A1 hreflang 无重复项', new Set(ra.map(x => x[0])).size === ra.length && new Set(ea.map(x => x[0])).size === ea.length, ra.map(x => x[0]).join(','));
+  chk(f, 'A1 两侧 hreflang 组完全一致', key(ra) === key(ea) && ra.length === 3, ra.length + ' vs ' + ea.length);
+
+  const can = (/<link rel="canonical" href="([^"]+)"/.exec(en) || [, ''])[1];
+  chk(f, 'A1 /en/ canonical 指向自身', can === enUrl, can);
+  const canZh = (/<link rel="canonical" href="([^"]+)"/.exec(h) || [, ''])[1];
+  chk(f, 'A1 根页 canonical 未被改写', canZh === zhUrl, canZh);
+  chk(f, 'A1 /en/ <html lang="en">', /<html[^>]+lang="en"/.test(en), (/<html[^>]*>/.exec(en) || [''])[0].slice(0, 60));
+  chk(f, 'A1 /en/ og:locale 为 en_US', /<meta property="og:locale" content="en_US">/.test(en), '');
+  chk(f, 'A1 /en/ 强制渲染英语', /var saved="en";/.test(en), '');
+  chk(f, 'A1 /en/ 不再遮挡正文', !/i18n-boot"*;/.test(en) || !en.includes('className+" ")+"i18n-boot"'), '');
+  chk(f, 'A1 /en/ 切语言回根页', /ROOT=/.test(en) && /\?lang=/.test(en) && !/"\)\+"lang="/.test(''), '');
+
+  // 预渲染：可见文本不含汉字（品牌名与语言标签除外）
+  const body = en.replace(/<(script|style)[^>]*>[\s\S]*?<\/\1>/g, '');
+  const cjk = [...body.matchAll(/[\u4e00-\u9fff]+/g)].map(m => m[0]);
+  const allowed = cjk.every(w => /王孙阳|王|Sunyang/.test(w));
+  chk(f, 'A1 /en/ 正文已静态英文化', allowed, cjk.slice(0, 6).join('/') || '0 处汉字');
+
+  // 文章页正文必须在 HTML 里（不是靠 JS 注入）
+  if (f.startsWith('posts/')) {
+    const prose = (/<div class="prose" id="prose">([\s\S]*?)<\/div>\s*<\/article>/.exec(en) || [, ''])[1];
+    chk(f, 'A1 /en/ 正文预渲染进 HTML', prose.replace(/<[^>]+>/g, '').trim().length > 400, prose.length + ' 字节容器');
+  }
+}
+for (const f of LOCALE_PAGES) {
+  const en = fs.readFileSync(path.join(W, 'en', f), 'utf8');
+  const bad = [...en.matchAll(/(?:href|src)="(?!https?:|\/|#|mailto:)([^"]+\.(?:png|webp|jpg|svg|xml|html|css|webmanifest))"/g)].map(m => m[1]);
+  chk('en/' + f, 'A1 站内相对路径已改绝对', bad.length === 0, bad.slice(0, 3).join(',') || '0 处');
+}
+for (const f of LOCALE_PAGES) {
+  const en = fs.readFileSync(path.join(W, 'en', f), 'utf8');
+  const t = (/<title>([\s\S]*?)<\/title>/.exec(en) || [, ''])[1].trim();
+  chk('en/' + f, 'A3 en title 含关键词且不过短', t.length >= 25 && /android|developer|notes|dependency|habit|optim/i.test(t), t.length + ' 字符');
+}
+const smA1 = fs.readFileSync(path.join(W, 'sitemap.xml'), 'utf8');
+chk('sitemap.xml', 'A1 收录 /en/ 且带 xhtml 互指',
+  (sm.match(/<loc>https:\/\/wang-sunyang\.github\.io\/en\//g) || []).length === 5 &&
+  (sm.match(/xmlns:xhtml=/g) || []).length === 1 &&
+  (sm.match(/<xhtml:link /g) || []).length === 30,
+  (sm.match(/<loc>/g) || []).length + ' 条 URL，' + (sm.match(/<xhtml:link /g) || []).length + ' 条 alternate');
+chk('404.html', 'A1 404 不参与 hreflang（noindex）', !/hreflang="en"/.test(fs.readFileSync(path.join(W, '404.html'), 'utf8')), '');
+
+/* ---------- B2：CSS 瘦身 ---------- */
+const postCss = fs.readFileSync(path.join(W, 'assets/post.css'), 'utf8');
+chk('assets/post.css', 'B2 公共样式已抽离且被三篇引用',
+  ['posts/handwritten-html.html', 'posts/three-habits.html', 'posts/site-r6-optimization.html']
+    .every(f => /<link rel="stylesheet" href="\.\.\/assets\/post\.css">/.test(fs.readFileSync(path.join(W, f), 'utf8'))),
+  postCss.length + ' 字节');
+chk('assets/post.css', 'B2 公共样式无注释残留', !/\/\*/.test(postCss), '');
+for (const f of PAGES) {
+  const h = fs.readFileSync(path.join(W, f), 'utf8');
+  const css = [...h.matchAll(/<style[^>]*>([\s\S]*?)<\/style>/g)].map(m => m[1]).join('\n');
+  const ws = css.length ? (css.match(/[ \t]{2,}/g) || []).length : 0;
+  chk(f, 'B2 内联 CSS 已压空白', ws === 0, ws + ' 处连续空白');
+}
+chk('sw.js', 'B2 公共样式进预缓存', /"\.\/assets\/post\.css"/.test(fs.readFileSync(path.join(W, 'sw.js'), 'utf8')), '');
+chk('index.html', 'B2 内联 CSS 体积下降', cssOf('index.html').length < 38000, cssOf('index.html').length + ' 字节');
+chk('index.html', 'A3 焦点环禁用裸色值',
+  !/:focus-visible[^{]*\{[^}]*outline:[^;}]*(?:#|rgba?\()/.test(cssOf('index.html')), '');
+
+/* ---------- C1：manifest 增强 ---------- */
+const mf = JSON.parse(fs.readFileSync(path.join(W, 'site.webmanifest'), 'utf8'));
+chk('site.webmanifest', 'C1 categories 已声明', Array.isArray(mf.categories) && mf.categories.length >= 2, (mf.categories || []).join(','));
+chk('site.webmanifest', 'C1 shortcuts 已声明', Array.isArray(mf.shortcuts) && mf.shortcuts.length >= 2, (mf.shortcuts || []).length + ' 条');
+chk('site.webmanifest', 'C1 shortcuts 均有图标与 url',
+  (mf.shortcuts || []).every(s => /^\//.test(s.url) && Array.isArray(s.icons) && s.icons.length && s.icons.every(i => i.sizes && i.src)), '');
+chk('site.webmanifest', 'C1 shortcuts url 指向真实页面',
+  (mf.shortcuts || []).every(s => { const u = s.url.split(/[?#]/)[0]; return u === '/' || fs.existsSync(path.join(W, u.replace(/^\//, ''))); }), '');
+
 console.log('\n合计 ' + results.length + ' 条断言，通过 ' + (results.length - bad.length) + ' 条，失败 ' + bad.length + ' 条');
 process.exit(bad.length ? 1 : 0);

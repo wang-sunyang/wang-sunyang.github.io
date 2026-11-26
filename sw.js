@@ -18,12 +18,15 @@ var PRECACHE = [
   "./posts/handwritten-html.html",
   "./posts/site-r6-optimization.html",
   "./posts/three-habits.html",
+  "./assets/post.css",
+  "./en/",
+  "./en/index.html",
   "./site.webmanifest",
   "./favicon-512.png",
   "./apple-touch-icon.png"
 ];
 
-var CACHE_FIRST_EXT = /\.(?:png|jpe?g|webp|avif|gif|svg|ico|woff2?|ttf)$/i;
+var CACHE_FIRST_EXT = /\.(?:png|jpe?g|webp|avif|gif|svg|ico|woff2?|ttf|css)$/i;
 
 self.addEventListener("install", function (e) {
   e.waitUntil(

@@ -1,33 +1,93 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://wang-sunyang.github.io/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://wang-sunyang.github.io/en/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://wang-sunyang.github.io/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://wang-sunyang.github.io/"/>
     <lastmod>2026-11-26</lastmod>
     <priority>1.0</priority>
     <changefreq>weekly</changefreq>
   </url>
   <url>
     <loc>https://wang-sunyang.github.io/blog.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://wang-sunyang.github.io/en/blog.html"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://wang-sunyang.github.io/blog.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://wang-sunyang.github.io/blog.html"/>
     <lastmod>2026-11-26</lastmod>
     <priority>0.8</priority>
     <changefreq>weekly</changefreq>
   </url>
   <url>
     <loc>https://wang-sunyang.github.io/posts/site-r6-optimization.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://wang-sunyang.github.io/en/posts/site-r6-optimization.html"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://wang-sunyang.github.io/posts/site-r6-optimization.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://wang-sunyang.github.io/posts/site-r6-optimization.html"/>
     <lastmod>2026-11-26</lastmod>
-    <changefreq>monthly</changefreq>
     <priority>0.7</priority>
+    <changefreq>monthly</changefreq>
   </url>
   <url>
     <loc>https://wang-sunyang.github.io/posts/handwritten-html.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://wang-sunyang.github.io/en/posts/handwritten-html.html"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://wang-sunyang.github.io/posts/handwritten-html.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://wang-sunyang.github.io/posts/handwritten-html.html"/>
     <lastmod>2026-11-26</lastmod>
     <priority>0.7</priority>
     <changefreq>yearly</changefreq>
   </url>
   <url>
     <loc>https://wang-sunyang.github.io/posts/three-habits.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://wang-sunyang.github.io/en/posts/three-habits.html"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://wang-sunyang.github.io/posts/three-habits.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://wang-sunyang.github.io/posts/three-habits.html"/>
     <lastmod>2026-11-26</lastmod>
     <priority>0.7</priority>
+    <changefreq>yearly</changefreq>
+  </url>
+  <url>
+    <loc>https://wang-sunyang.github.io/en/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://wang-sunyang.github.io/en/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://wang-sunyang.github.io/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://wang-sunyang.github.io/"/>
+    <lastmod>2026-11-26</lastmod>
+    <priority>0.6</priority>
+    <changefreq>weekly</changefreq>
+  </url>
+  <url>
+    <loc>https://wang-sunyang.github.io/en/blog.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://wang-sunyang.github.io/en/blog.html"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://wang-sunyang.github.io/blog.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://wang-sunyang.github.io/blog.html"/>
+    <lastmod>2026-11-26</lastmod>
+    <priority>0.6</priority>
+    <changefreq>weekly</changefreq>
+  </url>
+  <url>
+    <loc>https://wang-sunyang.github.io/en/posts/site-r6-optimization.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://wang-sunyang.github.io/en/posts/site-r6-optimization.html"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://wang-sunyang.github.io/posts/site-r6-optimization.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://wang-sunyang.github.io/posts/site-r6-optimization.html"/>
+    <lastmod>2026-11-26</lastmod>
+    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://wang-sunyang.github.io/en/posts/handwritten-html.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://wang-sunyang.github.io/en/posts/handwritten-html.html"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://wang-sunyang.github.io/posts/handwritten-html.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://wang-sunyang.github.io/posts/handwritten-html.html"/>
+    <lastmod>2026-11-26</lastmod>
+    <priority>0.6</priority>
+    <changefreq>yearly</changefreq>
+  </url>
+  <url>
+    <loc>https://wang-sunyang.github.io/en/posts/three-habits.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://wang-sunyang.github.io/en/posts/three-habits.html"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://wang-sunyang.github.io/posts/three-habits.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://wang-sunyang.github.io/posts/three-habits.html"/>
+    <lastmod>2026-11-26</lastmod>
+    <priority>0.6</priority>
     <changefreq>yearly</changefreq>
   </url>
 </urlset>
