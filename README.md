@@ -312,6 +312,9 @@ Fallbacks in place:
 - **Anchor scroll offset**: `:target,[id]{scroll-margin-top:96px}` added to all five pages so that
   jumping to a heading no longer hides it under the sticky header
 
+The reasoning, the trade-offs and the options I tried and dropped are in the note:
+[A round of subtraction: first paint, icons and weak networks](posts/site-r6-optimization.html).
+
 ## Contact
 
 | Channel | Address |

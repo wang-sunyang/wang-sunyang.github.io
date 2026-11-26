@@ -224,6 +224,8 @@ python3 -m http.server 8000
 - **焦点环统一为 CSS 变量**：15 处硬编码色全部改为 `var(--acc1)` / `var(--accent)`，随主题自动变色。
 - **锚点滚动偏移**：新增 `:target,[id]{scroll-margin-top:96px}`，修复 sticky 顶栏下锚点跳转被标题遮挡的问题。
 
+改动的过程、取舍和被砍掉又捡回来的方案，写在笔记里：[给站点做一轮减法：首屏、图标和弱网](posts/site-r6-optimization.html)。
+
 ## 联系方式
 
 | 渠道 | 地址 |
