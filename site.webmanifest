@@ -81,5 +81,28 @@
         }
       ]
     }
+  ],
+  "screenshots": [
+    {
+      "src": "assets/screenshots/screenshot-zh-home-narrow.webp",
+      "sizes": "900x1554",
+      "type": "image/webp",
+      "form_factor": "narrow",
+      "label": "首页 · 中文"
+    },
+    {
+      "src": "assets/screenshots/screenshot-en-home-narrow.webp",
+      "sizes": "900x1554",
+      "type": "image/webp",
+      "form_factor": "narrow",
+      "label": "Home · English"
+    },
+    {
+      "src": "assets/screenshots/screenshot-notes-narrow.webp",
+      "sizes": "900x1554",
+      "type": "image/webp",
+      "form_factor": "narrow",
+      "label": "笔记 · Notes"
+    }
   ]
 }

@@ -414,6 +414,26 @@ chk('site.webmanifest', 'C1 shortcuts 均有图标与 url',
   (mf.shortcuts || []).every(s => /^\//.test(s.url) && Array.isArray(s.icons) && s.icons.length && s.icons.every(i => i.sizes && i.src)), '');
 chk('site.webmanifest', 'C1 shortcuts url 指向真实页面',
   (mf.shortcuts || []).every(s => { const u = s.url.split(/[?#]/)[0]; return u === '/' || fs.existsSync(path.join(W, u.replace(/^\//, ''))); }), '');
+const sh = mf.screenshots || [];
+chk('site.webmanifest', 'C1 screenshots 已声明', Array.isArray(sh) && sh.length >= 2, sh.length + ' 张');
+chk('site.webmanifest', 'C1 screenshots 结构完整',
+  sh.length > 0 && sh.every(s => s.src && s.sizes && s.type === 'image/webp' && s.label && s.form_factor === 'narrow'), '');
+chk('site.webmanifest', 'C1 screenshots 文件存在且非空',
+  sh.length > 0 && sh.every(s => { const p = path.join(W, s.src); return fs.existsSync(p) && fs.statSync(p).size > 10000; }), '');
+chk('site.webmanifest', 'C1 screenshots sizes 与实际像素一致',
+  sh.length > 0 && sh.every(s => {
+    const b = fs.readFileSync(path.join(W, s.src));
+    let w = 0, h = 0;
+    if (b.toString('ascii', 0, 4) === 'RIFF' && b.toString('ascii', 8, 12) === 'WEBP') {
+      const t = b.toString('ascii', 12, 16);
+      if (t === 'VP8X') { w = 1 + b.readUIntLE(24, 3); h = 1 + b.readUIntLE(27, 3); }
+      else if (t === 'VP8 ') { w = b.readUInt16LE(26) & 0x3fff; h = b.readUInt16LE(28) & 0x3fff; }
+      else if (t === 'VP8L') { const v = b.readUInt32LE(21); w = (v & 0x3fff) + 1; h = ((v >> 14) & 0x3fff) + 1; }
+    }
+    return s.sizes === `${w}x${h}`;
+  }), '');
+chk('site.webmanifest', 'C1 screenshots 均为窄屏竖图',
+  sh.length > 0 && sh.every(s => { const [w, h] = s.sizes.split('x').map(Number); return h > w; }), '');
 
 
 /* ---------- A2：Open Graph 语言标注补全 ---------- */
